@@ -1,0 +1,152 @@
+[
+{
+  "mSourceCity" : "Boston",
+  "mDestinationCity" : "Miami",
+  "mPointValue" : 12
+},
+{
+  "mSourceCity" : "Calgary",
+  "mDestinationCity" : "Phoenix",
+  "mPointValue" : 13
+},
+{
+  "mSourceCity" : "Calgary",
+  "mDestinationCity" : "Salt Lake City",
+  "mPointValue" : 7
+},
+{
+  "mSourceCity" : "Chicago",
+  "mDestinationCity" : "Santa Fe",
+  "mPointValue" : 9
+},
+{
+  "mSourceCity" : "Chicago",
+  "mDestinationCity" : "New Orleans",
+  "mPointValue" : 7
+},
+{
+  "mSourceCity" : "Dallas",
+  "mDestinationCity" : "New York",
+  "mPointValue" : 11
+},
+{
+  "mSourceCity" : "Denver",
+  "mDestinationCity" : "Pittsburgh",
+  "mPointValue" : 11
+},
+{
+  "mSourceCity" : "Denver",
+  "mDestinationCity" : "El Paso",
+  "mPointValue" : 4
+},
+{
+  "mSourceCity" : "Duluth",
+  "mDestinationCity" : "El Paso",
+  "mPointValue" : 10
+},
+{
+  "mSourceCity" : "Duluth",
+  "mDestinationCity" : "Houston",
+  "mPointValue" : 8
+},
+{
+  "mSourceCity" : "Helena",
+  "mDestinationCity" : "Los Angeles",
+  "mPointValue" : 8
+},
+{
+  "mSourceCity" : "Kansas City",
+  "mDestinationCity" : "Houston",
+  "mPointValue" : 5
+},
+{
+  "mSourceCity" : "Los Angeles",
+  "mDestinationCity" : "New York",
+  "mPointValue" : 21
+},
+{
+  "mSourceCity" : "Los Angeles",
+  "mDestinationCity" : "Miami",
+  "mPointValue" : 20
+},
+{
+  "mSourceCity" : "Los Angeles",
+  "mDestinationCity" : "Chicago",
+  "mPointValue" :  16
+},
+{
+  "mSourceCity" : "Montreal",
+  "mDestinationCity" : "New Orleans",
+  "mPointValue" : 13
+},
+{
+  "mSourceCity" : "Montreal",
+  "mDestinationCity" : "Atlanta",
+  "mPointValue" : 9
+},
+{
+  "mSourceCity" : "New York",
+  "mDestinationCity" : "Atlanta",
+  "mPointValue" : 6
+},
+{
+  "mSourceCity" : "Portland",
+  "mDestinationCity" : "Nashville",
+  "mPointValue" : 17
+},
+{
+  "mSourceCity" : "Portland",
+  "mDestinationCity" : "Phoenix",
+  "mPointValue" : 11
+},
+{
+  "mSourceCity" : "San Francisco",
+  "mDestinationCity" : "Atlanta",
+  "mPointValue" : 17
+},
+{
+  "mSourceCity" : "Sault Ste. Marie",
+  "mDestinationCity" : "Oklahoma City",
+  "mPointValue" : 9
+},
+{
+  "mSourceCity" : "Sault Ste. Marie",
+  "mDestinationCity" : "Nashville",
+  "mPointValue" : 8
+},
+{
+  "mSourceCity" : "Seattle",
+  "mDestinationCity" : "New York",
+  "mPointValue" : 22
+},
+{
+  "mSourceCity" : "Seattle",
+  "mDestinationCity" : "Los Angeles",
+  "mPointValue" : 9
+},
+{
+  "mSourceCity" : "Toronto",
+  "mDestinationCity" : "Miami",
+  "mPointValue" : 10
+},
+{
+  "mSourceCity" : "Vancouver",
+  "mDestinationCity" : "Montreal",
+  "mPointValue" : 20
+},
+{
+  "mSourceCity" : "Vancouver",
+  "mDestinationCity" : "Santa Fe",
+  "mPointValue" : 13
+},
+{
+  "mSourceCity" : "Winnipeg",
+  "mDestinationCity" : "Houston",
+  "mPointValue" : 12
+},
+{
+  "mSourceCity" : "Winnipeg",
+  "mDestinationCity" : "Little Rock",
+  "mPointValue" : 11
+}
+]

@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "201762814327",
+    "firebase_url": "https://tickettoride-579be.firebaseio.com",
+    "project_id": "tickettoride-579be",
+    "storage_bucket": "tickettoride-579be.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:201762814327:android:96a665facc48769b",
+        "android_client_info": {
+          "package_name": "tewesday.tickettoridetestenvironment"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "201762814327-3oqt7k5eqvmiabgfvbg90bhlfce6noo4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfjueBdpelAXk5iW_2Pp1K-Sx6uX9j8mg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:201762814327:android:cb3e1709ff5b5093",
+        "android_client_info": {
+          "package_name": "tewesday.androidtickettorideapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "201762814327-3oqt7k5eqvmiabgfvbg90bhlfce6noo4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfjueBdpelAXk5iW_2Pp1K-Sx6uX9j8mg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
