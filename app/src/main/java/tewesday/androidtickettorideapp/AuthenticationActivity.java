@@ -123,8 +123,6 @@ public class AuthenticationActivity extends AppCompatActivity
                             setResult(RESULT_CANCELED);
                         }
                         finish();
-
-                        // ...
                     }
                 });
     }
@@ -140,15 +138,17 @@ public class AuthenticationActivity extends AppCompatActivity
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             //updateUI(user);
+                            setResult(RESULT_OK);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(AuthenticationActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                             //updateUI(null);
+                            setResult(RESULT_CANCELED);
                         }
 
-                        // ...
+                        finish();
                     }
                 });
     }
