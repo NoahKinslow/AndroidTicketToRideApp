@@ -28,7 +28,8 @@ public class MainActivity extends AppCompatActivity
             // already signed in
         } else {
             // not signed in
-            Intent intent = new Intent();
+            Intent intent = new Intent(this, AuthenticationActivity.class);
+
             startActivityForResult(intent, RC_SIGN_IN);
         }
 

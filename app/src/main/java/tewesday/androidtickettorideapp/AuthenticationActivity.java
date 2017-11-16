@@ -49,12 +49,6 @@ public class AuthenticationActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
     protected void onPause()
     {
         super.onPause();
@@ -64,12 +58,6 @@ public class AuthenticationActivity extends AppCompatActivity
     protected void onResume()
     {
         super.onResume();
-    }
-
-    @Override
-    public void startActivityForResult(Intent intent, int requestCode)
-    {
-        super.startActivityForResult(intent, requestCode);
     }
 
     public void createAccount(String email, String password)
@@ -83,13 +71,17 @@ public class AuthenticationActivity extends AppCompatActivity
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             //updateUI(user);
+                            setResult(RESULT_OK);
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(AuthenticationActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                             //updateUI(null);
+                            setResult(RESULT_CANCELED);
                         }
+                        finish();
 
                         // ...
                     }
