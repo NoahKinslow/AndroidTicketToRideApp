@@ -49,6 +49,8 @@ public class AuthenticationActivity extends AppCompatActivity
         if (currentUser != null)
         {
             //updateUI(currentUser);
+            Toast.makeText(AuthenticationActivity.this, "Signed in as" + mAuth.getCurrentUser().getDisplayName(),
+                    Toast.LENGTH_SHORT).show();
         }
         else
         {
