@@ -9,7 +9,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -17,6 +20,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import org.w3c.dom.Text;
 
 
 public class AuthenticationActivity extends AppCompatActivity
@@ -33,6 +38,7 @@ public class AuthenticationActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
+        setContentView(R.layout.activity_authentication);
     }
 
     @Override
@@ -47,21 +53,26 @@ public class AuthenticationActivity extends AppCompatActivity
         }
         else
         {
-            // Ask user to either sign in or sign up
-            askUserForSignIn();
-            if (mSignInText == "Sign in")
-            {
-                // sign in
-                signIntoAccount(mUsernameText, mPasswordText);
-            }
-            else
-            {
-                // sign up
-                acquireUsername();
-                acquirePassword();
-                createAccount(mUsernameText, mPasswordText);
-            }
-
+            Button signInButton = findViewById(R.id.signInButton);
+            signInButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    TextView usernameTextView = findViewById(R.id.usernameText);
+                    TextView passwordTextView = findViewById(R.id.passwordText);
+                    mUsernameText = (String) usernameTextView.getText();
+                    mPasswordText = (String) passwordTextView.getText();
+                    signIntoAccount(mUsernameText, mPasswordText);
+                }
+            });
+            Button signUpButton = findViewById(R.id.signUpButton);
+            signUpButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    TextView usernameTextView = findViewById(R.id.usernameText);
+                    TextView passwordTextView = findViewById(R.id.passwordText);
+                    mUsernameText = (String) usernameTextView.getText();
+                    mPasswordText = (String) passwordTextView.getText();
+                    createAccount(mUsernameText, mPasswordText);
+                }
+            });
         }
     }
 
@@ -139,90 +150,6 @@ public class AuthenticationActivity extends AppCompatActivity
                         // ...
                     }
                 });
-    }
-
-    private void acquireUsername()
-    {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this.getApplicationContext());
-        builder.setTitle("Username");
-
-        // Set up the input
-        final EditText input = new EditText(this);
-        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
-        builder.setView(input);
-
-        // Set up the buttons
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                mUsernameText = input.getText().toString();
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        builder.show();
-    }
-
-    private void acquirePassword()
-    {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this.getApplicationContext());
-        builder.setTitle("Password");
-
-        // Set up the input
-        final EditText input = new EditText(this);
-        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        builder.setView(input);
-
-        // Set up the buttons
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                mPasswordText = input.getText().toString();
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        builder.show();
-    }
-
-    private void askUserForSignIn()
-    {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this.getApplicationContext());
-        builder.setTitle("Sign in or Sign Up");
-
-        // Set up the input
-        final EditText input = new EditText(this);
-        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
-        builder.setView(input);
-
-        // Set up the buttons
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                mSignInText = input.getText().toString();
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        builder.show();
     }
 
 }
