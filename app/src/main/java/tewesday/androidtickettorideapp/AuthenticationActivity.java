@@ -30,7 +30,6 @@ public class AuthenticationActivity extends AppCompatActivity
     private FirebaseAuth mAuth;
     private String mUsernameText;
     private String mPasswordText;
-    private String mSignInText;
 
 
     @Override
@@ -58,8 +57,8 @@ public class AuthenticationActivity extends AppCompatActivity
                 public void onClick(View v) {
                     TextView usernameTextView = findViewById(R.id.usernameText);
                     TextView passwordTextView = findViewById(R.id.passwordText);
-                    mUsernameText = (String) usernameTextView.getText();
-                    mPasswordText = (String) passwordTextView.getText();
+                    mUsernameText = usernameTextView.getText().toString();
+                    mPasswordText = passwordTextView.getText().toString();
                     signIntoAccount(mUsernameText, mPasswordText);
                 }
             });
@@ -68,8 +67,8 @@ public class AuthenticationActivity extends AppCompatActivity
                 public void onClick(View v) {
                     TextView usernameTextView = findViewById(R.id.usernameText);
                     TextView passwordTextView = findViewById(R.id.passwordText);
-                    mUsernameText = (String) usernameTextView.getText();
-                    mPasswordText = (String) passwordTextView.getText();
+                    mUsernameText = usernameTextView.getText().toString();
+                    mPasswordText = passwordTextView.getText().toString();
                     createAccount(mUsernameText, mPasswordText);
                 }
             });
