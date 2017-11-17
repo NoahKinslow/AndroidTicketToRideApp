@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">AndroidTicketToRideApp</string>
+    <string name="usernameSignIn">Username</string>
+    <string name="passwordSignIn">Password</string>
+    <string name="sign_inButton">Sign In</string>
+    <string name="sign_upButton">Sign Up</string>
 </resources>

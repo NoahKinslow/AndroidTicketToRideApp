@@ -86,7 +86,7 @@ public class GameSession
         return mOwner;
     }
 
-    public void setmOwner(GamePlayer owner) {
+    public void setOwner(GamePlayer owner) {
         mOwner = owner;
     }
 }
