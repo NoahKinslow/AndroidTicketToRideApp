@@ -21,16 +21,19 @@
 
     <EditText
         android:id="@+id/gameSessionText"
-        android:layout_width="125dp"
-        android:layout_height="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:inputType="textPersonName"
         android:text="Enter Game Name"
+        android:textColor="?android:attr/editTextColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.228" />
+        app:layout_constraintVertical_bias="0.226"
+        tools:layout_editor_absoluteY="123dp"/>
 
     <Button
         android:id="@+id/signOutButton"
