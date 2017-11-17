@@ -81,4 +81,12 @@ public class GameSession
     public void setGameSessionName(String gameSessionName) {
         mGameSessionName = gameSessionName;
     }
+
+    public GamePlayer getOwner() {
+        return mOwner;
+    }
+
+    public void setmOwner(GamePlayer owner) {
+        mOwner = owner;
+    }
 }
