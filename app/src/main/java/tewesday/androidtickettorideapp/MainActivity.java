@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity
 
             pushedPostRef.setValue(gameSession);
 
-            Toast.makeText(MainActivity.this, "Game " + mGameSessionName + " +reated",
+            Toast.makeText(MainActivity.this, "Game " + mGameSessionName + " created",
                     Toast.LENGTH_SHORT).show();
 
             mGameLogicMaster.assignGameSession(gameSession);
