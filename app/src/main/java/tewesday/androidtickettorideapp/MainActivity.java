@@ -114,6 +114,7 @@ public class MainActivity extends AppCompatActivity
             myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    boolean gameFound = false;
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         if (snapshot.child("gameSessionName").getValue().equals(mGameSessionName))
                         {
@@ -130,7 +131,13 @@ public class MainActivity extends AppCompatActivity
                             mGameLogicMaster.setupDestinationTickets();
                             mGameLogicMaster.setupGameBoardMap();
                             mGameLogicMaster.loadGameSessionDataFromFirebase();
+                            gameFound = true;
                         }
+                    }
+                    if (!gameFound)
+                    {
+                        Toast.makeText(MainActivity.this, "Game " + mGameSessionName + " not found",
+                                Toast.LENGTH_SHORT).show();
                     }
                 }
 
