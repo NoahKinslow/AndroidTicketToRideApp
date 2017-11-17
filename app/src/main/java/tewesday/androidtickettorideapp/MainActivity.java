@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        if (snapshot.hasChild(mGameSessionName))
+                        if (snapshot.child("gameSessionName").getValue().equals(mGameSessionName))
                         {
                             GameSession gameSession = snapshot.getValue(GameSession.class);
                             mGameLogicMaster.assignGameSession(gameSession);
