@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity
     // Boolean value key: newGame = true, setup a new GameSession. newGame = false, look for an existing GameSession
     public void setupGame(Boolean newGame)
     {
-        if (newGame == true)
+        if (newGame)
         {
             mGameLogicMaster = new GameLogicMaster();
 
