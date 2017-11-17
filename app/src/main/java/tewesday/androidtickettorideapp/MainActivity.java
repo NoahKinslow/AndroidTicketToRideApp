@@ -72,14 +72,17 @@ public class MainActivity extends AppCompatActivity
 
             FirebaseAuth auth = FirebaseAuth.getInstance();
 
-            if (auth.getCurrentUser().getDisplayName() != null) {
-                if (auth.getCurrentUser().getDisplayName().equals("")) {
-                    gameSession.addNewPlayer(auth.getCurrentUser().getUid(), "Anonymous");
-                }
-            }
-            else
+            if (auth.getCurrentUser() != null)
             {
-                gameSession.addNewPlayer(auth.getCurrentUser().getUid(), auth.getCurrentUser().getDisplayName());
+                if (auth.getCurrentUser().getDisplayName() != null) {
+                    if (auth.getCurrentUser().getDisplayName().equals("")) {
+                        gameSession.addNewPlayer(auth.getCurrentUser().getUid(), "Anonymous");
+                    }
+                }
+                else
+                {
+                    gameSession.addNewPlayer(auth.getCurrentUser().getUid(), auth.getCurrentUser().getDisplayName());
+                }
             }
 
 
