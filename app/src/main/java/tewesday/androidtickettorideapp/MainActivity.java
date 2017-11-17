@@ -88,6 +88,9 @@ public class MainActivity extends AppCompatActivity
 
             pushedPostRef.setValue(gameSession);
 
+            Toast.makeText(MainActivity.this, "Game " + mGameSessionName + " +reated",
+                    Toast.LENGTH_SHORT).show();
+
             mGameLogicMaster.assignGameSession(gameSession);
 
             InputStream destinationTicketsStream = getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_destinationtickets);
@@ -115,6 +118,8 @@ public class MainActivity extends AppCompatActivity
                         if (snapshot.child("gameSessionName").getValue().equals(mGameSessionName))
                         {
                             GameSession gameSession = snapshot.getValue(GameSession.class);
+                            Toast.makeText(MainActivity.this, "Game " + mGameSessionName + " found",
+                                    Toast.LENGTH_SHORT).show();
                             mGameLogicMaster.assignGameSession(gameSession);
 
                             InputStream destinationTicketsStream = getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_destinationtickets);
