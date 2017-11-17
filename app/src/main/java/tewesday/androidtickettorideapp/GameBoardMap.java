@@ -125,7 +125,6 @@ public class GameBoardMap
     // Read all current RouteConnection data from the Firebase Database, setup Listeners for new RouteConnection additions
     public void readRouteDataFromFireabase(String gameSession)
     {
-        // Write a message to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("Games").child(gameSession).child("MapData").child("Routes");
 

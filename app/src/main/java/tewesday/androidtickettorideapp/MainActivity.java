@@ -10,8 +10,11 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.InputStream;
 import java.util.Objects;
@@ -19,8 +22,12 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity
 {
     private static final int RC_SIGN_IN = 123;
+    private String mGameSessionName;
 
     GameLogicMaster mGameLogicMaster;
+
+    Button mJoinGameButton;
+    Button mCreateGameButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -39,37 +46,98 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        setupGame();
+        setupGameSessionButtons();
+
+        //setupGame();
 
     }
 
-    public void setupGame()
+    // Boolean value key: newGame = true, setup a new GameSession. newGame = false, look for an existing GameSession
+    public void setupGame(Boolean newGame)
     {
-        mGameLogicMaster = new GameLogicMaster();
+        if (newGame == true)
+        {
+            mGameLogicMaster = new GameLogicMaster();
 
-        // Write a message to the database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("Games");
+            // Write a message to the database
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference("Games");
 
-        DatabaseReference pushedPostRef = myRef.child(myRef.push().getKey());
+            DatabaseReference pushedPostRef = myRef.child(myRef.push().getKey());
 
-        String gameSessionID = pushedPostRef.getKey();
+            String gameSessionID = pushedPostRef.getKey();
 
-        GameSession gameSession = new GameSession(gameSessionID);
+            GameSession gameSession = new GameSession(gameSessionID);
+            gameSession.setGameSessionName(mGameSessionName);
+            pushedPostRef.setValue(gameSession);
 
-        pushedPostRef.setValue(gameSession);
+            mGameLogicMaster.assignGameSession(gameSession);
 
-        mGameLogicMaster.assignGameSession(gameSession);
+            InputStream destinationTicketsStream = getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_destinationtickets);
+            InputStream citiesStream = getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_cities);
+            InputStream routeStream = getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_cityrouteconnections);
 
-        InputStream destinationTicketsStream = getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_destinationtickets);
-        InputStream citiesStream = getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_cities);
-        InputStream routeStream = getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_cityrouteconnections);
+            mGameLogicMaster.setupFiles(destinationTicketsStream, citiesStream, routeStream);
+            mGameLogicMaster.setupDestinationTickets();
+            mGameLogicMaster.setupGameBoardMap();
+            //mGameLogicMaster.loadGameSessionDataFromFirebase();
+            //mGameLogicMaster.updateRoute(1, 0);
+        }
+        else
+        {
+            mGameLogicMaster = new GameLogicMaster();
 
-        mGameLogicMaster.setupFiles(destinationTicketsStream, citiesStream, routeStream);
-        mGameLogicMaster.setupDestinationTickets();
-        mGameLogicMaster.setupGameBoardMap();
-        mGameLogicMaster.loadGameSessionDataFromFirebase();
-        mGameLogicMaster.updateRoute(1, 0);
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference("Games");
+
+            // Read all current data once
+            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        if (snapshot.hasChild(mGameSessionName))
+                        {
+                            GameSession gameSession = snapshot.getValue(GameSession.class);
+                            mGameLogicMaster.assignGameSession(gameSession);
+
+                            InputStream destinationTicketsStream = getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_destinationtickets);
+                            InputStream citiesStream = getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_cities);
+                            InputStream routeStream = getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_cityrouteconnections);
+
+                            mGameLogicMaster.setupFiles(destinationTicketsStream, citiesStream, routeStream);
+                            mGameLogicMaster.setupDestinationTickets();
+                            mGameLogicMaster.setupGameBoardMap();
+                            mGameLogicMaster.loadGameSessionDataFromFirebase();
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+    }
+
+    public void setupGameSessionButtons()
+    {
+        mJoinGameButton = findViewById(R.id.joinGameButton);
+        mJoinGameButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                TextView gameSessionNameTextView = findViewById(R.id.gameSessionText);
+                mGameSessionName = gameSessionNameTextView.getText().toString();
+                setupGame(false);
+            }
+        });
+        mCreateGameButton = findViewById(R.id.createGameButton);
+        mCreateGameButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                TextView gameSessionNameTextView = findViewById(R.id.gameSessionText);
+                mGameSessionName = gameSessionNameTextView.getText().toString();
+                setupGame(true);
+            }
+        });
     }
 
     private void checkLogin()

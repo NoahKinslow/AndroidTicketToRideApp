@@ -6,6 +6,7 @@ import java.util.List;
 public class GameSession
 {
     private String mGameSessionID;
+    private String mGameSessionName;
 
     private List<GamePlayer> mPlayerList = new ArrayList<>();
 
@@ -69,5 +70,13 @@ public class GameSession
     // Sets the entire PlayerList for the Firebase Database
     public void setPlayerList(List<GamePlayer> playerList) {
         mPlayerList = playerList;
+    }
+
+    public String getGameSessionName() {
+        return mGameSessionName;
+    }
+
+    public void setGameSessionName(String gameSessionName) {
+        mGameSessionName = gameSessionName;
     }
 }
