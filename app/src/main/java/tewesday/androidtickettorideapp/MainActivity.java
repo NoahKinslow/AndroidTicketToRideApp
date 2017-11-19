@@ -22,12 +22,17 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity
 {
     private static final int RC_SIGN_IN = 123;
+    private FirebaseAuth mAuthentication;
     private String mGameSessionName;
 
     GameLogicMaster mGameLogicMaster;
 
     Button mJoinGameButton;
     Button mCreateGameButton;
+
+    private InputStream mDestinationTicketsStream;
+    private InputStream mCitiesStream;
+    private InputStream mRoutesStream;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -40,14 +45,14 @@ public class MainActivity extends AppCompatActivity
         Button signOutButton = findViewById(R.id.signOutButton);
         signOutButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                FirebaseAuth auth = FirebaseAuth.getInstance();
-                auth.signOut();
+                mAuthentication = FirebaseAuth.getInstance();
+                mAuthentication.signOut();
                 checkLogin();
             }
         });
 
         setupGameSessionButtons();
-
+        prepareInputFiles();
     }
 
     // Split this into more functions!
@@ -67,20 +72,17 @@ public class MainActivity extends AppCompatActivity
             String gameSessionID = pushedPostRef.getKey();
 
             GameSession gameSession = new GameSession(gameSessionID);
-            gameSession.setGameSessionName(mGameSessionName);
 
-            FirebaseAuth auth = FirebaseAuth.getInstance();
-
-            if (auth.getCurrentUser() != null)
+            if (mAuthentication.getCurrentUser() != null)
             {
-                if (auth.getCurrentUser().getDisplayName() != null) {
-                    if (auth.getCurrentUser().getDisplayName().equals("")) {
-                        gameSession.addNewPlayer(auth.getCurrentUser().getUid(), "Anonymous");
+                if (mAuthentication.getCurrentUser().getDisplayName() != null) {
+                    if (mAuthentication.getCurrentUser().getDisplayName().equals("")) {
+                        gameSession.addNewPlayer(mAuthentication.getCurrentUser().getUid(), "Anonymous");
                     }
                 }
                 else
                 {
-                    gameSession.addNewPlayer(auth.getCurrentUser().getUid(), auth.getCurrentUser().getDisplayName());
+                    gameSession.addNewPlayer(mAuthentication.getCurrentUser().getUid(), mAuthentication.getCurrentUser().getDisplayName());
                 }
             }
 
@@ -90,15 +92,8 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(MainActivity.this, "Game " + mGameSessionName + " created.",
                     Toast.LENGTH_SHORT).show();
 
-            mGameLogicMaster.assignGameSession(gameSession);
+            setupGameLogicMaster(gameSession);
 
-            InputStream destinationTicketsStream = getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_destinationtickets);
-            InputStream citiesStream = getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_cities);
-            InputStream routeStream = getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_cityrouteconnections);
-
-            mGameLogicMaster.setupFiles(destinationTicketsStream, citiesStream, routeStream);
-            mGameLogicMaster.setupDestinationTickets();
-            mGameLogicMaster.setupGameBoardMap();
         }
         else
         {
@@ -123,24 +118,16 @@ public class MainActivity extends AppCompatActivity
                             {
                                 // Check if the GameSession is full
                                 if (gameSession.getPlayerList().size() == 4) {
-                                    FirebaseAuth auth = FirebaseAuth.getInstance();
-                                    if (gameSession.searchForPlayer(auth.getCurrentUser().getUid()) != null) {
+                                    // Check if User is in GameSession
+                                    if (gameSession.searchForPlayer(mAuthentication.getCurrentUser().getUid()) != null) {
                                         Toast.makeText(MainActivity.this, "Waiting for " + mGameSessionName + " to start. Rejoining now...",
                                                 Toast.LENGTH_SHORT).show();
 
                                         // Assign User to matching Player
-                                        gameSession.searchForPlayer(auth.getCurrentUser().getUid());
+                                        gameSession.searchForPlayer(mAuthentication.getCurrentUser().getUid());
 
-                                        mGameLogicMaster.assignGameSession(gameSession);
+                                        setupGameLogicMaster(gameSession);
 
-                                        InputStream destinationTicketsStream = getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_destinationtickets);
-                                        InputStream citiesStream = getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_cities);
-                                        InputStream routeStream = getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_cityrouteconnections);
-
-                                        mGameLogicMaster.setupFiles(destinationTicketsStream, citiesStream, routeStream);
-                                        mGameLogicMaster.setupDestinationTickets();
-                                        mGameLogicMaster.setupGameBoardMap();
-                                        mGameLogicMaster.loadGameSessionDataFromFirebase();
                                     } else {
                                         Toast.makeText(MainActivity.this, "Game " + mGameSessionName + " is full",
                                                 Toast.LENGTH_SHORT).show();
@@ -148,24 +135,14 @@ public class MainActivity extends AppCompatActivity
                                     }
                                 } else {
                                         // Game found and started, check if joining User is a Player
-                                        FirebaseAuth auth = FirebaseAuth.getInstance();
-                                        if (gameSession.searchForPlayer(auth.getCurrentUser().getUid()) != null) {
+                                        if (gameSession.searchForPlayer(mAuthentication.getCurrentUser().getUid()) != null) {
                                             Toast.makeText(MainActivity.this, "Welcome back to " + mGameSessionName + ". Rejoining now...",
                                                     Toast.LENGTH_SHORT).show();
 
                                             // Assign User to matching Player
-                                            gameSession.searchForPlayer(auth.getCurrentUser().getUid());
+                                            gameSession.searchForPlayer(mAuthentication.getCurrentUser().getUid());
 
-                                            mGameLogicMaster.assignGameSession(gameSession);
-
-                                            InputStream destinationTicketsStream = getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_destinationtickets);
-                                            InputStream citiesStream = getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_cities);
-                                            InputStream routeStream = getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_cityrouteconnections);
-
-                                            mGameLogicMaster.setupFiles(destinationTicketsStream, citiesStream, routeStream);
-                                            mGameLogicMaster.setupDestinationTickets();
-                                            mGameLogicMaster.setupGameBoardMap();
-                                            mGameLogicMaster.loadGameSessionDataFromFirebase();
+                                            setupGameLogicMaster(gameSession);
                                         }
                                         else
                                         {
@@ -191,6 +168,22 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    public void prepareInputFiles()
+    {
+        mDestinationTicketsStream = getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_destinationtickets);
+        mCitiesStream = getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_cities);
+        mRoutesStream = getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_cityrouteconnections);
+    }
+
+    public void setupGameLogicMaster(GameSession gameSession)
+    {
+        mGameLogicMaster.assignGameSession(gameSession);
+        mGameLogicMaster.setupFiles(mDestinationTicketsStream, mCitiesStream, mRoutesStream);
+        mGameLogicMaster.setupDestinationTickets();
+        mGameLogicMaster.setupGameBoardMap();
+        mGameLogicMaster.loadGameSessionDataFromFirebase();
+    }
+
     public void setupGameSessionButtons()
     {
         mJoinGameButton = findViewById(R.id.joinGameButton);
@@ -213,17 +206,17 @@ public class MainActivity extends AppCompatActivity
 
     private void checkLogin()
     {
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        if (auth.getCurrentUser() != null) {
+        mAuthentication = FirebaseAuth.getInstance();
+        if (mAuthentication.getCurrentUser() != null) {
             // already signed in
-            if (Objects.equals(auth.getCurrentUser().getDisplayName(), ""))
+            if (Objects.equals(mAuthentication.getCurrentUser().getDisplayName(), ""))
             {
-                Toast.makeText(MainActivity.this, "Signed in as " + auth.getCurrentUser().getEmail(),
+                Toast.makeText(MainActivity.this, "Signed in as " + mAuthentication.getCurrentUser().getEmail(),
                         Toast.LENGTH_SHORT).show();
             }
             else
             {
-                Toast.makeText(MainActivity.this, "Signed in as " + auth.getCurrentUser().getDisplayName(),
+                Toast.makeText(MainActivity.this, "Signed in as " + mAuthentication.getCurrentUser().getDisplayName(),
                         Toast.LENGTH_SHORT).show();
             }
         } else {
