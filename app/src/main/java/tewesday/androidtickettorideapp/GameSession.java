@@ -45,15 +45,28 @@ public class GameSession
     }
 
     // Re-add a player that was already assigned to this GameSession
-    public void addExistingPlayer(GamePlayer player)
+/*    public void addExistingPlayer(GamePlayer player)
     {
         mPlayerList.add(player);
-    }
+    }*/
 
     // Get a player from the PlayerList using the Player's ID
     public GamePlayer getPlayer(int playerID)
     {
         return mPlayerList.get(playerID - 1);
+    }
+
+    // Search for a player in the PlayerList using the Player's UserID
+    public GamePlayer searchForPlayer(String userID)
+    {
+        for (GamePlayer player : mPlayerList)
+        {
+            if (player.getAssociatedUserID().equals(userID))
+            {
+                return player;
+            }
+        }
+        return null;
     }
 
     public String getGameSessionID() {

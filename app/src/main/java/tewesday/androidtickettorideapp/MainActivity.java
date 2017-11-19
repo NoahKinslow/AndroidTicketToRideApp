@@ -48,8 +48,6 @@ public class MainActivity extends AppCompatActivity
 
         setupGameSessionButtons();
 
-        //setupGame();
-
     }
 
     // Boolean value key: newGame = true, setup a new GameSession. newGame = false, look for an existing GameSession
@@ -100,8 +98,6 @@ public class MainActivity extends AppCompatActivity
             mGameLogicMaster.setupFiles(destinationTicketsStream, citiesStream, routeStream);
             mGameLogicMaster.setupDestinationTickets();
             mGameLogicMaster.setupGameBoardMap();
-            //mGameLogicMaster.loadGameSessionDataFromFirebase();
-            //mGameLogicMaster.updateRoute(1, 0);
         }
         else
         {
@@ -121,6 +117,16 @@ public class MainActivity extends AppCompatActivity
                             GameSession gameSession = snapshot.getValue(GameSession.class);
                             Toast.makeText(MainActivity.this, "Game " + mGameSessionName + " found",
                                     Toast.LENGTH_SHORT).show();
+
+                            // Check if the GameSession is full
+                            if (gameSession.getPlayerList().size() == 4)
+                            {
+                                FirebaseAuth auth = FirebaseAuth.getInstance();
+                                if (gameSession.searchForPlayer(auth.getCurrentUser().getProviderId()))
+                                Toast.makeText(MainActivity.this, "Game " + mGameSessionName + " is full",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+
                             mGameLogicMaster.assignGameSession(gameSession);
 
                             InputStream destinationTicketsStream = getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_destinationtickets);
