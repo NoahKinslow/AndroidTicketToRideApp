@@ -8,6 +8,7 @@ public class GameSession
     private String mGameSessionID;
     private String mGameSessionName;
     private GamePlayer mOwner;
+    private boolean mGameStarted = false;
 
     private List<GamePlayer> mPlayerList = new ArrayList<>();
 
@@ -101,5 +102,13 @@ public class GameSession
 
     public void setOwner(GamePlayer owner) {
         mOwner = owner;
+    }
+
+    public boolean isGameStarted() {
+        return mGameStarted;
+    }
+
+    public void setGameStarted(boolean gameStarted) {
+        mGameStarted = gameStarted;
     }
 }

@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    // Split this into more functions!
     // Boolean value key: newGame = true, setup a new GameSession. newGame = false, look for an existing GameSession
     public void setupGame(Boolean newGame)
     {
@@ -86,7 +87,7 @@ public class MainActivity extends AppCompatActivity
 
             pushedPostRef.setValue(gameSession);
 
-            Toast.makeText(MainActivity.this, "Game " + mGameSessionName + " created",
+            Toast.makeText(MainActivity.this, "Game " + mGameSessionName + " created.",
                     Toast.LENGTH_SHORT).show();
 
             mGameLogicMaster.assignGameSession(gameSession);
@@ -112,37 +113,72 @@ public class MainActivity extends AppCompatActivity
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     boolean gameFound = false;
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        if (snapshot.child("gameSessionName").getValue().equals(mGameSessionName))
-                        {
+                        if (snapshot.child("gameSessionName").getValue().equals(mGameSessionName)) {
                             GameSession gameSession = snapshot.getValue(GameSession.class);
-                            Toast.makeText(MainActivity.this, "Game " + mGameSessionName + " found",
+                            Toast.makeText(MainActivity.this, "Game " + mGameSessionName + " found.",
                                     Toast.LENGTH_SHORT).show();
-
-                            // Check if the GameSession is full
-                            if (gameSession.getPlayerList().size() == 4)
-                            {
-                                FirebaseAuth auth = FirebaseAuth.getInstance();
-                                if (gameSession.searchForPlayer(auth.getCurrentUser().getProviderId()))
-                                Toast.makeText(MainActivity.this, "Game " + mGameSessionName + " is full",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-
-                            mGameLogicMaster.assignGameSession(gameSession);
-
-                            InputStream destinationTicketsStream = getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_destinationtickets);
-                            InputStream citiesStream = getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_cities);
-                            InputStream routeStream = getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_cityrouteconnections);
-
-                            mGameLogicMaster.setupFiles(destinationTicketsStream, citiesStream, routeStream);
-                            mGameLogicMaster.setupDestinationTickets();
-                            mGameLogicMaster.setupGameBoardMap();
-                            mGameLogicMaster.loadGameSessionDataFromFirebase();
                             gameFound = true;
+
+                            if (!gameSession.isGameStarted())
+                            {
+                                // Check if the GameSession is full
+                                if (gameSession.getPlayerList().size() == 4) {
+                                    FirebaseAuth auth = FirebaseAuth.getInstance();
+                                    if (gameSession.searchForPlayer(auth.getCurrentUser().getUid()) != null) {
+                                        Toast.makeText(MainActivity.this, "Waiting for " + mGameSessionName + " to start. Rejoining now...",
+                                                Toast.LENGTH_SHORT).show();
+
+                                        // Assign User to matching Player
+                                        gameSession.searchForPlayer(auth.getCurrentUser().getUid());
+
+                                        mGameLogicMaster.assignGameSession(gameSession);
+
+                                        InputStream destinationTicketsStream = getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_destinationtickets);
+                                        InputStream citiesStream = getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_cities);
+                                        InputStream routeStream = getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_cityrouteconnections);
+
+                                        mGameLogicMaster.setupFiles(destinationTicketsStream, citiesStream, routeStream);
+                                        mGameLogicMaster.setupDestinationTickets();
+                                        mGameLogicMaster.setupGameBoardMap();
+                                        mGameLogicMaster.loadGameSessionDataFromFirebase();
+                                    } else {
+                                        Toast.makeText(MainActivity.this, "Game " + mGameSessionName + " is full",
+                                                Toast.LENGTH_SHORT).show();
+
+                                    }
+                                } else {
+                                        // Game found and started, check if joining User is a Player
+                                        FirebaseAuth auth = FirebaseAuth.getInstance();
+                                        if (gameSession.searchForPlayer(auth.getCurrentUser().getUid()) != null) {
+                                            Toast.makeText(MainActivity.this, "Welcome back to " + mGameSessionName + ". Rejoining now...",
+                                                    Toast.LENGTH_SHORT).show();
+
+                                            // Assign User to matching Player
+                                            gameSession.searchForPlayer(auth.getCurrentUser().getUid());
+
+                                            mGameLogicMaster.assignGameSession(gameSession);
+
+                                            InputStream destinationTicketsStream = getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_destinationtickets);
+                                            InputStream citiesStream = getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_cities);
+                                            InputStream routeStream = getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_cityrouteconnections);
+
+                                            mGameLogicMaster.setupFiles(destinationTicketsStream, citiesStream, routeStream);
+                                            mGameLogicMaster.setupDestinationTickets();
+                                            mGameLogicMaster.setupGameBoardMap();
+                                            mGameLogicMaster.loadGameSessionDataFromFirebase();
+                                        }
+                                        else
+                                        {
+                                            Toast.makeText(MainActivity.this, "You are not in " + mGameSessionName + ".",
+                                                    Toast.LENGTH_SHORT).show();
+                                        }
+                                }
+                            }
                         }
                     }
                     if (!gameFound)
                     {
-                        Toast.makeText(MainActivity.this, "Game " + mGameSessionName + " not found",
+                        Toast.makeText(MainActivity.this, "Game " + mGameSessionName + " not found.",
                                 Toast.LENGTH_SHORT).show();
                     }
                 }
