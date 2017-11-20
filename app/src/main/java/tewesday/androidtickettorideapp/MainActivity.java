@@ -182,6 +182,7 @@ public class MainActivity extends AppCompatActivity
         mGameLogicMaster.setupDestinationTickets();
         mGameLogicMaster.setupGameBoardMap();
         mGameLogicMaster.loadGameSessionDataFromFirebase();
+        // Switch to GameBoardActivity/UI here
     }
 
     public void setupGameSessionButtons()
