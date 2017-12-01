@@ -4,9 +4,6 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -17,26 +14,38 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.gson.Gson;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
-public class GameActivity extends AppCompatActivity implements OnMapReadyCallback{
+public class GameActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnPolylineClickListener{
 
     private GoogleMap mMap;
     private int RADIUS = 80000;
+    private List<GameRouteConnection> mRoutes;
+    private List<CityCoordinates> mCities;
+    private List<String> mCityArray;
+    //Wild, Red, Blue, Yellow, Green, Orange, Pink, Black, White
+    private final int[] ROUTE_COLORS = {
+            Color.GRAY,
+            Color.RED,
+            Color.BLUE,
+            Color.YELLOW,
+            Color.GREEN,
+            Color.rgb(255,165,0),
+            Color.rgb(255,192,203),
+            Color.BLACK,
+            Color.WHITE
+    };
+
+    @Override
+    public void onPolylineClick(Polyline polyline) {
+
+    }
+
     private class CityCoordinates
     {
         public LatLng mLocation;
@@ -61,6 +70,8 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                                         .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        mRoutes = getIntent().getParcelableArrayListExtra("ROUTE");
+        mCityArray = getIntent().getStringArrayListExtra("CITY");
     }
 
 
@@ -77,34 +88,77 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mMap = googleMap;
 
-        List<CityCoordinates> cities = createListOfCities();
+        mCities = createListOfCities();
 
         //add Circles
-        for(CityCoordinates city : cities) {
-            CircleOptions cir = new CircleOptions();
-            cir.center(city.mLocation);
-            cir.radius(RADIUS);
-            cir.fillColor(Color.BLACK);
-            mMap.addCircle(cir);
-        }
+        addCitiesToMap();
+
+        //draw Lines
+        addRoutesToMap();
+
+        //Listener
+        mMap.setOnPolylineClickListener(this);
 
         //http://www.kansastravel.org/geographicalcenter.htm
         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(39.8283, -98.5795)));
+    }
+
+    private void addCitiesToMap() {
+        for (CityCoordinates city : mCities) {
+            CircleOptions cir = new CircleOptions()
+                    .center(city.mLocation)
+                    .radius(RADIUS)
+                    .fillColor(Color.BLACK)
+                    .zIndex(200);
+
+            mMap.addCircle(cir);
+        }
+    }
+
+    private void addRoutesToMap()
+    {
+        for(GameRouteConnection route : mRoutes)
+        {
+            String sourceStr = route.getSourceCity();
+            String desStr = route.getDestinationCity();
+
+            CityCoordinates source = getCityCoordinates(sourceStr);
+            CityCoordinates des = getCityCoordinates(desStr);
+
+            if(source == null || des == null)
+                break;
+
+            PolylineOptions poly = new PolylineOptions()
+                    .add(source.mLocation)
+                    .add(des.mLocation)
+                    .color(ROUTE_COLORS[route.getRouteColor()])
+                    .width(15)
+                    .zIndex(100)
+                    .clickable(true);
+
+            mMap.addPolyline(poly);
+        }
+    }
+
+
+    private CityCoordinates getCityCoordinates(String city)
+    {
+        for(CityCoordinates c : mCities)
+        {
+            if(city.equals(c.mName))
+            {
+                return c;
+            }
+        }
+        return null;
     }
 
     private List<CityCoordinates> createListOfCities() {
 
         List<CityCoordinates> cities = new ArrayList<>();
 
-        InputStream cityJson = getApplicationContext().
-                getResources().
-                openRawResource(R.raw.cities);
-        BufferedReader br = new BufferedReader(new InputStreamReader((cityJson)));
-        Gson gson = new Gson();
-        String[] cityList = gson.fromJson(br, String[].class);
-
         Geocoder geo = new Geocoder(this);
-        for (String cityName : cityList) {
+        for (String cityName : mCityArray) {
             List<Address> addresses = null;
             try {
                 addresses = geo.getFromLocationName(cityName, 1);

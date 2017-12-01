@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 
 
 public class AuthenticationActivity extends AppCompatActivity
@@ -154,7 +157,17 @@ public class AuthenticationActivity extends AppCompatActivity
     }
 
     public void gameTestOnClick(View view) {
+        //Test
+        GameLogicMaster glm = new GameLogicMaster();
+        glm.setupFiles(null,
+                (getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_cities)),
+                (getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_cityrouteconnections)));
+        glm.setupGameBoardMap();
+
         Intent intent = new Intent (this, GameActivity.class);
+        intent.putParcelableArrayListExtra("ROUTE", (ArrayList<GameRouteConnection>) glm.getmGameBoardMap().getmRoutes());
+        intent.putStringArrayListExtra("CITY", (ArrayList<String>) glm.getmGameBoardMap().getmCities());
+
         startActivity(intent);
     }
 

@@ -33,11 +33,21 @@ import static android.content.ContentValues.TAG;
 
 public class GameBoardMap
 {
+    public List<String> getmCities() {
+        return mCities;
+    }
+
     // List of Cities
     private List<String> mCities;
 
     // Map of cities and routes connected to them
     private Map<String, GameCity> mCityMap = new LinkedHashMap<>();
+
+    public List<GameRouteConnection> getmRoutes() {
+        return mRoutes;
+    }
+
+    private List<GameRouteConnection> mRoutes;
 
     // constructor
     GameBoardMap()
@@ -55,6 +65,7 @@ public class GameBoardMap
 
         for (int i = 0;i < cities.size();i++)
         {
+            mCities.add(cities.get(i).getCityName());
             addCity(cities.get(i).getCityName());
         }
 
@@ -62,6 +73,8 @@ public class GameBoardMap
         br = new BufferedReader(new InputStreamReader((routesStream)));
         type = new TypeToken<List<GameRouteConnection>>(){}.getType();
         List<GameRouteConnection> routes = gson.fromJson(br, type);
+
+        mRoutes = routes;
 
         for (int i = 0;i < routes.size(); i++)
         {

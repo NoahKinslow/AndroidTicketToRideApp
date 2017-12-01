@@ -1,6 +1,9 @@
 package tewesday.androidtickettorideapp;
 
-public class GameRouteConnection
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class GameRouteConnection implements Parcelable
 {
     // Connection's unique ID to differentiate from a similar connection
     private int mConnectionID;
@@ -39,6 +42,44 @@ public class GameRouteConnection
         mTrainDistance = trainDistance;
         mRouteColor = routeColor;
     }
+
+    protected GameRouteConnection(Parcel in) {
+        mConnectionID = in.readInt();
+        mSourceCity = in.readString();
+        mDestinationCity = in.readString();
+        mTrainDistance = in.readInt();
+        mRouteColor = in.readInt();
+        mPlayerControlled = in.readByte() != 0;
+        mPlayerID = in.readInt();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(mConnectionID);
+        dest.writeString(mSourceCity);
+        dest.writeString(mDestinationCity);
+        dest.writeInt(mTrainDistance);
+        dest.writeInt(mRouteColor);
+        dest.writeByte((byte) (mPlayerControlled ? 1 : 0));
+        dest.writeInt(mPlayerID);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<GameRouteConnection> CREATOR = new Creator<GameRouteConnection>() {
+        @Override
+        public GameRouteConnection createFromParcel(Parcel in) {
+            return new GameRouteConnection(in);
+        }
+
+        @Override
+        public GameRouteConnection[] newArray(int size) {
+            return new GameRouteConnection[size];
+        }
+    };
 
     public int getConnectionID()
     {

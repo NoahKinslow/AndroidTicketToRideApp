@@ -13,6 +13,11 @@ import java.util.List;
 public class GameLogicMaster
 {
     private List<GameDestinationTicket> mDestinationTickets = new ArrayList<>();
+
+    public GameBoardMap getmGameBoardMap() {
+        return mGameBoardMap;
+    }
+
     private GameBoardMap mGameBoardMap;
     private InputStream mDestinationTicketsStream;
     private InputStream mCitiesStream;
