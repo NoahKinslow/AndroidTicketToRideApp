@@ -4,4 +4,9 @@
     <string name="passwordSignIn">Password</string>
     <string name="sign_inButton">Sign In</string>
     <string name="sign_upButton">Sign Up</string>
+
+    <string name="title_activity_game">GameActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

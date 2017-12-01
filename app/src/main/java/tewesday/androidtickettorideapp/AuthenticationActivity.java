@@ -153,4 +153,9 @@ public class AuthenticationActivity extends AppCompatActivity
                 });
     }
 
+    public void gameTestOnClick(View view) {
+        Intent intent = new Intent (this, GameActivity.class);
+        startActivity(intent);
+    }
+
 }

@@ -55,4 +55,12 @@
         android:layout_margin="10dp"
         android:text="@string/sign_upButton"
         android:textAppearance="@android:style/TextAppearance.Material.Widget.Button" />
+
+
+    <Button
+        android:id="@+id/gameTestButton"
+        android:layout_width="88dp"
+        android:layout_height="48dp"
+        android:onClick="gameTestOnClick"
+        android:text="Game Test"/>
 </LinearLayout>
