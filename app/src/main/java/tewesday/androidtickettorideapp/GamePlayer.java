@@ -17,8 +17,9 @@ public class GamePlayer
 
     private int mPlayerColor;
     private int mPlayerID;
-    private int mTrainsLeft;
-
+    private int mTrainsLeft = 45;
+    private int mScore;
+    private int mPlayerColor;
     private List<GameTrainCards> mTrainCards;
     private List<GameDestinationTicket> mTickets;
 
@@ -64,6 +65,22 @@ public class GamePlayer
 
     public List<GameTrainCards> getTrainCards() {
         return mTrainCards;
+    }
+
+    public int getScore() {
+        return mScore;
+    }
+
+    public void setScore(int score) {
+        mScore = score;
+    }
+
+    public int getPlayerColor() {
+        return mPlayerColor;
+    }
+
+    public void setPlayerColor(int playerColor) {
+        mPlayerColor = playerColor;
     }
 
     public void setTrainCards(List<GameTrainCards> trainCards) {

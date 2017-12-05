@@ -1,5 +1,8 @@
 package tewesday.androidtickettorideapp;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -10,8 +13,33 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameLogicMaster
+public class GameLogicMaster implements Parcelable
 {
+    protected GameLogicMaster(Parcel in) {
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<GameLogicMaster> CREATOR = new Creator<GameLogicMaster>() {
+        @Override
+        public GameLogicMaster createFromParcel(Parcel in) {
+            return new GameLogicMaster(in);
+        }
+
+        @Override
+        public GameLogicMaster[] newArray(int size) {
+            return new GameLogicMaster[size];
+        }
+    };
+
+
     private List<GameDestinationTicket> mDestinationTickets = new ArrayList<>();
 
     public GameBoardMap getmGameBoardMap() {
