@@ -4,6 +4,7 @@
     <string name="passwordSignIn">Password</string>
     <string name="sign_inButton">Sign In</string>
     <string name="sign_upButton">Sign Up</string>
+    <string name="add_tickets">Add Tickets</string>
 
     <string name="title_activity_game">GameActivity</string>
     <string name="dummy_button">Dummy Button</string>
@@ -14,5 +15,6 @@
 
     <string name="points">%1$d Points</string>
     <string name="trainsLeft">%1$d Trains Left</string>
-    <string name="add_tickets">Add Tickets</string>
+
+
 </resources>

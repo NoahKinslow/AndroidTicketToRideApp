@@ -1,12 +1,18 @@
 package tewesday.androidtickettorideapp;
 
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -14,13 +20,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
-import com.google.android.gms.maps.model.Dash;
-import com.google.android.gms.maps.model.Dot;
-import com.google.android.gms.maps.model.Gap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PatternItem;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.ui.IconGenerator;
@@ -37,12 +39,22 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 {
 
     private GoogleMap mMap;
-    private int RADIUS = 80000;
+    private final int COLOR_TAG = 200;
+    private final int RADIUS = 80000;
     private List<GameRouteConnection> mRoutes;
     private List<CityCoordinates> mCities;
     private List<String> mCityArray;
     private List<Marker> mMarkers;
     private List<Polyline> mPolylines;
+    //LayoutItems
+    private List<Button> mHandButtons;
+    private List<ImageView> mDrawPile;
+    private List<TextView> mAIInfo;
+    private List<TextView> mPlayerInfo;
+    private ImageView mAIImage;
+    private ImageView mPlayerImage;
+    private ScrollView mTicketScrollView;
+
     //Wild, Red, Blue, Yellow, Green, Orange, Pink, Black, White
     private final int[] ROUTE_COLORS = {
             Color.GRAY,
@@ -56,16 +68,6 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             Color.WHITE
     };
 
-    @Override
-    public void onPolylineClick(Polyline polyline) {
-
-    }
-
-    public void drawPileClick(View view) {
-
-    }
-
-
     private class CityCoordinates
     {
         public LatLng mLocation;
@@ -76,7 +78,6 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             mLocation = latLng;
             mName = name;
         }
-
     }
 
     @Override
@@ -94,8 +95,45 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         mPolylines = new ArrayList<>();
         mRoutes = getIntent().getParcelableArrayListExtra("ROUTE");
         mCityArray = getIntent().getStringArrayListExtra("CITY");
+
+        initializeLayoutItems();
     }
 
+    private void initializeLayoutItems()
+    {
+        mHandButtons = new ArrayList<>();
+        mHandButtons.add((Button)findViewById(R.id.handCard0));
+        mHandButtons.add((Button)findViewById(R.id.handCard1));
+        mHandButtons.add((Button)findViewById(R.id.handCard2));
+        mHandButtons.add((Button)findViewById(R.id.handCard3));
+        mHandButtons.add((Button)findViewById(R.id.handCard4));
+        mHandButtons.add((Button)findViewById(R.id.handCard5));
+        mHandButtons.add((Button)findViewById(R.id.handCard6));
+        mHandButtons.add((Button)findViewById(R.id.handCard7));
+        mHandButtons.add((Button)findViewById(R.id.handCard8));
+
+        mDrawPile = new ArrayList<>();
+        mDrawPile.add((ImageView)findViewById(R.id.drawPileDeck));
+        mDrawPile.add((ImageView)findViewById(R.id.drawPile1));
+        mDrawPile.add((ImageView)findViewById(R.id.drawPile2));
+        mDrawPile.add((ImageView)findViewById(R.id.drawPile3));
+        mDrawPile.add((ImageView)findViewById(R.id.drawPile4));
+        mDrawPile.add((ImageView)findViewById(R.id.drawPile5));
+
+        mAIInfo = new ArrayList<>();
+        mAIInfo.add((TextView)findViewById(R.id.AIname));
+        mAIInfo.add((TextView)findViewById(R.id.AIpoints));
+        mAIInfo.add((TextView)findViewById(R.id.AItrains));
+
+        mPlayerInfo = new ArrayList<>();
+        mPlayerInfo.add((TextView)findViewById(R.id.Playername));
+        mPlayerInfo.add((TextView)findViewById(R.id.Playerpoints));
+        mPlayerInfo.add((TextView)findViewById(R.id.Playertrains));
+
+        mAIImage = findViewById(R.id.AIimage);
+        mPlayerImage = findViewById(R.id.Playerimage);
+        mTicketScrollView = findViewById(R.id.ticketScrollView);
+    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -217,19 +255,6 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMarkers.add(mMap.addMarker(markerOptions));
     }
 
-    //https://stackoverflow.com/questions/46508549/google-maps-android-only-show-markers-below-a-certain-zoom-level
-    //https://stackoverflow.com/questions/38727517/oncamerachangelistener-is-deprecated
-    @Override
-    public void onCameraMove()
-    {
-        for(Marker m : mMarkers)
-        {
-            if(mMap.getCameraPosition().zoom > 5)
-                m.setVisible(true);
-            else
-                m.setVisible(false);
-        }
-    }
 
     private double lineLength(LatLng p1, LatLng p2)
     {
@@ -288,6 +313,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         return cities;
     }
 
+    //Listeners
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
@@ -301,4 +327,147 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
     }
+
+    //https://stackoverflow.com/questions/46508549/google-maps-android-only-show-markers-below-a-certain-zoom-level
+    //https://stackoverflow.com/questions/38727517/oncamerachangelistener-is-deprecated
+    @Override
+    public void onCameraMove()
+    {
+        for(Marker m : mMarkers)
+        {
+            if(mMap.getCameraPosition().zoom > 5)
+                m.setVisible(true);
+            else
+                m.setVisible(false);
+        }
+    }
+
+    //Click Listeners
+    @Override
+    public void onPolylineClick(Polyline polyline) {
+
+    }
+
+    public void drawPileClick(View view) {
+
+    }
+
+    public void handCardClick(View view)
+    {
+        
+    }
+
+    //UI updaters
+
+    public void updatePlayerName(String name)
+    {
+        mPlayerInfo.get(0).setText(name);
+    }
+
+    public void updateAIName(String name)
+    {
+        mAIInfo.get(0).setText(name);
+    }
+
+    public void updatePlayerPoints(int points)
+    {
+        mPlayerInfo.get(1).setText(getString(R.string.points, points));
+    }
+    public void updateAIPoints(int points)
+    {
+        mAIInfo.get(1).setText(getString(R.string.points, points));
+    }
+
+    public void updatePlayerTrains(int trains)
+    {
+        mPlayerInfo.get(2).setText(getString(R.string.trainsLeft, trains));
+    }
+
+    public void updateAITrains(int trains)
+    {
+        mAIInfo.get(2).setText(getString(R.string.trainsLeft, trains));
+    }
+
+    public void updatePlayerImage(Bitmap image)
+    {
+        mPlayerImage.setImageBitmap(image);
+    }
+
+    public void updateAIImage(Bitmap image)
+    {
+        mAIImage.setImageBitmap(image);
+    }
+
+    public void updateDrawPile(int drawPile, int color)
+    {
+        mDrawPile.get(drawPile).setImageBitmap(getCardImageFromColor(color));
+        mDrawPile.get(drawPile).setTag(COLOR_TAG, color);
+    }
+
+    public void updateHandDisplay(int color, int numberOfCards)
+    {
+        mHandButtons.get(color).setText(numberOfCards);
+    }
+
+    public Bitmap getCardImageFromColor(int color)
+    {
+        int id = R.drawable.carddeck;
+
+        switch (color)
+        {
+            //Color Key: Grey:0,Red:1,Blue:2,Yellow:3,Green:4,Orange:5,Pink:6,Black:7,White:8 -->
+
+            case 0:
+                id = R.drawable.cardwild;
+                break;
+            case 1:
+                id = R.drawable.cardred;
+                break;
+            case 2:
+                id = R.drawable.cardblue;
+                break;
+            case 3:
+                id = R.drawable.cardyellow;
+                break;
+            case 4:
+                id = R.drawable.cardgreen;
+                break;
+            case 5:
+                id = R.drawable.cardorange;
+                break;
+            case 6
+                id = R.drawable.cardpink;
+                break;
+            case 7:
+                id = R.drawable.cardblack;
+                break;
+            case 8:
+                id = R.drawable.cardwhite;
+                break;
+        }
+
+        return BitmapFactory.decodeResource(getResources(), id);
+    }
+
+    public int getColorFromDrawPile(int drawPile)
+    {
+        return (int) mDrawPile.get(drawPile).getTag(COLOR_TAG);
+    }
+
+    public void addTicketToDisplay(GameDestinationTicket ticket)
+    {
+        TextView textView = new TextView(this);
+        textView.setText(getTicketString(ticket));
+        textView.setTag(ticket);
+        mTicketScrollView.addView(textView);
+    }
+
+    public String getTicketString(GameDestinationTicket ticket)
+    {
+        return ticket.getSourceCity() + "<-->" + ticket.getDestinationCity() +
+                " - " + ticket.getPointValue() + "points";
+    }
+
+
+
 }
