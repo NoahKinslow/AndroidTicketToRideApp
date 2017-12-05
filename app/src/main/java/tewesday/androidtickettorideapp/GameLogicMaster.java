@@ -81,4 +81,9 @@ public class GameLogicMaster
     public void AITurn() {
 
     }
+
+    public void PlaceTrains(GameRouteConnection route) {
+
+
+    }
 }

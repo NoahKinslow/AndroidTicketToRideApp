@@ -1,5 +1,6 @@
 package tewesday.androidtickettorideapp;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -36,8 +38,7 @@ import java.util.Objects;
 
 public class GameActivity extends AppCompatActivity implements OnMapReadyCallback,
                                                                 GoogleMap.OnPolylineClickListener,
-        GoogleMap.OnCameraMoveListener
-
+                                                                GoogleMap.OnCameraMoveListener
 {
 
     private GoogleMap mMap;
@@ -100,12 +101,21 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                                         .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        mGameLogicMaster = new GameLogicMaster();
+        if(getIntent().hasExtra("GAMELOGIC"))
+        {
+            mGameLogicMaster = getIntent().getParcelableExtra("GAMELOGIC");
+            mRoutes = mGameLogicMaster.getmGameBoardMap().getmRoutes();
+            mCityArray = mGameLogicMaster.getmGameBoardMap().getmCities();
+        }
+        else
+        {
+            mGameLogicMaster = new GameLogicMaster();
+            mRoutes = getIntent().getParcelableArrayListExtra("ROUTE");
+            mCityArray = getIntent().getStringArrayListExtra("CITY");
+        }
         mMarkers = new ArrayList<>();
         mPolylines = new ArrayList<>();
         mCircles = new ArrayList<>();
-        mRoutes = getIntent().getParcelableArrayListExtra("ROUTE");
-        mCityArray = getIntent().getStringArrayListExtra("CITY");
 
         initializeLayoutItems();
     }
@@ -367,7 +377,21 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onPolylineClick(Polyline polyline)
     {
+        if (mSelectedCard == null ||
+                mTimesTapped > 0)
+            return;
 
+        GameRouteConnection route = (GameRouteConnection) polyline.getTag();
+        if(isCardAndRouteSeletion(mSelectedCard,route))
+        {
+            mGameLogicMaster.PlaceTrains(route);
+            //TODO:Change Line
+            Toast.makeText(this, "Route Claimed!", Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            Toast.makeText(this, "Invalid Move", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void drawPileClick(View view)
@@ -386,7 +410,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         //add card to hand display
         updateHandDisplay(color, getNumHandCardsFromColor(color) + 1);
 
-        //Tell gameLogic about it
+        //TODO:Tell gameLogic about it
 
         //See if turn is over
         if(mTimesTapped > 1)
@@ -572,4 +596,17 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         mIsAITurn = isAITurn;
     }
 
+    public boolean isCardAndRouteSeletion(Pair<Integer,Integer> card, GameRouteConnection route)
+    {
+        if(!route.isPlayerControlled())
+        {
+            if (route.getRouteColor() == card.first ||
+                    card.first == 0 || route.getRouteColor() == 0)
+            {
+                if(route.getTrainDistance() <= card.second)
+                    return true;
+            }
+        }
+        return false;
+    }
 }
