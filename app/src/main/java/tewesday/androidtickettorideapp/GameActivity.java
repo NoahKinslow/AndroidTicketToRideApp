@@ -229,6 +229,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             LatLng sourceLoc = source.mLocation;
             LatLng desLoc = des.mLocation;
 
+            //If it is a double route
             Polyline otherLine = null;
             for(Polyline p : mPolylines)
             {
@@ -272,11 +273,20 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             PolylineOptions poly = new PolylineOptions()
                     .add(sourceLoc)
                     .add(desLoc)
-                    .color(ROUTE_COLORS[route.getRouteColor()])
                     .width(25)
                     .zIndex(100)
-                    .clickable(true)
-                    .pattern(DOT_PATERN);
+                    .clickable(true);
+
+            if (route.isPlayerControlled())
+            {
+                poly.color(ROUTE_COLORS[route.getPlayerColor()]);
+            }
+            else
+            {
+                poly.color(ROUTE_COLORS[route.getRouteColor()]);
+                poly.pattern(DOT_PATERN);
+            }
+
             mPolylines.add(mMap.addPolyline(poly));
             mPolylines.get(mPolylines.size() - 1).setTag(route);
         }
