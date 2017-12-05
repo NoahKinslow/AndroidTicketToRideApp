@@ -624,7 +624,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     {
         route.setPlayerControlled(true);
         route.setPlayerID(player.getPlayerID());
-        route.setPlayerColor(player.getmPlayerColor());
+        route.setPlayerColor(player.getPlayerColor());
         updatePolyline(route);
     }
 

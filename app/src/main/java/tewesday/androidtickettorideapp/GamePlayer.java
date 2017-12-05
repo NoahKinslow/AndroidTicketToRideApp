@@ -6,16 +6,6 @@ public class GamePlayer
 {
     private String mAssociatedUserID;
     private String mPlayerName;
-
-    public int getmPlayerColor() {
-        return mPlayerColor;
-    }
-
-    public void setmPlayerColor(int mPlayerColor) {
-        this.mPlayerColor = mPlayerColor;
-    }
-
-    private int mPlayerColor;
     private int mPlayerID;
     private int mTrainsLeft = 45;
     private int mScore;
