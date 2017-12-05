@@ -21,44 +21,134 @@
         map:layout_constraintHorizontal_bias="0.0"
         map:layout_constraintVertical_bias="0.0" />
 
-    <ImageView
-        android:background="#FFFFFF"
-        android:id="@+id/AIimage"
-        android:layout_width="55dp"
+    <HorizontalScrollView
+        android:layout_width="175dp"
         android:layout_height="55dp"
-        android:src="@drawable/defaultuser"
-        android:contentDescription="AI Image"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/AIlayout"/>
-
-    <LinearLayout
-        android:id="@+id/AIlayout"
-        android:background="#FFFFFF"
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/AIimage">
-        <TextView
-            android:id="@+id/AIname"
+        android:background="#FFFFFF">
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="AI Name"
-            />
-        <TextView
-            android:id="@+id/AIpoints"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="10 points"
-            />
-        <TextView
-            android:id="@+id/AItrains"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="45 Trains left"
-            />
-    </LinearLayout>
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/PlayerImage1"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:src="@drawable/defaultuser"
+                android:contentDescription="Player1"/>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/PlayerName1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="AI Name"
+                    />
+                <TextView
+                    android:id="@+id/PlayerPoints1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10 points"
+                    />
+                <TextView
+                    android:id="@+id/PlayerTrains1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="45 Trains left"
+                    />
+            </LinearLayout>
+            <ImageView
+                android:id="@+id/PlayerImage2"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:src="@drawable/defaultuser"
+                android:contentDescription="Player1"/>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/PlayerName2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="AI Name"
+                    />
+                <TextView
+                    android:id="@+id/PlayerPoints2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10 points"
+                    />
+                <TextView
+                    android:id="@+id/PlayerTrains2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="45 Trains left"
+                    />
+            </LinearLayout>
+            <ImageView
+                android:id="@+id/PlayerImage3"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:src="@drawable/defaultuser"
+                android:contentDescription="Player1"/>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/PlayerName3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="AI Name"
+                    />
+                <TextView
+                    android:id="@+id/PlayerPoints3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10 points"
+                    />
+                <TextView
+                    android:id="@+id/PlayerTrains3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="45 Trains left"
+                    />
+            </LinearLayout>
+            <ImageView
+                android:id="@+id/PlayerImage4"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:src="@drawable/defaultuser"
+                android:contentDescription="Player1"/>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/PlayerName4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="AI Name"
+                    />
+                <TextView
+                    android:id="@+id/PlayerPoints4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10 points"
+                    />
+                <TextView
+                    android:id="@+id/PlayerTrains4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="45 Trains left"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+    </HorizontalScrollView>
 
     <Button
         app:layout_constraintTop_toTopOf="parent"
@@ -121,7 +211,7 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/Playerimage"
+        android:id="@+id/PlayerImage0"
         android:layout_width="55dp"
         android:layout_height="55dp"
         android:onClick="takeUserPhoto"
@@ -137,21 +227,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/Playerimage">
+        app:layout_constraintLeft_toRightOf="@+id/PlayerImage0">
         <TextView
-            android:id="@+id/Playername"
+            android:id="@+id/PlayerName0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Player Name"
+            android:text="Player0"
             />
         <TextView
-            android:id="@+id/Playerpoints"
+            android:id="@+id/PlayerPoints0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="100 points"
             />
         <TextView
-            android:id="@+id/Playertrains"
+            android:id="@+id/PlayerTrains0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="4 Trains left"
@@ -281,10 +371,15 @@
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/ticketScrollView"
+        android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@+id/map"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/ticketListView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </ScrollView>
 </android.support.constraint.ConstraintLayout>

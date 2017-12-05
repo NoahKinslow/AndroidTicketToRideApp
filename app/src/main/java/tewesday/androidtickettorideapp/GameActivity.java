@@ -1,20 +1,19 @@
 package tewesday.androidtickettorideapp;
 
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
-import android.support.v4.util.ArraySet;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ScrollView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,17 +57,18 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     //LayoutItems
     private List<Button> mHandButtons;
     private List<ImageView> mDrawPile;
-    private List<TextView> mAIInfo;
-    private List<TextView> mPlayerInfo;
-    private ImageView mAIImage;
-    private ImageView mPlayerImage;
-    private ScrollView mTicketScrollView;
+    private List<TextView> mNameTextViews;
+    private List<TextView> mPointsTextViews;
+    private List<TextView> mTrainsTextViews;
+    private List<ImageView> mImageViews;
+    private LinearLayout mTicketLayout;
     //GameControl
+    private List<GamePlayer> mGamePlayers;
     private GameLogicMaster mGameLogicMaster;
     private final boolean mIsAIGame = true;
     private boolean mIsAITurn = false;
     private int mTimesTapped = 0;
-    private final List<PatternItem> DOT_PATERN =
+    private final List<PatternItem> DOT_PATTERN =
             new ArrayList<PatternItem>(Arrays.asList(new Dot()));
 
     //Wild, Red, Blue, Yellow, Green, Orange, Pink, Black, White
@@ -156,19 +156,28 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             button.setTag(R.string.PILE_TAG, mHandButtons.indexOf(button));
         }
 
-        mAIInfo = new ArrayList<>();
-        mAIInfo.add((TextView)findViewById(R.id.AIname));
-        mAIInfo.add((TextView)findViewById(R.id.AIpoints));
-        mAIInfo.add((TextView)findViewById(R.id.AItrains));
+        mTicketLayout = findViewById(R.id.ticketListView);
 
-        mPlayerInfo = new ArrayList<>();
-        mPlayerInfo.add((TextView)findViewById(R.id.Playername));
-        mPlayerInfo.add((TextView)findViewById(R.id.Playerpoints));
-        mPlayerInfo.add((TextView)findViewById(R.id.Playertrains));
+        mImageViews = new ArrayList<>();
+        mNameTextViews = new ArrayList<>();
+        mPointsTextViews = new ArrayList<>();
+        mTrainsTextViews = new ArrayList<>();
 
-        mAIImage = findViewById(R.id.AIimage);
-        mPlayerImage = findViewById(R.id.Playerimage);
-        mTicketScrollView = findViewById(R.id.ticketScrollView);
+        for (int i = 0; i < 5; i++)
+        {
+            //http://daniel-codes.blogspot.com/2009/12/dynamically-retrieving-resources-in.html
+            Resources r = getResources();
+            String packageName = getPackageName();
+            int playerImage = r.getIdentifier("PlayerImage" + String.valueOf(i), "id", packageName);
+            int playerName = r.getIdentifier("PlayerName" + String.valueOf(i), "id", packageName);
+            int playerPoints = r.getIdentifier("PlayerPoints" + String.valueOf(i), "id", packageName);
+            int playerTrains = r.getIdentifier("PlayerTrains" + String.valueOf(i), "id", packageName);
+            mImageViews.add((ImageView)findViewById(playerImage));
+            mNameTextViews.add((TextView)findViewById(playerName));
+            mPointsTextViews.add((TextView)findViewById(playerPoints));
+            mTrainsTextViews.add((TextView)findViewById(playerTrains));
+
+        }
     }
 
     @Override
@@ -284,7 +293,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             else
             {
                 poly.color(ROUTE_COLORS[route.getRouteColor()]);
-                poly.pattern(DOT_PATERN);
+                poly.pattern(DOT_PATTERN);
             }
 
             mPolylines.add(mMap.addPolyline(poly));
@@ -472,43 +481,24 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     //UI updaters
 
-    public void updatePlayerName(String name)
+    public void updatePlayerName(int player, String name)
     {
-        mPlayerInfo.get(0).setText(name);
+        mNameTextViews.get(player).setText(name);
     }
 
-    public void updateAIName(String name)
+    public void updatePlayerPoints(int player, int points)
     {
-        mAIInfo.get(0).setText(name);
+        mPointsTextViews.get(player).setText(getString(R.string.points, points));
     }
 
-    public void updatePlayerPoints(int points)
+    public void updatePlayerTrains(int player, int trains)
     {
-        mPlayerInfo.get(1).setText(getString(R.string.points, points));
-    }
-    public void updateAIPoints(int points)
-    {
-        mAIInfo.get(1).setText(getString(R.string.points, points));
+        mTrainsTextViews.get(player).setText(getString(R.string.trainsLeft, trains));
     }
 
-    public void updatePlayerTrains(int trains)
+    public void updatePlayerImage(int player, Bitmap image)
     {
-        mPlayerInfo.get(2).setText(getString(R.string.trainsLeft, trains));
-    }
-
-    public void updateAITrains(int trains)
-    {
-        mAIInfo.get(2).setText(getString(R.string.trainsLeft, trains));
-    }
-
-    public void updatePlayerImage(Bitmap image)
-    {
-        mPlayerImage.setImageBitmap(image);
-    }
-
-    public void updateAIImage(Bitmap image)
-    {
-        mAIImage.setImageBitmap(image);
+        mImageViews.get(player).setImageBitmap(image);
     }
 
     public void updateDrawPile(int drawPile, int color)
@@ -589,7 +579,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
         textView.setText(getTicketString(ticket));
         textView.setTag(ticket);
-        mTicketScrollView.addView(textView);
+        mTicketLayout.addView(textView);
     }
 
     public String getTicketString(GameDestinationTicket ticket)
