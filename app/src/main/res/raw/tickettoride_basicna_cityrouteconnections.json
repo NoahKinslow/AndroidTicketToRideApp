@@ -1,590 +1,596 @@
 [
-{
-  "mSourceCity" :  "Montreal",
-  "mDestinationCity" : "Boston",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" :  "Montreal",
-  "mDestinationCity" : "Boston",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" :  "Montreal",
-  "mDestinationCity" : "Toronto",
-  "mTrainDistance" : 3,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" :  "Montreal",
-  "mDestinationCity" : "Sault St. Marie",
-  "mTrainDistance" : 5,
-  "mRouteColor" : 7
-},
-{
-  "mSourceCity" :  "Boston",
-  "mDestinationCity" : "New York",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 3
-},
-{
-  "mSourceCity" :  "Boston",
-  "mDestinationCity" : "New York",
-  "mTrainDistance" : 2,
-  "mRouteColor" :  1
-},
-{
-  "mSourceCity" :  "New York",
-  "mDestinationCity" : "Washington",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 7
-},
-{
-  "mSourceCity" :  "New York",
-  "mDestinationCity" : "Washington",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 5
-},
-{
-  "mSourceCity" :  "New York",
-  "mDestinationCity" : "Pittsburgh",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 4
-},
-{
-  "mSourceCity" :  "New York",
-  "mDestinationCity" : "Pittsburgh",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 8
-},
-{
-  "mSourceCity" :  "Pittsburgh",
-  "mDestinationCity" : "Washington",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" :  "Pittsburgh",
-  "mDestinationCity" : "Raleigh",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" :  "Pittsburgh",
-  "mDestinationCity" : "Nashville",
-  "mTrainDistance" : 4,
-  "mRouteColor" : 3
-},
-{
-  "mSourceCity" :  "Pittsburgh",
-  "mDestinationCity" : "Saint Louis",
-  "mTrainDistance" : 5,
-  "mRouteColor" : 4
-},
-{
-  "mSourceCity" :  "Pittsburgh",
-  "mDestinationCity" : "Chicago",
-  "mTrainDistance" : 3,
-  "mRouteColor" : 5
-},
-{
-  "mSourceCity" :  "Pittsburgh",
-  "mDestinationCity" : "Chicago",
-  "mTrainDistance" : 3,
-  "mRouteColor" : 7
-},
-{
-  "mSourceCity" :  "Washington",
-  "mDestinationCity" : "Raleigh",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" :  "Washington",
-  "mDestinationCity" : "Raleigh",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" : "Raleigh",
-  "mDestinationCity" : "Nashville",
-  "mTrainDistance" : 3,
-  "mRouteColor" : 7
-},
-{
-  "mSourceCity" :  "Raleigh",
-  "mDestinationCity" : "Atlanta",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" :  "Raleigh",
-  "mDestinationCity" : "Atlanta",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" :  "Raleigh",
-  "mDestinationCity" : "Charleston",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" : "Charleston",
-  "mDestinationCity" : "Miami",
-  "mTrainDistance" : 4,
-  "mRouteColor" : 6
-},
-{
-  "mSourceCity" :  "Atlanta",
-  "mDestinationCity" : "Charleston",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" :  "Atlanta",
-  "mDestinationCity" : "Miami",
-  "mTrainDistance" : 5,
-  "mRouteColor" : 2
-},
-{
-  "mSourceCity" :  "Atlanta",
-  "mDestinationCity" : "New Orleans",
-  "mTrainDistance" : 4,
-  "mRouteColor" : 3
-},
-{
-  "mSourceCity" :  "Atlanta",
-  "mDestinationCity" : "New Orleans",
-  "mTrainDistance" : 4,
-  "mRouteColor" : 5
-},
-{
-  "mSourceCity" : "Toronto",
-  "mDestinationCity" : "Pittsburgh",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" : "Toronto",
-  "mDestinationCity" : "Chicago",
-  "mTrainDistance" : 4,
-  "mRouteColor" : 8
-},
-{
-  "mSourceCity" : "Toronto",
-  "mDestinationCity" : "Duluth",
-  "mTrainDistance" : 6,
-  "mRouteColor" : 6
-},
-{
-  "mSourceCity" : "Nashville",
-  "mDestinationCity" : "Atlanta",
-  "mTrainDistance" : 1,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" : "Nashville",
-  "mDestinationCity" : "Little Rock",
-  "mTrainDistance" : 3,
-  "mRouteColor" : 8
-},
-{
-  "mSourceCity" : "New Orleans",
-  "mDestinationCity" : "Miami",
-  "mTrainDistance" : 6,
-  "mRouteColor" : 1
-},
-{
-  "mSourceCity" : "New Orleans",
-  "mDestinationCity" : "Houston",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" : "Sault St. Marie",
-  "mDestinationCity" : "Toronto",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" : "Sault St. Marie",
-  "mDestinationCity" : "Duluth",
-  "mTrainDistance" : 3,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" : "Chicago",
-  "mDestinationCity" : "Saint Louis",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 4
-},
-{
-  "mSourceCity" : "Chicago",
-  "mDestinationCity" : "Saint Louis",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 8
-},
-{
-  "mSourceCity" : "Chicago",
-  "mDestinationCity" : "Omaha",
-  "mTrainDistance" : 4,
-  "mRouteColor" : 2
-},
-{
-  "mSourceCity" : "Saint Louis",
-  "mDestinationCity" : "Nashville",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" : "Saint Louis",
-  "mDestinationCity" : "Little Rock",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" : "Saint Louis",
-  "mDestinationCity" : "Kansas City",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 2
-},
-{
-  "mSourceCity" : "Saint Louis",
-  "mDestinationCity" : "Kansas City",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 6
-},
-{
-  "mSourceCity" : "Little Rock",
-  "mDestinationCity" : "New Orleans",
-  "mTrainDistance" : 3,
-  "mRouteColor" : 4
-},
-{
-  "mSourceCity" : "Little Rock",
-  "mDestinationCity" : "Dallas",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" : "Little Rock",
-  "mDestinationCity" : "Omaha",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" : "Houston",
-  "mDestinationCity" : "El Paso",
-  "mTrainDistance" : 6,
-  "mRouteColor" : 4
-},
-{
-  "mSourceCity" : "Duluth",
-  "mDestinationCity" : "Chicago",
-  "mTrainDistance" : 3,
-  "mRouteColor" : 1
-},
-{
-  "mSourceCity" : "Duluth",
-  "mDestinationCity" : "Omaha",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" : "Duluth",
-  "mDestinationCity" : "Omaha",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" : "Duluth",
-  "mDestinationCity" : "Helena",
-  "mTrainDistance" : 6,
-  "mRouteColor" : 5
-},
-{
-  "mSourceCity" : "Omaha",
-  "mDestinationCity" : "Kansas City",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" : "Omaha",
-  "mDestinationCity" : "Kansas City",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" : "Omaha",
-  "mDestinationCity" : "Denver",
-  "mTrainDistance" : 4,
-  "mRouteColor" : 6
-},
-{
-  "mSourceCity" : "Kansas City",
-  "mDestinationCity" : "Oklahoma City",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" : "Kansas City",
-  "mDestinationCity" : "Oklahoma City",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" : "Kansas City",
-  "mDestinationCity" : "Denver",
-  "mTrainDistance" : 4,
-  "mRouteColor" : 7
-},
-{
-  "mSourceCity" : "Kansas City",
-  "mDestinationCity" : "Denver",
-  "mTrainDistance" : 4,
-  "mRouteColor" : 5
-},
-{
-  "mSourceCity" : "Oklahoma City",
-  "mDestinationCity" : "Dallas",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" : "Oklahoma City",
-  "mDestinationCity" : "Dallas",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" : "Oklahoma City",
-  "mDestinationCity" : "El Paso",
-  "mTrainDistance" : 5,
-  "mRouteColor" : 3
-},
-{
-  "mSourceCity" : "Oklahoma City",
-  "mDestinationCity" : "Santa Fe",
-  "mTrainDistance" : 3,
-  "mRouteColor" : 2
-},
-{
-  "mSourceCity" : "Dallas",
-  "mDestinationCity" : "Houston",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" : "Dallas",
-  "mDestinationCity" : "Houston",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" : "Dallas",
-  "mDestinationCity" : "El Paso",
-  "mTrainDistance" : 4,
-  "mRouteColor" : 1
-},
-{
-  "mSourceCity" : "Winnipeg",
-  "mDestinationCity" : "Duluth",
-  "mTrainDistance" : 4,
-  "mRouteColor" : 7
-},
-{
-  "mSourceCity" : "Winnipeg",
-  "mDestinationCity" : "Helena",
-  "mTrainDistance" : 4,
-  "mRouteColor" : 2
-},
-{
-  "mSourceCity" : "Winnipeg",
-  "mDestinationCity" : "Calgary",
-  "mTrainDistance" : 6,
-  "mRouteColor" : 8
-},
-{
-  "mSourceCity" : "Helena",
-  "mDestinationCity" : "Omaha",
-  "mTrainDistance" : 5,
-  "mRouteColor" : 1
-},
-{
-  "mSourceCity" : "Helena",
-  "mDestinationCity" : "Denver",
-  "mTrainDistance" : 4,
-  "mRouteColor" : 4
-},
-{
-  "mSourceCity" : "Helena",
-  "mDestinationCity" : "Salt Lake City",
-  "mTrainDistance" : 3,
-  "mRouteColor" : 6
-},
-{
-  "mSourceCity" : "Denver",
-  "mDestinationCity" : "Oklahoma City",
-  "mTrainDistance" : 4,
-  "mRouteColor" : 1
-},
-{
-  "mSourceCity" : "Denver",
-  "mDestinationCity" : "Santa Fe",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" : "Denver",
-  "mDestinationCity" : "Phoenix",
-  "mTrainDistance" : 5,
-  "mRouteColor" : 8
-},
-{
-  "mSourceCity" : "Santa Fe",
-  "mDestinationCity" : "El Paso",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" : "Santa Fe",
-  "mDestinationCity" : "Phoenix",
-  "mTrainDistance" : 3,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" : "Calgary",
-  "mDestinationCity" : "Helena",
-  "mTrainDistance" : 4,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" : "Calgary",
-  "mDestinationCity" : "Seattle",
-  "mTrainDistance" : 4,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" : "Calgary",
-  "mDestinationCity" : "Vancouver",
-  "mTrainDistance" : 3,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" : "Salt Lake City",
-  "mDestinationCity" : "Denver",
-  "mTrainDistance" : 3,
-  "mRouteColor" : 1
-},
-{
-  "mSourceCity" : "Salt Lake City",
-  "mDestinationCity" : "Denver",
-  "mTrainDistance" : 3,
-  "mRouteColor" : 3
-},
-{
-  "mSourceCity" : "Salt Lake City",
-  "mDestinationCity" : "Las Vegas",
-  "mTrainDistance" : 3,
-  "mRouteColor" : 5
-},
-{
-  "mSourceCity" : "Salt Lake City",
-  "mDestinationCity" : "San Francisco",
-  "mTrainDistance" : 5,
-  "mRouteColor" : 5
-},
-{
-  "mSourceCity" : "Salt Lake City",
-  "mDestinationCity" : "San Francisco",
-  "mTrainDistance" : 5,
-  "mRouteColor" : 8
-},
-{
-  "mSourceCity" : "Las Vegas",
-  "mDestinationCity" : "Los Angeles",
-  "mTrainDistance" : 2,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" : "Phoenix",
-  "mDestinationCity" : "El Paso",
-  "mTrainDistance" : 3,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" : "Phoenix",
-  "mDestinationCity" : "Los Angeles",
-  "mTrainDistance" : 3,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" : "Vancouver",
-  "mDestinationCity" : "Seattle",
-  "mTrainDistance" : 1,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" : "Vancouver",
-  "mDestinationCity" : "Seattle",
-  "mTrainDistance" : 1,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" : "Seattle",
-  "mDestinationCity" : "Portland",
-  "mTrainDistance" : 1,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" : "Seattle",
-  "mDestinationCity" : "Portland",
-  "mTrainDistance" : 1,
-  "mRouteColor" : 0
-},
-{
-  "mSourceCity" : "Seattle",
-  "mDestinationCity" : "Helena",
-  "mTrainDistance" : 6,
-  "mRouteColor" : 3
-},
-{
-  "mSourceCity" : "Portland",
-  "mDestinationCity" : "Salt Lake City",
-  "mTrainDistance" : 6,
-  "mRouteColor" : 2
-},
-{
-  "mSourceCity" : "Portland",
-  "mDestinationCity" : "San Francisco",
-  "mTrainDistance" : 5,
-  "mRouteColor" : 6
-},
-{
-  "mSourceCity" : "Portland",
-  "mDestinationCity" : "San Francisco",
-  "mTrainDistance" : 5,
-  "mRouteColor" : 4
-},
-{
-  "mSourceCity" : "San Francisco",
-  "mDestinationCity" : "Los Angeles",
-  "mTrainDistance" : 3,
-  "mRouteColor" : 6
-},
-{
-  "mSourceCity" : "San Francisco",
-  "mDestinationCity" : "Los Angeles",
-  "mTrainDistance" : 3,
-  "mRouteColor" : 3
-},
-{
-  "mSourceCity" : "Los Angeles",
-  "mDestinationCity" : "El Paso",
-  "mTrainDistance" : 6,
-  "mRouteColor" : 7
-}
+  {
+    "mSourceCity": "Montreal",
+    "mDestinationCity": "Boston",
+    "mTrainDistance": 2,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Montreal",
+    "mDestinationCity": "Boston",
+    "mTrainDistance": 2,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Montreal",
+    "mDestinationCity": "New York",
+    "mTrainDistance": 3,
+    "mRouteColor": 2
+  },
+  {
+    "mSourceCity": "Montreal",
+    "mDestinationCity": "Toronto",
+    "mTrainDistance": 3,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Montreal",
+    "mDestinationCity": "Sault St. Marie",
+    "mTrainDistance": 5,
+    "mRouteColor": 7
+  },
+  {
+    "mSourceCity": "Boston",
+    "mDestinationCity": "New York",
+    "mTrainDistance": 2,
+    "mRouteColor": 3
+  },
+  {
+    "mSourceCity": "Boston",
+    "mDestinationCity": "New York",
+    "mTrainDistance": 2,
+    "mRouteColor": 1
+  },
+  {
+    "mSourceCity": "New York",
+    "mDestinationCity": "Washington",
+    "mTrainDistance": 2,
+    "mRouteColor": 7
+  },
+  {
+    "mSourceCity": "New York",
+    "mDestinationCity": "Washington",
+    "mTrainDistance": 2,
+    "mRouteColor": 5
+  },
+  {
+    "mSourceCity": "New York",
+    "mDestinationCity": "Pittsburgh",
+    "mTrainDistance": 2,
+    "mRouteColor": 4
+  },
+  {
+    "mSourceCity": "New York",
+    "mDestinationCity": "Pittsburgh",
+    "mTrainDistance": 2,
+    "mRouteColor": 8
+  },
+  {
+    "mSourceCity": "Pittsburgh",
+    "mDestinationCity": "Washington",
+    "mTrainDistance": 2,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Pittsburgh",
+    "mDestinationCity": "Raleigh",
+    "mTrainDistance": 2,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Pittsburgh",
+    "mDestinationCity": "Nashville",
+    "mTrainDistance": 4,
+    "mRouteColor": 3
+  },
+  {
+    "mSourceCity": "Pittsburgh",
+    "mDestinationCity": "Saint Louis",
+    "mTrainDistance": 5,
+    "mRouteColor": 4
+  },
+  {
+    "mSourceCity": "Pittsburgh",
+    "mDestinationCity": "Chicago",
+    "mTrainDistance": 3,
+    "mRouteColor": 5
+  },
+  {
+    "mSourceCity": "Pittsburgh",
+    "mDestinationCity": "Chicago",
+    "mTrainDistance": 3,
+    "mRouteColor": 7
+  },
+  {
+    "mSourceCity": "Washington",
+    "mDestinationCity": "Raleigh",
+    "mTrainDistance": 2,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Washington",
+    "mDestinationCity": "Raleigh",
+    "mTrainDistance": 2,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Raleigh",
+    "mDestinationCity": "Nashville",
+    "mTrainDistance": 3,
+    "mRouteColor": 7
+  },
+  {
+    "mSourceCity": "Raleigh",
+    "mDestinationCity": "Atlanta",
+    "mTrainDistance": 2,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Raleigh",
+    "mDestinationCity": "Atlanta",
+    "mTrainDistance": 2,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Raleigh",
+    "mDestinationCity": "Charleston",
+    "mTrainDistance": 2,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Charleston",
+    "mDestinationCity": "Miami",
+    "mTrainDistance": 4,
+    "mRouteColor": 6
+  },
+  {
+    "mSourceCity": "Atlanta",
+    "mDestinationCity": "Charleston",
+    "mTrainDistance": 2,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Atlanta",
+    "mDestinationCity": "Miami",
+    "mTrainDistance": 5,
+    "mRouteColor": 2
+  },
+  {
+    "mSourceCity": "Atlanta",
+    "mDestinationCity": "New Orleans",
+    "mTrainDistance": 4,
+    "mRouteColor": 3
+  },
+  {
+    "mSourceCity": "Atlanta",
+    "mDestinationCity": "New Orleans",
+    "mTrainDistance": 4,
+    "mRouteColor": 5
+  },
+  {
+    "mSourceCity": "Toronto",
+    "mDestinationCity": "Pittsburgh",
+    "mTrainDistance": 2,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Toronto",
+    "mDestinationCity": "Chicago",
+    "mTrainDistance": 4,
+    "mRouteColor": 8
+  },
+  {
+    "mSourceCity": "Toronto",
+    "mDestinationCity": "Duluth",
+    "mTrainDistance": 6,
+    "mRouteColor": 6
+  },
+  {
+    "mSourceCity": "Nashville",
+    "mDestinationCity": "Atlanta",
+    "mTrainDistance": 1,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Nashville",
+    "mDestinationCity": "Little Rock",
+    "mTrainDistance": 3,
+    "mRouteColor": 8
+  },
+  {
+    "mSourceCity": "New Orleans",
+    "mDestinationCity": "Miami",
+    "mTrainDistance": 6,
+    "mRouteColor": 1
+  },
+  {
+    "mSourceCity": "New Orleans",
+    "mDestinationCity": "Houston",
+    "mTrainDistance": 2,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Sault St. Marie",
+    "mDestinationCity": "Toronto",
+    "mTrainDistance": 2,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Sault St. Marie",
+    "mDestinationCity": "Duluth",
+    "mTrainDistance": 3,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Chicago",
+    "mDestinationCity": "Saint Louis",
+    "mTrainDistance": 2,
+    "mRouteColor": 4
+  },
+  {
+    "mSourceCity": "Chicago",
+    "mDestinationCity": "Saint Louis",
+    "mTrainDistance": 2,
+    "mRouteColor": 8
+  },
+  {
+    "mSourceCity": "Chicago",
+    "mDestinationCity": "Omaha",
+    "mTrainDistance": 4,
+    "mRouteColor": 2
+  },
+  {
+    "mSourceCity": "Saint Louis",
+    "mDestinationCity": "Nashville",
+    "mTrainDistance": 2,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Saint Louis",
+    "mDestinationCity": "Little Rock",
+    "mTrainDistance": 2,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Saint Louis",
+    "mDestinationCity": "Kansas City",
+    "mTrainDistance": 2,
+    "mRouteColor": 2
+  },
+  {
+    "mSourceCity": "Saint Louis",
+    "mDestinationCity": "Kansas City",
+    "mTrainDistance": 2,
+    "mRouteColor": 6
+  },
+  {
+    "mSourceCity": "Little Rock",
+    "mDestinationCity": "New Orleans",
+    "mTrainDistance": 3,
+    "mRouteColor": 4
+  },
+  {
+    "mSourceCity": "Little Rock",
+    "mDestinationCity": "Dallas",
+    "mTrainDistance": 2,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Little Rock",
+    "mDestinationCity": "Oklahoma City",
+    "mTrainDistance": 2,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Houston",
+    "mDestinationCity": "El Paso",
+    "mTrainDistance": 6,
+    "mRouteColor": 4
+  },
+  {
+    "mSourceCity": "Duluth",
+    "mDestinationCity": "Chicago",
+    "mTrainDistance": 3,
+    "mRouteColor": 1
+  },
+  {
+    "mSourceCity": "Duluth",
+    "mDestinationCity": "Omaha",
+    "mTrainDistance": 2,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Duluth",
+    "mDestinationCity": "Omaha",
+    "mTrainDistance": 2,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Duluth",
+    "mDestinationCity": "Helena",
+    "mTrainDistance": 6,
+    "mRouteColor": 5
+  },
+  {
+    "mSourceCity": "Omaha",
+    "mDestinationCity": "Kansas City",
+    "mTrainDistance": 2,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Omaha",
+    "mDestinationCity": "Kansas City",
+    "mTrainDistance": 2,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Omaha",
+    "mDestinationCity": "Denver",
+    "mTrainDistance": 4,
+    "mRouteColor": 6
+  },
+  {
+    "mSourceCity": "Kansas City",
+    "mDestinationCity": "Oklahoma City",
+    "mTrainDistance": 2,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Kansas City",
+    "mDestinationCity": "Oklahoma City",
+    "mTrainDistance": 2,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Kansas City",
+    "mDestinationCity": "Denver",
+    "mTrainDistance": 4,
+    "mRouteColor": 7
+  },
+  {
+    "mSourceCity": "Kansas City",
+    "mDestinationCity": "Denver",
+    "mTrainDistance": 4,
+    "mRouteColor": 5
+  },
+  {
+    "mSourceCity": "Oklahoma City",
+    "mDestinationCity": "Dallas",
+    "mTrainDistance": 2,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Oklahoma City",
+    "mDestinationCity": "Dallas",
+    "mTrainDistance": 2,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Oklahoma City",
+    "mDestinationCity": "El Paso",
+    "mTrainDistance": 5,
+    "mRouteColor": 3
+  },
+  {
+    "mSourceCity": "Oklahoma City",
+    "mDestinationCity": "Santa Fe",
+    "mTrainDistance": 3,
+    "mRouteColor": 2
+  },
+  {
+    "mSourceCity": "Dallas",
+    "mDestinationCity": "Houston",
+    "mTrainDistance": 2,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Dallas",
+    "mDestinationCity": "Houston",
+    "mTrainDistance": 2,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Dallas",
+    "mDestinationCity": "El Paso",
+    "mTrainDistance": 4,
+    "mRouteColor": 1
+  },
+  {
+    "mSourceCity": "Winnipeg",
+    "mDestinationCity": "Duluth",
+    "mTrainDistance": 4,
+    "mRouteColor": 7
+  },
+  {
+    "mSourceCity": "Winnipeg",
+    "mDestinationCity": "Helena",
+    "mTrainDistance": 4,
+    "mRouteColor": 2
+  },
+  {
+    "mSourceCity": "Winnipeg",
+    "mDestinationCity": "Calgary",
+    "mTrainDistance": 6,
+    "mRouteColor": 8
+  },
+  {
+    "mSourceCity": "Helena",
+    "mDestinationCity": "Omaha",
+    "mTrainDistance": 5,
+    "mRouteColor": 1
+  },
+  {
+    "mSourceCity": "Helena",
+    "mDestinationCity": "Denver",
+    "mTrainDistance": 4,
+    "mRouteColor": 4
+  },
+  {
+    "mSourceCity": "Helena",
+    "mDestinationCity": "Salt Lake City",
+    "mTrainDistance": 3,
+    "mRouteColor": 6
+  },
+  {
+    "mSourceCity": "Denver",
+    "mDestinationCity": "Oklahoma City",
+    "mTrainDistance": 4,
+    "mRouteColor": 1
+  },
+  {
+    "mSourceCity": "Denver",
+    "mDestinationCity": "Santa Fe",
+    "mTrainDistance": 2,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Denver",
+    "mDestinationCity": "Phoenix",
+    "mTrainDistance": 5,
+    "mRouteColor": 8
+  },
+  {
+    "mSourceCity": "Santa Fe",
+    "mDestinationCity": "El Paso",
+    "mTrainDistance": 2,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Santa Fe",
+    "mDestinationCity": "Phoenix",
+    "mTrainDistance": 3,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Calgary",
+    "mDestinationCity": "Helena",
+    "mTrainDistance": 4,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Calgary",
+    "mDestinationCity": "Seattle",
+    "mTrainDistance": 4,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Calgary",
+    "mDestinationCity": "Vancouver",
+    "mTrainDistance": 3,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Salt Lake City",
+    "mDestinationCity": "Denver",
+    "mTrainDistance": 3,
+    "mRouteColor": 1
+  },
+  {
+    "mSourceCity": "Salt Lake City",
+    "mDestinationCity": "Denver",
+    "mTrainDistance": 3,
+    "mRouteColor": 3
+  },
+  {
+    "mSourceCity": "Salt Lake City",
+    "mDestinationCity": "Las Vegas",
+    "mTrainDistance": 3,
+    "mRouteColor": 5
+  },
+  {
+    "mSourceCity": "Salt Lake City",
+    "mDestinationCity": "San Francisco",
+    "mTrainDistance": 5,
+    "mRouteColor": 5
+  },
+  {
+    "mSourceCity": "Salt Lake City",
+    "mDestinationCity": "San Francisco",
+    "mTrainDistance": 5,
+    "mRouteColor": 8
+  },
+  {
+    "mSourceCity": "Las Vegas",
+    "mDestinationCity": "Los Angeles",
+    "mTrainDistance": 2,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Phoenix",
+    "mDestinationCity": "El Paso",
+    "mTrainDistance": 3,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Phoenix",
+    "mDestinationCity": "Los Angeles",
+    "mTrainDistance": 3,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Vancouver",
+    "mDestinationCity": "Seattle",
+    "mTrainDistance": 1,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Vancouver",
+    "mDestinationCity": "Seattle",
+    "mTrainDistance": 1,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Seattle",
+    "mDestinationCity": "Portland",
+    "mTrainDistance": 1,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Seattle",
+    "mDestinationCity": "Portland",
+    "mTrainDistance": 1,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Seattle",
+    "mDestinationCity": "Helena",
+    "mTrainDistance": 6,
+    "mRouteColor": 3
+  },
+  {
+    "mSourceCity": "Portland",
+    "mDestinationCity": "Salt Lake City",
+    "mTrainDistance": 6,
+    "mRouteColor": 2
+  },
+  {
+    "mSourceCity": "Portland",
+    "mDestinationCity": "San Francisco",
+    "mTrainDistance": 5,
+    "mRouteColor": 6
+  },
+  {
+    "mSourceCity": "Portland",
+    "mDestinationCity": "San Francisco",
+    "mTrainDistance": 5,
+    "mRouteColor": 4
+  },
+  {
+    "mSourceCity": "San Francisco",
+    "mDestinationCity": "Los Angeles",
+    "mTrainDistance": 3,
+    "mRouteColor": 6
+  },
+  {
+    "mSourceCity": "San Francisco",
+    "mDestinationCity": "Los Angeles",
+    "mTrainDistance": 3,
+    "mRouteColor": 3
+  },
+  {
+    "mSourceCity": "Los Angeles",
+    "mDestinationCity": "El Paso",
+    "mTrainDistance": 6,
+    "mRouteColor": 7
+  }
 ]
