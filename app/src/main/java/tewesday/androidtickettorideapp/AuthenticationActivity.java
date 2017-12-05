@@ -165,8 +165,8 @@ public class AuthenticationActivity extends AppCompatActivity
         glm.setupGameBoardMap();
 
         Intent intent = new Intent (this, GameActivity.class);
-        intent.putParcelableArrayListExtra("ROUTE", (ArrayList<GameRouteConnection>) glm.getmGameBoardMap().getmRoutes());
-        intent.putStringArrayListExtra("CITY", (ArrayList<String>) glm.getmGameBoardMap().getmCities());
+        intent.putParcelableArrayListExtra("ROUTE", (ArrayList<GameRouteConnection>) glm.getGameBoardMap().getRoutes());
+        intent.putStringArrayListExtra("CITY", (ArrayList<String>) glm.getGameBoardMap().getCities());
 
         startActivity(intent);
     }

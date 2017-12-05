@@ -42,7 +42,7 @@ public class GameLogicMaster implements Parcelable
 
     private List<GameDestinationTicket> mDestinationTickets = new ArrayList<>();
 
-    public GameBoardMap getmGameBoardMap() {
+    public GameBoardMap getGameBoardMap() {
         return mGameBoardMap;
     }
 

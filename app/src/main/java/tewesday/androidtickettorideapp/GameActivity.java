@@ -110,8 +110,8 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         if(getIntent().hasExtra("GAMELOGICMASTER"))
         {
             mGameLogicMaster = getIntent().getParcelableExtra("GAMELOGICMASTER");
-            mRoutes = mGameLogicMaster.getmGameBoardMap().getmRoutes();
-            mCityArray = mGameLogicMaster.getmGameBoardMap().getmCities();
+            mRoutes = mGameLogicMaster.getGameBoardMap().getRoutes();
+            mCityArray = mGameLogicMaster.getGameBoardMap().getCities();
         }
         else
         {

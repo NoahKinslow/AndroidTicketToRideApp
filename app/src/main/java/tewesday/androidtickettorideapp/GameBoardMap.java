@@ -33,7 +33,7 @@ import static android.content.ContentValues.TAG;
 
 public class GameBoardMap
 {
-    public List<String> getmCities() {
+    public List<String> getCities() {
         return mCities;
     }
 
@@ -43,7 +43,7 @@ public class GameBoardMap
     // Map of cities and routes connected to them
     private Map<String, GameCity> mCityMap = new LinkedHashMap<>();
 
-    public List<GameRouteConnection> getmRoutes() {
+    public List<GameRouteConnection> getRoutes() {
         return mRoutes;
     }
 

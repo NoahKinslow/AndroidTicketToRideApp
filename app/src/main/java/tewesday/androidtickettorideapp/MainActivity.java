@@ -200,8 +200,8 @@ public class MainActivity extends AppCompatActivity
         // Switch to GameBoardActivity/UI here
 
         Intent intent = new Intent (this, GameActivity.class);
-        intent.putParcelableArrayListExtra("ROUTE", (ArrayList<GameRouteConnection>) mGameLogicMaster.getmGameBoardMap().getmRoutes());
-        intent.putStringArrayListExtra("CITY", (ArrayList<String>) mGameLogicMaster.getmGameBoardMap().getmCities());
+        intent.putParcelableArrayListExtra("ROUTE", (ArrayList<GameRouteConnection>) mGameLogicMaster.getGameBoardMap().getRoutes());
+        intent.putStringArrayListExtra("CITY", (ArrayList<String>) mGameLogicMaster.getGameBoardMap().getCities());
         intent.putExtra("GAMELOGICMASTER", mGameLogicMaster);
 
         startActivity(intent);
