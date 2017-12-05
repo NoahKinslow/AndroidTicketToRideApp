@@ -101,9 +101,9 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                                         .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        if(getIntent().hasExtra("GAMELOGIC"))
+        if(getIntent().hasExtra("GAMELOGICMASTER"))
         {
-            mGameLogicMaster = getIntent().getParcelableExtra("GAMELOGIC");
+            mGameLogicMaster = getIntent().getParcelableExtra("GAMELOGICMASTER");
             mRoutes = mGameLogicMaster.getmGameBoardMap().getmRoutes();
             mCityArray = mGameLogicMaster.getmGameBoardMap().getmCities();
         }
