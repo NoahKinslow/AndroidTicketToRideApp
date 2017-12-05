@@ -77,4 +77,7 @@ public class GameLogicMaster
     {
         mGameSession = gameSession;
     }
+
+    public void AITurn() {
+    }
 }

@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -39,13 +41,17 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 {
 
     private GoogleMap mMap;
+    private final int PILE_TAG = 100;
     private final int COLOR_TAG = 200;
     private final int RADIUS = 80000;
+    private final int HIGHLIGHT_RADIUS = 120000;
+    private Pair<Integer, Integer> mSelectedCard = null;
     private List<GameRouteConnection> mRoutes;
     private List<CityCoordinates> mCities;
     private List<String> mCityArray;
     private List<Marker> mMarkers;
     private List<Polyline> mPolylines;
+    private List<Circle> mCircles;
     //LayoutItems
     private List<Button> mHandButtons;
     private List<ImageView> mDrawPile;
@@ -54,6 +60,11 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     private ImageView mAIImage;
     private ImageView mPlayerImage;
     private ScrollView mTicketScrollView;
+    //GameControl
+    private GameLogicMaster mGameLogicMaster;
+    private final boolean mIsAIGame = true;
+    private boolean mIsAITurn = false;
+    private int mTimesTapped = 0;
 
     //Wild, Red, Blue, Yellow, Green, Orange, Pink, Black, White
     private final int[] ROUTE_COLORS = {
@@ -91,8 +102,10 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                                         .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        mGameLogicMaster = new GameLogicMaster();
         mMarkers = new ArrayList<>();
         mPolylines = new ArrayList<>();
+        mCircles = new ArrayList<>();
         mRoutes = getIntent().getParcelableArrayListExtra("ROUTE");
         mCityArray = getIntent().getStringArrayListExtra("CITY");
 
@@ -112,6 +125,11 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         mHandButtons.add((Button)findViewById(R.id.handCard7));
         mHandButtons.add((Button)findViewById(R.id.handCard8));
 
+        for (Button button : mHandButtons)
+        {
+            button.setTag(COLOR_TAG, mHandButtons.indexOf(button));
+        }
+
         mDrawPile = new ArrayList<>();
         mDrawPile.add((ImageView)findViewById(R.id.drawPileDeck));
         mDrawPile.add((ImageView)findViewById(R.id.drawPile1));
@@ -119,6 +137,10 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         mDrawPile.add((ImageView)findViewById(R.id.drawPile3));
         mDrawPile.add((ImageView)findViewById(R.id.drawPile4));
         mDrawPile.add((ImageView)findViewById(R.id.drawPile5));
+        for (Button button : mHandButtons)
+        {
+            button.setTag(PILE_TAG, mHandButtons.indexOf(button));
+        }
 
         mAIInfo = new ArrayList<>();
         mAIInfo.add((TextView)findViewById(R.id.AIname));
@@ -175,7 +197,8 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                     .fillColor(Color.BLACK)
                     .zIndex(200);
 
-            mMap.addCircle(cir);
+            mCircles.add(mMap.addCircle(cir));
+            mCircles.get(mCircles.size() - 1).setTag(city);
         }
     }
 
@@ -344,17 +367,65 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     //Click Listeners
     @Override
-    public void onPolylineClick(Polyline polyline) {
+    public void onPolylineClick(Polyline polyline)
+    {
 
     }
 
-    public void drawPileClick(View view) {
+    public void drawPileClick(View view)
+    {
+        if(mTimesTapped > 1)
+            return;
 
+        mTimesTapped++;
+
+        int pileNum = getDrawPileIndexFromImageView((ImageView)view);
+        int color = getColorFromDrawPile(pileNum);
+
+        if(color == 0)
+            mTimesTapped++;
+
+        //add card to hand display
+        updateHandDisplay(color, getNumHandCardsFromColor(color) + 1);
+
+        //Tell gameLogic about it
+
+        //See if turn is over
+        if(mTimesTapped > 1)
+        {
+            //end turn
+            if (mIsAIGame) {
+                setAITurn(true);
+                mGameLogicMaster.AITurn();
+            }
+            mTimesTapped = 0;
+        }
     }
 
     public void handCardClick(View view)
     {
-        
+        Button button = (Button) view;
+        int color = (int) button.getTag(COLOR_TAG);
+        int number = Integer.parseInt(button.getText().toString());
+        mSelectedCard = new Pair<>(color, number);
+    }
+
+    public void onTicketClick(View view)
+    {
+        GameDestinationTicket ticket = (GameDestinationTicket) view.getTag();
+        Circle source = getCircleFromCityName(ticket.getSourceCity());
+        Circle des = getCircleFromCityName(ticket.getDestinationCity());
+
+        if(source.getRadius() == RADIUS || des.getRadius() == RADIUS)
+        {
+            source.setRadius(HIGHLIGHT_RADIUS);
+            des.setRadius(HIGHLIGHT_RADIUS);
+        }
+        else
+        {
+            source.setRadius(RADIUS);
+            des.setRadius(RADIUS);
+        }
     }
 
     //UI updaters
@@ -409,6 +480,12 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         mHandButtons.get(color).setText(numberOfCards);
     }
 
+    //returns quantity of cards in hand of that color
+    public int getNumHandCardsFromColor(int color)
+    {
+        return Integer.parseInt(mHandButtons.get(color).getText().toString());
+    }
+
     public Bitmap getCardImageFromColor(int color)
     {
         int id = R.drawable.carddeck;
@@ -435,7 +512,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             case 5:
                 id = R.drawable.cardorange;
                 break;
-            case 6
+            case 6:
                 id = R.drawable.cardpink;
                 break;
             case 7:
@@ -454,9 +531,20 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         return (int) mDrawPile.get(drawPile).getTag(COLOR_TAG);
     }
 
+    public int getDrawPileIndexFromImageView(ImageView imageview)
+    {
+        return (int) imageview.getTag(PILE_TAG);
+    }
+
     public void addTicketToDisplay(GameDestinationTicket ticket)
     {
         TextView textView = new TextView(this);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onTicketClick(v);
+            }
+        });
         textView.setText(getTicketString(ticket));
         textView.setTag(ticket);
         mTicketScrollView.addView(textView);
@@ -468,6 +556,22 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                 " - " + ticket.getPointValue() + "points";
     }
 
+    public Circle getCircleFromCityName(String cityname)
+    {
+        for (Circle c : mCircles)
+        {
+            CityCoordinates tag = (CityCoordinates) c.getTag();
+            if(tag.mName == cityname)
+            {
+                return c;
+            }
+        }
+        return null;
+    }
 
+    public void setAITurn(boolean isAITurn)
+    {
+        mIsAITurn = isAITurn;
+    }
 
 }
