@@ -17,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity
@@ -72,12 +73,19 @@ public class MainActivity extends AppCompatActivity
             String gameSessionID = pushedPostRef.getKey();
 
             GameSession gameSession = new GameSession(gameSessionID);
+            gameSession.setGameSessionName(mGameSessionName);
 
+            String userID = null;
             if (mAuthentication.getCurrentUser() != null)
             {
+                userID = mAuthentication.getCurrentUser().getUid();
                 if (mAuthentication.getCurrentUser().getDisplayName() != null) {
                     if (mAuthentication.getCurrentUser().getDisplayName().equals("")) {
                         gameSession.addNewPlayer(mAuthentication.getCurrentUser().getUid(), "Anonymous");
+                    }
+                    else
+                    {
+                        gameSession.addNewPlayer(mAuthentication.getCurrentUser().getUid(), mAuthentication.getCurrentUser().getDisplayName());
                     }
                 }
                 else
@@ -88,6 +96,12 @@ public class MainActivity extends AppCompatActivity
 
 
             pushedPostRef.setValue(gameSession);
+
+            // Add gameSession to User's games
+            myRef = database.getReference("Users").child(userID).child("Games").child(gameSessionID);
+            myRef.setValue(gameSessionID);
+
+
 
             Toast.makeText(MainActivity.this, "Game " + mGameSessionName + " created.",
                     Toast.LENGTH_SHORT).show();
@@ -177,12 +191,20 @@ public class MainActivity extends AppCompatActivity
 
     public void setupGameLogicMaster(GameSession gameSession)
     {
+        gameSession.setGameStarted(true);
         mGameLogicMaster.assignGameSession(gameSession);
         mGameLogicMaster.setupFiles(mDestinationTicketsStream, mCitiesStream, mRoutesStream);
         mGameLogicMaster.setupDestinationTickets();
         mGameLogicMaster.setupGameBoardMap();
         mGameLogicMaster.loadGameSessionDataFromFirebase();
         // Switch to GameBoardActivity/UI here
+
+        Intent intent = new Intent (this, GameActivity.class);
+        intent.putParcelableArrayListExtra("ROUTE", (ArrayList<GameRouteConnection>) mGameLogicMaster.getmGameBoardMap().getmRoutes());
+        intent.putStringArrayListExtra("CITY", (ArrayList<String>) mGameLogicMaster.getmGameBoardMap().getmCities());
+        intent.putExtra("GAMELOGICMASTER", mGameLogicMaster);
+
+        startActivity(intent);
     }
 
     public void setupGameSessionButtons()
