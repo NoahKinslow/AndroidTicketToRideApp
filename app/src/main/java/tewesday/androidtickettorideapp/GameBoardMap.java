@@ -2,6 +2,8 @@ package tewesday.androidtickettorideapp;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.google.firebase.database.ChildEventListener;
@@ -31,8 +33,36 @@ import static android.content.ContentValues.TAG;
 
 
 
-public class GameBoardMap
+public class GameBoardMap implements Parcelable
 {
+    protected GameBoardMap(Parcel in) {
+        mCities = in.createStringArrayList();
+        mRoutes = in.createTypedArrayList(GameRouteConnection.CREATOR);
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeStringList(mCities);
+        dest.writeTypedList(mRoutes);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<GameBoardMap> CREATOR = new Creator<GameBoardMap>() {
+        @Override
+        public GameBoardMap createFromParcel(Parcel in) {
+            return new GameBoardMap(in);
+        }
+
+        @Override
+        public GameBoardMap[] newArray(int size) {
+            return new GameBoardMap[size];
+        }
+    };
+
     public List<String> getCities() {
         return mCities;
     }

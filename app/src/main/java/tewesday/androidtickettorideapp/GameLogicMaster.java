@@ -15,11 +15,17 @@ import java.util.List;
 
 public class GameLogicMaster implements Parcelable
 {
+
+
+    private List<GameDestinationTicket> mDestinationTickets = new ArrayList<>();
+
     protected GameLogicMaster(Parcel in) {
+        mGameBoardMap = in.readParcelable(GameBoardMap.class.getClassLoader());
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(mGameBoardMap, flags);
     }
 
     @Override
@@ -38,9 +44,6 @@ public class GameLogicMaster implements Parcelable
             return new GameLogicMaster[size];
         }
     };
-
-
-    private List<GameDestinationTicket> mDestinationTickets = new ArrayList<>();
 
     public GameBoardMap getGameBoardMap() {
         return mGameBoardMap;
