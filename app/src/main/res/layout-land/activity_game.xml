@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context="tewesday.androidtickettorideapp.GameActivity">
 
-
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:map="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -15,9 +14,278 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         tools:context="tewesday.androidtickettorideapp.GameActivity"
-        map:layout_constraintBottom_toBottomOf="parent"
+        map:layout_constraintBottom_toTopOf="@+id/Playerlayout"
         map:layout_constraintRight_toRightOf="parent"
         map:layout_constraintLeft_toLeftOf="parent"
-        map:layout_constraintTop_toTopOf="parent" />
+        map:layout_constraintTop_toTopOf="parent"
+        map:layout_constraintHorizontal_bias="0.0"
+        map:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:background="#FFFFFF"
+        android:id="@+id/AIimage"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:src="@drawable/defaultuser"
+        android:contentDescription="AI Image"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/AIlayout"/>
+
+    <LinearLayout
+        android:id="@+id/AIlayout"
+        android:background="#FFFFFF"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/AIimage">
+        <TextView
+            android:id="@+id/AIname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AI Name"
+            />
+        <TextView
+            android:id="@+id/AIpoints"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10 points"
+            />
+        <TextView
+            android:id="@+id/AItrains"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="45 Trains left"
+            />
+    </LinearLayout>
+
+    <Button
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/drawPile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_tickets"/>
+
+    <LinearLayout
+        android:background="#FFFFFF"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/drawPile"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+        <ImageView
+            android:id="@+id/drawPileDeck"
+            android:layout_width="35dp"
+            android:layout_height="50dp"
+            android:src="@drawable/cardfeck"
+            android:onClick="drawPileClick"
+            />
+        <ImageView
+            android:id="@+id/drawPile1"
+            android:layout_width="35dp"
+            android:layout_height="50dp"
+            android:src="@drawable/cardfeck"
+            android:onClick="drawPileClick"
+            />
+        <ImageView
+            android:id="@+id/drawPile2"
+            android:layout_width="35dp"
+            android:layout_height="50dp"
+            android:src="@drawable/cardfeck"
+            android:onClick="drawPileClick"
+            />
+        <ImageView
+            android:id="@+id/drawPile3"
+            android:layout_width="35dp"
+            android:layout_height="50dp"
+            android:src="@drawable/cardfeck"
+            android:onClick="drawPileClick"
+            />
+        <ImageView
+            android:id="@+id/drawPile4"
+            android:layout_width="35dp"
+            android:layout_height="50dp"
+            android:src="@drawable/cardfeck"
+            android:onClick="drawPileClick"
+            />
+        <ImageView
+            android:id="@+id/drawPile5"
+            android:layout_width="35dp"
+            android:layout_height="50dp"
+            android:src="@drawable/cardfeck"
+            android:onClick="drawPieClick"
+            />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/Playerimage"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:onClick="takeUserPhoto"
+        android:src="@drawable/defaultuser"
+        android:contentDescription="Player Image"
+        app:layout_constraintTop_toBottomOf="@+id/map"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/Playerlayout"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/Playerimage">
+        <TextView
+            android:id="@+id/Playername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Player Name"
+            />
+        <TextView
+            android:id="@+id/Playerpoints"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100 points"
+            />
+        <TextView
+            android:id="@+id/Playertrains"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="4 Trains left"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/handLayout"
+        app:layout_constraintTop_toBottomOf="@+id/map"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent">
+        <Button
+            android:id="@+id/handCard0"
+            android:background="@drawable/handwild"
+            android:layout_width="35dp"
+            android:layout_height="50dp"
+            android:onClick="handCardClick"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            android:padding="0dp"
+            android:text="0"
+            android:textSize="25sp"
+            />
+        <!-- Color Key: Grey:0,Red:1,Blue:2,Yellow:3,Green:4,Orange:5,Pink:6,Black:7,White:8 -->
+        <Button
+            android:id="@+id/handCard1"
+            android:layout_width="35dp"
+            android:layout_height="50dp"
+            android:background="@drawable/handred"
+            android:onClick="handCardClick"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            android:padding="0dp"
+            android:text="0"
+            android:textSize="25sp"
+            />
+        <Button
+            android:id="@+id/handCard2"
+            android:layout_width="35dp"
+            android:layout_height="50dp"
+            android:background="@drawable/handblue"
+            android:onClick="handCardClick"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            android:padding="0dp"
+            android:text="0"
+            android:textSize="25sp"
+            />
+        <Button
+            android:id="@+id/handCard3"
+            android:layout_width="35dp"
+            android:layout_height="50dp"
+            android:background="@drawable/handyellow"
+            android:onClick="handCardClick"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            android:padding="0dp"
+            android:text="0"
+            android:textSize="25sp"
+            />
+        <Button
+            android:id="@+id/handCard4"
+            android:layout_width="35dp"
+            android:layout_height="50dp"
+            android:background="@drawable/handgreen"
+            android:onClick="handCardClick"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            android:padding="0dp"
+            android:text="0"
+            android:textSize="25sp"
+            />
+        <Button
+            android:id="@+id/handCard5"
+            android:layout_width="35dp"
+            android:layout_height="50dp"
+            android:background="@drawable/handorange"
+            android:onClick="handCardClick"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            android:padding="0dp"
+            android:text="0"
+            android:textSize="25sp"
+            />
+        <Button
+            android:id="@+id/handCard6"
+            android:layout_width="35dp"
+            android:layout_height="50dp"
+            android:background="@drawable/handpink"
+            android:onClick="handCardClick"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            android:padding="0dp"
+            android:text="0"
+            android:textSize="25sp"
+            />
+        <Button
+            android:id="@+id/handCard7"
+            android:layout_width="35dp"
+            android:layout_height="50dp"
+            android:background="@drawable/handblack"
+            android:onClick="handCardClick"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            android:padding="0dp"
+            android:text="0"
+            android:textColor="#FFFFFF"
+            android:textSize="25sp"
+            />
+        <Button
+            android:id="@+id/handCard8"
+            android:layout_width="35dp"
+            android:layout_height="50dp"
+            android:background="@drawable/handwhite"
+            android:onClick="handCardClick"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            android:padding="0dp"
+            android:text="0"
+            android:textSize="25sp"
+            />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/ticketScrollView"
+        app:layout_constraintTop_toBottomOf="@+id/map"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>

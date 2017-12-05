@@ -61,6 +61,9 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+    public void drawPileClick(View view) {
+
+    }
 
 
     private class CityCoordinates
@@ -187,7 +190,8 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                 IconGenerator label = new IconGenerator(this);
                 label.setStyle(IconGenerator.STYLE_WHITE);
                 //https://stackoverflow.com/questions/3656371/dynamic-string-using-string-xml
-                addIcon(label, String.valueOf(route.getTrainDistance()), midPoint);
+                String labelText = getString(R.string.RouteLabel, route.getTrainDistance());
+                addIcon(label, labelText, midPoint);
             }
 
             PolylineOptions poly = new PolylineOptions()
@@ -255,27 +259,32 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         List<CityCoordinates> cities = new ArrayList<>();
 
-        Geocoder geo = new Geocoder(this);
-        for (String cityName : mCityArray) {
-            List<Address> addresses = null;
-            try {
-                //gives some human assistance ;)
-                if (Objects.equals(cityName, "Washington"))
-                    addresses = geo.getFromLocationName(cityName + " DC", 1);
-                else if (Objects.equals(cityName, "Vancouver"))
-                    addresses = geo.getFromLocationName(cityName + " Canada", 1);
-                else
-                    addresses = geo.getFromLocationName(cityName, 1);
-            } catch (IOException e) {
-                e.printStackTrace();
+        do {
+            if (Geocoder.isPresent())
+            {
+                Geocoder geo = new Geocoder(this);
+                for (String cityName : mCityArray) {
+                    List<Address> addresses = null;
+                    try {
+                        //gives some human assistance ;)
+                        if (Objects.equals(cityName, "Washington"))
+                            addresses = geo.getFromLocationName(cityName + " DC", 1);
+                        else if (Objects.equals(cityName, "Vancouver"))
+                            addresses = geo.getFromLocationName(cityName + " Canada", 1);
+                        else
+                            addresses = geo.getFromLocationName(cityName, 1);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    if (addresses != null && !addresses.isEmpty()) {
+                        Address city = addresses.get(0);
+                        double lat = city.getLatitude();
+                        double lng = city.getLongitude();
+                        cities.add(new CityCoordinates(cityName, new LatLng(lat, lng)));
+                    }
+                }
             }
-            if(!addresses.isEmpty()) {
-                Address city = addresses.get(0);
-                double lat = city.getLatitude();
-                double lng = city.getLongitude();
-                cities.add(new CityCoordinates(cityName, new LatLng(lat, lng)));
-            }
-        }
+        }while(!Geocoder.isPresent() || cities.isEmpty());
         return cities;
     }
 

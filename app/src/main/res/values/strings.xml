@@ -11,4 +11,8 @@
     <string name="title_activity_maps">Map</string>
 
     <string name="RouteLabel">%1$d Trains</string>
+
+    <string name="points">%1$d Points</string>
+    <string name="trainsLeft">%1$d Trains Left</string>
+    <string name="add_tickets">Add Tickets</string>
 </resources>
