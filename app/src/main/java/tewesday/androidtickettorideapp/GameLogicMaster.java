@@ -109,4 +109,9 @@ public class GameLogicMaster implements Parcelable
     public void AITurn() {
 
     }
+
+    public void PlaceTrains(GameRouteConnection route) {
+
+
+    }
 }
