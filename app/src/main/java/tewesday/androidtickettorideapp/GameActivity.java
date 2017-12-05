@@ -41,8 +41,6 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 {
 
     private GoogleMap mMap;
-    private final int PILE_TAG = 100;
-    private final int COLOR_TAG = 200;
     private final int RADIUS = 80000;
     private final int HIGHLIGHT_RADIUS = 120000;
     private Pair<Integer, Integer> mSelectedCard = null;
@@ -127,7 +125,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         for (Button button : mHandButtons)
         {
-            button.setTag(COLOR_TAG, mHandButtons.indexOf(button));
+            button.setTag(R.string.COLOR_TAG, mHandButtons.indexOf(button));
         }
 
         mDrawPile = new ArrayList<>();
@@ -139,7 +137,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         mDrawPile.add((ImageView)findViewById(R.id.drawPile5));
         for (Button button : mHandButtons)
         {
-            button.setTag(PILE_TAG, mHandButtons.indexOf(button));
+            button.setTag(R.string.PILE_TAG, mHandButtons.indexOf(button));
         }
 
         mAIInfo = new ArrayList<>();
@@ -405,7 +403,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void handCardClick(View view)
     {
         Button button = (Button) view;
-        int color = (int) button.getTag(COLOR_TAG);
+        int color = (int) button.getTag(R.string.COLOR_TAG);
         int number = Integer.parseInt(button.getText().toString());
         mSelectedCard = new Pair<>(color, number);
     }
@@ -472,7 +470,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void updateDrawPile(int drawPile, int color)
     {
         mDrawPile.get(drawPile).setImageBitmap(getCardImageFromColor(color));
-        mDrawPile.get(drawPile).setTag(COLOR_TAG, color);
+        mDrawPile.get(drawPile).setTag(R.string.COLOR_TAG, color);
     }
 
     public void updateHandDisplay(int color, int numberOfCards)
@@ -528,12 +526,12 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public int getColorFromDrawPile(int drawPile)
     {
-        return (int) mDrawPile.get(drawPile).getTag(COLOR_TAG);
+        return (int) mDrawPile.get(drawPile).getTag(R.string.COLOR_TAG);
     }
 
     public int getDrawPileIndexFromImageView(ImageView imageview)
     {
-        return (int) imageview.getTag(PILE_TAG);
+        return (int) imageview.getTag(R.string.PILE_TAG);
     }
 
     public void addTicketToDisplay(GameDestinationTicket ticket)

@@ -6,6 +6,9 @@
     <string name="sign_upButton">Sign Up</string>
     <string name="add_tickets">Add Tickets</string>
 
+    <string name="COLOR_TAG">COLORTAG</string>
+    <string name="PILE_TAG">PILETAG</string>
+
     <string name="title_activity_game">GameActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>

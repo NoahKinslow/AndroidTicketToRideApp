@@ -403,6 +403,12 @@
   },
   {
     "mSourceCity": "Winnipeg",
+    "mDestinationCity": "Sault St. Marie",
+    "mTrainDistance": 6,
+    "mRouteColor": 0
+  },
+  {
+    "mSourceCity": "Winnipeg",
     "mDestinationCity": "Helena",
     "mTrainDistance": 4,
     "mRouteColor": 2
