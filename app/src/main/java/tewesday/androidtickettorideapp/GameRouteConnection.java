@@ -15,7 +15,17 @@ public class GameRouteConnection implements Parcelable
     private int mTrainDistance;
     // Color of Route Connection/Train color required
     private int mRouteColor;
+
+    public int getPlayerColor() {
+        return playerColor;
+    }
+
+    public void setPlayerColor(int playerColor) {
+        this.playerColor = playerColor;
+    }
+
     // Color Key: Grey:0,Red:1,Blue:2,Yellow:3,Green:4,Orange:5,Pink:6,Black:7,White:8
+    private int playerColor;
 
     // Does a player own this route?
     private boolean mPlayerControlled = false;

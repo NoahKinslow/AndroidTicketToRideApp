@@ -23,6 +23,7 @@ public class GameLogicMaster
     private InputStream mCitiesStream;
     private InputStream mRoutesStream;
     private GameSession mGameSession;
+    private List<GamePlayer> mGamePlayers;
 
     GameLogicMaster()
     {
@@ -86,4 +87,10 @@ public class GameLogicMaster
 
 
     }
+
+    public GamePlayer getPlayer(int index)
+    {
+        return mGamePlayers.get(index);
+    }
+
 }

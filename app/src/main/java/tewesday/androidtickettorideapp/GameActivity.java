@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
+import android.support.v4.util.ArraySet;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,15 +25,18 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
+import com.google.android.gms.maps.model.Dot;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PatternItem;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.ui.IconGenerator;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -64,6 +68,8 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     private final boolean mIsAIGame = true;
     private boolean mIsAITurn = false;
     private int mTimesTapped = 0;
+    private final List<PatternItem> DOT_PATERN =
+            new ArrayList<PatternItem>(Arrays.asList(new Dot()));
 
     //Wild, Red, Blue, Yellow, Green, Orange, Pink, Black, White
     private final int[] ROUTE_COLORS = {
@@ -269,7 +275,8 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                     .color(ROUTE_COLORS[route.getRouteColor()])
                     .width(25)
                     .zIndex(100)
-                    .clickable(true);
+                    .clickable(true)
+                    .pattern(DOT_PATERN);
             mPolylines.add(mMap.addPolyline(poly));
             mPolylines.get(mPolylines.size() - 1).setTag(route);
         }
@@ -386,6 +393,9 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         {
             mGameLogicMaster.PlaceTrains(route);
             //TODO:Change Line
+            GamePlayer player = mGameLogicMaster.getPlayer(0);
+            claimRoute(player, route);
+
             Toast.makeText(this, "Route Claimed!", Toast.LENGTH_LONG).show();
         }
         else
@@ -608,5 +618,27 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         }
         return false;
+    }
+
+    public void claimRoute(GamePlayer player, GameRouteConnection route)
+    {
+        route.setPlayerControlled(true);
+        route.setPlayerID(player.getPlayerID());
+        route.setPlayerColor(player.getmPlayerColor());
+        updatePolyline(route);
+    }
+
+    public void updatePolyline(GameRouteConnection route)
+    {
+        for(Polyline p : mPolylines)
+        {
+            if(((GameRouteConnection)p.getTag()).getConnectionID()
+                    == route.getConnectionID())
+            {
+                p.setTag(route);
+                p.setColor(ROUTE_COLORS[route.getPlayerColor()]);
+                p.setPattern(null);
+            }
+        }
     }
 }
