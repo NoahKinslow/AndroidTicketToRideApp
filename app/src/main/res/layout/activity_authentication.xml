@@ -6,7 +6,7 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="30pt"
+        android:layout_height="10pt"
         android:layout_weight="0.34" />
 
     <EditText
@@ -56,11 +56,13 @@
         android:text="@string/sign_upButton"
         android:textAppearance="@android:style/TextAppearance.Material.Widget.Button" />
 
-
     <Button
         android:id="@+id/gameTestButton"
-        android:layout_width="88dp"
-        android:layout_height="48dp"
-        android:onClick="gameTestOnClick"
-        android:text="Game Test"/>
+        style="@android:style/Widget.Material.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="playAICLick"
+        android:text="Play AI Game"
+        android:layout_margin="10dp"
+        android:textAppearance="@android:style/TextAppearance.Material.Widget.Button"/>
 </LinearLayout>
