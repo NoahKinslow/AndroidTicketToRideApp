@@ -443,6 +443,8 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                             addresses = geo.getFromLocationName(cityName + " DC", 1);
                         else if (Objects.equals(cityName, "Vancouver"))
                             addresses = geo.getFromLocationName(cityName + " Canada", 1);
+                        else if (Objects.equals(cityName, "Helena"))
+                            addresses = geo.getFromLocationName(cityName + " Montana", 1);
                         else
                             addresses = geo.getFromLocationName(cityName, 1);
                     } catch (IOException e) {
