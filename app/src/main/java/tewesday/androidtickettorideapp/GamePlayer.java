@@ -22,6 +22,11 @@ public class GamePlayer implements Parcelable
 
     }
 
+    public void addTicket(GameDestinationTicket ticket)
+    {
+        mTickets.add(ticket);
+    }
+
     protected GamePlayer(Parcel in) {
         mAssociatedUserID = in.readString();
         mPlayerName = in.readString();

@@ -146,6 +146,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         mPolylines = new ArrayList<>();
         mCircles = new ArrayList<>();
 
+        mGameLogicMaster.setGameActivity(this);
         initializeLayoutItems();
         initializeDrawPiles();
         initializeHand();
@@ -567,6 +568,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                     selectedTickets.add(proposedTickets.get(i));
                     addTicketToDisplay(proposedTickets.get(i));
                 }
+                mGameLogicMaster.selectedTicket(selectedTickets);
             }
         });
 
