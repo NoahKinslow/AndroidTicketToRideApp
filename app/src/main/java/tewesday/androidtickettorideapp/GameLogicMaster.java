@@ -153,4 +153,8 @@ public class GameLogicMaster implements Parcelable
                 mDestinationTickets.get(2)));
         return mProposedTickets;
     }
+
+    public int getDrawPileCardColor(int drawpile) {
+        return 0;
+    }
 }

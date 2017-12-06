@@ -78,6 +78,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     private final List<PatternItem> DOT_PATTERN =
             new ArrayList<PatternItem>(Arrays.asList(new Dot()));
     private List<Integer> mSelectedItems;
+    private boolean isGameStarted = false;
 
     //Wild, Red, Blue, Yellow, Green, Orange, Pink, Black, White
     private final int[] ROUTE_COLORS = {
@@ -91,6 +92,15 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             Color.BLACK,
             Color.WHITE
     };
+
+    public void startGameClick(View view) {
+        Button button = (Button) view;
+
+        //TODO: do stuff
+
+        isGameStarted = true;
+        button.setVisibility(View.GONE);
+    }
 
     private class CityCoordinates
     {
@@ -134,6 +144,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         mCircles = new ArrayList<>();
 
         initializeLayoutItems();
+        initializeDrawPiles();
     }
 
     private void initializeLayoutItems()
@@ -188,6 +199,12 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             mTrainsTextViews.add((TextView)findViewById(playerTrains));
 
         }
+    }
+
+    private void initializeDrawPiles()
+    {
+        for (int i = 0; i < 6; i++)
+            updateDrawPile(i, mGameLogicMaster.getDrawPileCardColor(i));
     }
 
     @Override
@@ -591,13 +608,15 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void updateDrawPile(int drawPile, int color)
     {
-        mDrawPile.get(drawPile).setImageBitmap(getCardImageFromColor(color));
+        if(drawPile != 0)
+            mDrawPile.get(drawPile).setImageBitmap(getCardImageFromColor(color));
+        mDrawPile.get(drawPile).setTag(R.string.PILE_TAG, drawPile);
         mDrawPile.get(drawPile).setTag(R.string.COLOR_TAG, color);
     }
 
     public void updateHandDisplay(int color, int numberOfCards)
     {
-        mHandButtons.get(color).setText(numberOfCards);
+        mHandButtons.get(color).setText(String.valueOf(numberOfCards));
     }
 
     //returns quantity of cards in hand of that color
