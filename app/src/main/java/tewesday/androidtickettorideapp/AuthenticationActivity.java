@@ -156,7 +156,7 @@ public class AuthenticationActivity extends AppCompatActivity
                 });
     }
 
-    public void playAICLick(View view) {
+    public void playAIClick(View view) {
         //Create AI Game
         GameLogicMaster glm = new GameLogicMaster();
         glm.setupFiles((getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_destinationtickets)),

@@ -91,7 +91,7 @@
         style="@android:style/Widget.Material.Button"
         android:layout_width="145dp"
         android:layout_height="wrap_content"
-        android:onClick="playAICLick"
+        android:onClick="playAIClick"
         android:text="Play AI Game"
         android:layout_margin="10dp"
         android:textAppearance="@android:style/TextAppearance.Material.Widget.Button"

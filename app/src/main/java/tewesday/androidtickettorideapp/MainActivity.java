@@ -198,6 +198,9 @@ public class MainActivity extends AppCompatActivity
         mGameLogicMaster.setupDestinationTickets();
         mGameLogicMaster.setupGameBoardMap();
         mGameLogicMaster.loadGameSessionDataFromFirebase();
+        mGameLogicMaster.setupTrainDeck();
+        mGameLogicMaster.setupDrawPiles();
+
         // Switch to GameBoardActivity/UI here
 
         Intent intent = new Intent (this, GameActivity.class);
@@ -269,7 +272,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void aplayAICLick(View view)
+    public void playAIClick(View view)
     {
         GameLogicMaster glm = new GameLogicMaster();
         glm.setupFiles((getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_destinationtickets)),
@@ -288,4 +291,5 @@ public class MainActivity extends AppCompatActivity
 
         startActivity(intent);
     }
+
 }

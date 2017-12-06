@@ -32,12 +32,14 @@ public class GameLogicMaster implements Parcelable
     private List<Integer> DiscardTrainDeck = new ArrayList<>();
     private List<Integer> drawPiles = new ArrayList<>();
     private boolean mIsAITurn = false;
-    private final boolean mIsAIGame = true;
+    private boolean mIsAIGame = true;
 
     GameLogicMaster()
     {
 
     }
+
+
 
     // Setup the basic files to be read from
     public void setupFiles(InputStream destinationTicketsStream, InputStream citiesStream, InputStream routesStream)
@@ -280,6 +282,11 @@ public class GameLogicMaster implements Parcelable
         mGameBoardMap = in.readParcelable(GameBoardMap.class.getClassLoader());
         mGameSession = in.readParcelable(GameSession.class.getClassLoader());
         mGamePlayers = in.createTypedArrayList(GamePlayer.CREATOR);
+        in.readList(TrainDeck, Integer.class.getClassLoader());
+        in.readList(DiscardTrainDeck, Integer.class.getClassLoader());
+        in.readList(drawPiles, Integer.class.getClassLoader());
+        mIsAITurn = in.readByte() != 0;
+        mIsAIGame = in.readByte() != 0;
     }
 
     @Override
@@ -289,6 +296,11 @@ public class GameLogicMaster implements Parcelable
         dest.writeParcelable(mGameBoardMap, flags);
         dest.writeParcelable(mGameSession, flags);
         dest.writeTypedList(mGamePlayers);
+        dest.writeList(TrainDeck);
+        dest.writeList(DiscardTrainDeck);
+        dest.writeList(drawPiles);
+        dest.writeByte((byte) (mIsAITurn ? 1 : 0));
+        dest.writeByte((byte) (mIsAIGame ? 1 : 0));
     }
 
     @Override
@@ -306,7 +318,5 @@ public class GameLogicMaster implements Parcelable
         public GameLogicMaster[] newArray(int size) {
             return new GameLogicMaster[size];
         }
-
     };
-
 }

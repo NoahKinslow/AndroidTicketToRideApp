@@ -141,6 +141,8 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             mCityArray = getIntent().getStringArrayListExtra("CITY");
             mGameLogicMaster.setDestinationTickets(getIntent()
                     .<GameDestinationTicket>getParcelableArrayListExtra("TICKET"));
+            mGameLogicMaster.setupTrainDeck();
+            mGameLogicMaster.setupDrawPiles();
         }
         mMarkers = new ArrayList<>();
         mPolylines = new ArrayList<>();
