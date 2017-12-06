@@ -160,8 +160,10 @@ public class MainActivity extends AppCompatActivity
                                         }
                                         else
                                         {
-                                            Toast.makeText(MainActivity.this, "You are not in " + mGameSessionName + ".",
-                                                    Toast.LENGTH_SHORT).show();
+                                            gameSession.addNewPlayer(mAuthentication.getCurrentUser().getUid(), mAuthentication.getCurrentUser().getDisplayName());
+                                            //Toast.makeText(MainActivity.this, "You are not in " + mGameSessionName + ".",
+                                            //       Toast.LENGTH_SHORT).show();
+                                            setupGameLogicMaster(gameSession);
                                         }
                                 }
                             }
@@ -191,7 +193,6 @@ public class MainActivity extends AppCompatActivity
 
     public void setupGameLogicMaster(GameSession gameSession)
     {
-        gameSession.setGameStarted(true);
         mGameLogicMaster.assignGameSession(gameSession);
         mGameLogicMaster.setupFiles(mDestinationTicketsStream, mCitiesStream, mRoutesStream);
         mGameLogicMaster.setupDestinationTickets();

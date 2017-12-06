@@ -3,6 +3,9 @@ package tewesday.androidtickettorideapp;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,16 +73,24 @@ public class GameSession implements Parcelable
         playerToAdd.setTrainsLeft(DEFAULTTRAINCOUNT);
         if (mPlayerList.isEmpty())
         {
-            playerToAdd.setPlayerID(1);
+            playerToAdd.setPlayerID(0);
             mOwner = playerToAdd;
             mPlayerList.add(playerToAdd);
         }
         else
         {
-            int playerNumber = (mPlayerList.size() + 1);
+            int playerNumber = (mPlayerList.size());
             playerToAdd.setPlayerID(playerNumber);
             mPlayerList.add(playerToAdd);
+            addNewPlayerToFirebase(playerToAdd);
         }
+    }
+
+    public void addNewPlayerToFirebase(GamePlayer playerToAdd)
+    {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("Games").child(mGameSessionID).child("playerList").child(playerToAdd.getPlayerID() + "");
+        myRef.setValue(playerToAdd);
     }
 
     // Re-add a player that was already assigned to this GameSession
