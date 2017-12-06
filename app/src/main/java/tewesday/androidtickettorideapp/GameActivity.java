@@ -1,5 +1,7 @@
 package tewesday.androidtickettorideapp;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -8,8 +10,10 @@ import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.support.v4.util.Pair;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -38,6 +42,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+
+import static android.R.attr.tag;
+import static android.R.attr.windowHideAnimation;
 
 public class GameActivity extends AppCompatActivity implements OnMapReadyCallback,
                                                                 GoogleMap.OnPolylineClickListener,
@@ -70,6 +77,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     private int mTimesTapped = 0;
     private final List<PatternItem> DOT_PATTERN =
             new ArrayList<PatternItem>(Arrays.asList(new Dot()));
+    private List<Integer> mSelectedItems;
 
     //Wild, Red, Blue, Yellow, Green, Orange, Pink, Black, White
     private final int[] ROUTE_COLORS = {
@@ -118,6 +126,8 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             mGameLogicMaster = new GameLogicMaster();
             mRoutes = getIntent().getParcelableArrayListExtra("ROUTE");
             mCityArray = getIntent().getStringArrayListExtra("CITY");
+            mGameLogicMaster.setDestinationTickets(getIntent()
+                    .<GameDestinationTicket>getParcelableArrayListExtra("TICKET"));
         }
         mMarkers = new ArrayList<>();
         mPolylines = new ArrayList<>();
@@ -235,8 +245,15 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             CityCoordinates source = getCityCoordinates(sourceStr);
             CityCoordinates des = getCityCoordinates(desStr);
 
-            LatLng sourceLoc = source.mLocation;
-            LatLng desLoc = des.mLocation;
+            LatLng sourceLoc = null;
+            LatLng desLoc = null;
+            if (source != null && des != null) {
+                sourceLoc = source.mLocation;
+                desLoc = des.mLocation;
+            }
+            else
+                break;
+
 
             //If it is a double route
             Polyline otherLine = null;
@@ -340,10 +357,8 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     private List<CityCoordinates> createListOfCities() {
 
         List<CityCoordinates> cities = new ArrayList<>();
-
         do {
-            if (Geocoder.isPresent())
-            {
+            if (Geocoder.isPresent()) {
                 Geocoder geo = new Geocoder(this);
                 for (String cityName : mCityArray) {
                     List<Address> addresses = null;
@@ -357,6 +372,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                             addresses = geo.getFromLocationName(cityName, 1);
                     } catch (IOException e) {
                         e.printStackTrace();
+                        Log.d("CITY FAIL:", cityName);
                     }
                     if (addresses != null && !addresses.isEmpty()) {
                         Address city = addresses.get(0);
@@ -366,7 +382,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                     }
                 }
             }
-        }while(!Geocoder.isPresent() || cities.isEmpty());
+        }while(!Geocoder.isPresent());
         return cities;
     }
 
@@ -411,9 +427,9 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         if(isCardAndRouteSeletion(mSelectedCard,route))
         {
             mGameLogicMaster.PlaceTrains(route);
-            //TODO:Change Line
-            GamePlayer player = mGameLogicMaster.getPlayer(0);
-            claimRoute(player, route);
+
+            claimRoute(mGamePlayers.get(0), route);
+
 
             Toast.makeText(this, "Route Claimed!", Toast.LENGTH_LONG).show();
         }
@@ -439,7 +455,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         //add card to hand display
         updateHandDisplay(color, getNumHandCardsFromColor(color) + 1);
 
-        //TODO:Tell gameLogic about it
+        mGameLogicMaster.drawCard(pileNum);
 
         //See if turn is over
         if(mTimesTapped > 1)
@@ -461,6 +477,69 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         mSelectedCard = new Pair<>(color, number);
     }
 
+    public void addTicketClick(View view)
+    {
+        //https://developer.android.com/guide/topics/ui/dialogs.html
+        //https://stackoverflow.com/questions/10714911/alertdialogs-items-not-displayed
+        mSelectedItems = new ArrayList<>();
+        final List<GameDestinationTicket> proposedTickets = mGameLogicMaster.getProposedTickets();
+        CharSequence[] dialogTicketItems =
+                {
+                    getTicketString(proposedTickets.get(0)),
+                    getTicketString(proposedTickets.get(1)),
+                    getTicketString(proposedTickets.get(2))
+                };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.ticketDialogMessage);
+        builder.setMultiChoiceItems(dialogTicketItems, null, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                if (isChecked) {
+                    mSelectedItems.add(which);
+                } else if (mSelectedItems.contains(which)) {
+                    mSelectedItems.remove(Integer.valueOf(which));
+                }
+            }
+        });
+
+        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                List<GameDestinationTicket> selectedTickets = new ArrayList<>();
+                for (int i : mSelectedItems)
+                {
+                    selectedTickets.add(proposedTickets.get(i));
+                    addTicketToDisplay(proposedTickets.get(i));
+                }
+            }
+        });
+
+        builder.setPositiveButton(R.string.okay, null);
+        final AlertDialog dialog = builder.create();
+        //https://stackoverflow.com/questions/2620444/how-to-prevent-a-dialog-from-closing-when-a-button-is-clicked
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+
+                Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // TODO Do something
+                        if(mSelectedItems.size() > 1)
+                            dialog.dismiss();
+                        else
+                            Toast.makeText(getApplicationContext(),"Choose Two Tickets",Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
+        dialog.show();
+    }
+
     public void onTicketClick(View view)
     {
         GameDestinationTicket ticket = (GameDestinationTicket) view.getTag();
@@ -479,7 +558,12 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    //UI updaters
+
+    public void takeUserPhoto(View view) {
+    }
+
+
+    //UI updaters and getters
 
     public void updatePlayerName(int player, String name)
     {

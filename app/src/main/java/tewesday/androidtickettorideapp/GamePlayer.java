@@ -1,8 +1,11 @@
 package tewesday.androidtickettorideapp;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
-public class GamePlayer
+public class GamePlayer implements Parcelable
 {
     private String mAssociatedUserID;
     private String mPlayerName;
@@ -18,6 +21,44 @@ public class GamePlayer
     {
 
     }
+
+    protected GamePlayer(Parcel in) {
+        mAssociatedUserID = in.readString();
+        mPlayerName = in.readString();
+        mPlayerID = in.readInt();
+        mTrainsLeft = in.readInt();
+        mScore = in.readInt();
+        mPlayerColor = in.readInt();
+        mTickets = in.createTypedArrayList(GameDestinationTicket.CREATOR);
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mAssociatedUserID);
+        dest.writeString(mPlayerName);
+        dest.writeInt(mPlayerID);
+        dest.writeInt(mTrainsLeft);
+        dest.writeInt(mScore);
+        dest.writeInt(mPlayerColor);
+        dest.writeTypedList(mTickets);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<GamePlayer> CREATOR = new Creator<GamePlayer>() {
+        @Override
+        public GamePlayer createFromParcel(Parcel in) {
+            return new GamePlayer(in);
+        }
+
+        @Override
+        public GamePlayer[] newArray(int size) {
+            return new GamePlayer[size];
+        }
+    };
 
     public String getAssociatedUserID()
     {

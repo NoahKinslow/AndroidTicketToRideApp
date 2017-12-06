@@ -1,7 +1,10 @@
 package tewesday.androidtickettorideapp;
 
 
-public class GameDestinationTicket
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class GameDestinationTicket implements Parcelable
 {
     private String mSourceCity;
     private String mDestinationCity;
@@ -13,6 +16,38 @@ public class GameDestinationTicket
     {
 
     }
+
+    protected GameDestinationTicket(Parcel in) {
+        mSourceCity = in.readString();
+        mDestinationCity = in.readString();
+        mPointValue = in.readInt();
+        mIsCompleted = in.readByte() != 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mSourceCity);
+        dest.writeString(mDestinationCity);
+        dest.writeInt(mPointValue);
+        dest.writeByte((byte) (mIsCompleted ? 1 : 0));
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<GameDestinationTicket> CREATOR = new Creator<GameDestinationTicket>() {
+        @Override
+        public GameDestinationTicket createFromParcel(Parcel in) {
+            return new GameDestinationTicket(in);
+        }
+
+        @Override
+        public GameDestinationTicket[] newArray(int size) {
+            return new GameDestinationTicket[size];
+        }
+    };
 
     public String getSourceCity()
     {

@@ -1,9 +1,12 @@
 package tewesday.androidtickettorideapp;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameSession
+public class GameSession implements Parcelable
 {
     private String mGameSessionID;
     private String mGameSessionName;
@@ -23,6 +26,40 @@ public class GameSession
     {
         mGameSessionID = gameSessionID;
     }
+
+    protected GameSession(Parcel in) {
+        mGameSessionID = in.readString();
+        mGameSessionName = in.readString();
+        mOwner = in.readParcelable(GamePlayer.class.getClassLoader());
+        mGameStarted = in.readByte() != 0;
+        mPlayerList = in.createTypedArrayList(GamePlayer.CREATOR);
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mGameSessionID);
+        dest.writeString(mGameSessionName);
+        dest.writeParcelable(mOwner, flags);
+        dest.writeByte((byte) (mGameStarted ? 1 : 0));
+        dest.writeTypedList(mPlayerList);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<GameSession> CREATOR = new Creator<GameSession>() {
+        @Override
+        public GameSession createFromParcel(Parcel in) {
+            return new GameSession(in);
+        }
+
+        @Override
+        public GameSession[] newArray(int size) {
+            return new GameSession[size];
+        }
+    };
 
     // Add a new player to this GameSession
     public void addNewPlayer(String userID, String playerName)

@@ -159,14 +159,19 @@ public class AuthenticationActivity extends AppCompatActivity
     public void gameTestOnClick(View view) {
         //Test
         GameLogicMaster glm = new GameLogicMaster();
-        glm.setupFiles(null,
+        glm.setupFiles((getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_destinationtickets)),
                 (getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_cities)),
                 (getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_cityrouteconnections)));
         glm.setupGameBoardMap();
+        glm.setupDestinationTickets();
 
         Intent intent = new Intent (this, GameActivity.class);
-        intent.putParcelableArrayListExtra("ROUTE", (ArrayList<GameRouteConnection>) glm.getGameBoardMap().getRoutes());
-        intent.putStringArrayListExtra("CITY", (ArrayList<String>) glm.getGameBoardMap().getCities());
+        intent.putParcelableArrayListExtra("ROUTE",
+                (ArrayList<GameRouteConnection>) glm.getGameBoardMap().getRoutes());
+        intent.putStringArrayListExtra("CITY",
+                (ArrayList<String>) glm.getGameBoardMap().getCities());
+        intent.putParcelableArrayListExtra("TICKET",
+                (ArrayList<GameDestinationTicket>) glm.getDestinationTickets());
 
         startActivity(intent);
     }

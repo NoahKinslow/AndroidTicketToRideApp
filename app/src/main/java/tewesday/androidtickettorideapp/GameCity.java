@@ -1,9 +1,12 @@
 package tewesday.androidtickettorideapp;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 
 
-public class GameCity
+public class GameCity implements Parcelable
 {
     private String mCityName;
     private ArrayList<GameRouteConnection> mCityRoutes = new ArrayList<>();
@@ -19,6 +22,34 @@ public class GameCity
     {
         mCityName = cityName;
     }
+
+    protected GameCity(Parcel in) {
+        mCityName = in.readString();
+        mCityRoutes = in.createTypedArrayList(GameRouteConnection.CREATOR);
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mCityName);
+        dest.writeTypedList(mCityRoutes);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<GameCity> CREATOR = new Creator<GameCity>() {
+        @Override
+        public GameCity createFromParcel(Parcel in) {
+            return new GameCity(in);
+        }
+
+        @Override
+        public GameCity[] newArray(int size) {
+            return new GameCity[size];
+        }
+    };
 
     // Add a routeConnection to this city
     public void addRouteConnection(GameRouteConnection routeConnection)

@@ -11,21 +11,40 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class GameLogicMaster implements Parcelable
 {
 
 
+    public List<GameDestinationTicket> getDestinationTickets() {
+        return mDestinationTickets;
+    }
+
+    public void setDestinationTickets(List<GameDestinationTicket> mDestinationTickets) {
+        this.mDestinationTickets = mDestinationTickets;
+    }
+
     private List<GameDestinationTicket> mDestinationTickets = new ArrayList<>();
+    private List<GameDestinationTicket> mProposedTickets;
+
 
     protected GameLogicMaster(Parcel in) {
+        mDestinationTickets = in.createTypedArrayList(GameDestinationTicket.CREATOR);
+        mProposedTickets = in.createTypedArrayList(GameDestinationTicket.CREATOR);
         mGameBoardMap = in.readParcelable(GameBoardMap.class.getClassLoader());
+        mGameSession = in.readParcelable(GameSession.class.getClassLoader());
+        mGamePlayers = in.createTypedArrayList(GamePlayer.CREATOR);
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeTypedList(mDestinationTickets);
+        dest.writeTypedList(mProposedTickets);
         dest.writeParcelable(mGameBoardMap, flags);
+        dest.writeParcelable(mGameSession, flags);
+        dest.writeTypedList(mGamePlayers);
     }
 
     @Override
@@ -124,4 +143,14 @@ public class GameLogicMaster implements Parcelable
         return mGamePlayers.get(index);
     }
 
+    public void drawCard(int pileNum) {
+
+    }
+
+    public List<GameDestinationTicket> getProposedTickets() {
+        mProposedTickets = new ArrayList<>(Arrays.asList(mDestinationTickets.get(0),
+                mDestinationTickets.get(1),
+                mDestinationTickets.get(2)));
+        return mProposedTickets;
+    }
 }

@@ -18,6 +18,8 @@
 
     <string name="points">%1$d Points</string>
     <string name="trainsLeft">%1$d Trains Left</string>
+    <string name="ticketDialogMessage">Select at least two tickets</string>
+    <string name="okay">OK</string>
 
 
 </resources>
