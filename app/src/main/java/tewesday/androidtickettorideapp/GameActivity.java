@@ -35,6 +35,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PatternItem;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.maps.android.ui.IconGenerator;
 
 import java.io.IOException;
@@ -70,6 +71,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     private List<ImageView> mImageViews;
     private LinearLayout mTicketLayout;
     //GameControl
+    private FirebaseAuth mAuthentication;
     private List<GamePlayer> mGamePlayers;
     private GameLogicMaster mGameLogicMaster;
     private final boolean mIsAIGame = true;
@@ -98,8 +100,11 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         //TODO: do stuff
 
-        isGameStarted = true;
-        button.setVisibility(View.GONE);
+        if (mGameLogicMaster.startGame(mAuthentication.getCurrentUser().getUid()))
+        {
+            isGameStarted = true;
+            button.setVisibility(View.GONE);
+        }
     }
 
     private class CityCoordinates
@@ -130,6 +135,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             mGameLogicMaster = getIntent().getParcelableExtra("GAMELOGICMASTER");
             mRoutes = mGameLogicMaster.getGameBoardMap().getRoutes();
             mCityArray = mGameLogicMaster.getGameBoardMap().getCities();
+            mAuthentication = FirebaseAuth.getInstance();
         }
         else
         {

@@ -3,6 +3,8 @@ package tewesday.androidtickettorideapp;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -156,5 +158,20 @@ public class GameLogicMaster implements Parcelable
 
     public int getDrawPileCardColor(int drawpile) {
         return 0;
+    }
+
+    public boolean startGame(String userID)
+    {
+        if (userID.equals(mGameSession.getOwner().getAssociatedUserID()))
+        {
+            mGameSession.setGameStarted(true);
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference("Games").child(mGameSession.getGameSessionID()).child("gameStarted");
+            myRef.setValue(true);
+            // Give everyone tickets... other game start stuff...
+            return true;
+        }
+        // Give everyone tickets... other game start stuff...
+        return false;
     }
 }
