@@ -230,8 +230,9 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                     .fillColor(Color.BLACK)
                     .zIndex(200);
 
-            mCircles.add(mMap.addCircle(cir));
-            mCircles.get(mCircles.size() - 1).setTag(city);
+            Circle circle = mMap.addCircle(cir);
+            circle.setTag(city);
+            mCircles.add(circle);
         }
     }
 
@@ -313,8 +314,9 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                 poly.pattern(DOT_PATTERN);
             }
 
-            mPolylines.add(mMap.addPolyline(poly));
-            mPolylines.get(mPolylines.size() - 1).setTag(route);
+            Polyline polyline = mMap.addPolyline(poly);
+            polyline.setTag(route);
+            mPolylines.add(polyline);
         }
     }
 
@@ -545,6 +547,8 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         GameDestinationTicket ticket = (GameDestinationTicket) view.getTag();
         Circle source = getCircleFromCityName(ticket.getSourceCity());
         Circle des = getCircleFromCityName(ticket.getDestinationCity());
+        if(source == null || des == null)
+            return;
 
         if(source.getRadius() == RADIUS || des.getRadius() == RADIUS)
         {
@@ -668,7 +672,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public String getTicketString(GameDestinationTicket ticket)
     {
-        return ticket.getSourceCity() + "<-->" + ticket.getDestinationCity() +
+        return ticket.getSourceCity() + " <> " + ticket.getDestinationCity() +
                 " - " + ticket.getPointValue() + "points";
     }
 
@@ -677,7 +681,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         for (Circle c : mCircles)
         {
             CityCoordinates tag = (CityCoordinates) c.getTag();
-            if(tag.mName == cityname)
+            if(tag.mName.equals(cityname))
             {
                 return c;
             }
