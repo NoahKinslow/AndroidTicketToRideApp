@@ -444,8 +444,9 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onPolylineClick(Polyline polyline)
     {
-        if (mSelectedCard == null ||
-                mTimesTapped > 0)
+        if (!isGameStarted ||
+            mSelectedCard == null ||
+            mTimesTapped > 0)
             return;
 
         GameRouteConnection route = (GameRouteConnection) polyline.getTag();
@@ -466,7 +467,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void drawPileClick(View view)
     {
-        if(mTimesTapped > 1)
+        if(!isGameStarted || mTimesTapped > 1)
             return;
 
         mTimesTapped++;
@@ -496,14 +497,19 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void handCardClick(View view)
     {
-        Button button = (Button) view;
-        int color = (int) button.getTag(R.string.COLOR_TAG);
-        int number = Integer.parseInt(button.getText().toString());
-        mSelectedCard = new Pair<>(color, number);
+        if(isGameStarted) {
+            Button button = (Button) view;
+            int color = (int) button.getTag(R.string.COLOR_TAG);
+            int number = Integer.parseInt(button.getText().toString());
+            mSelectedCard = new Pair<>(color, number);
+        }
     }
 
     public void addTicketClick(View view)
     {
+        if(!isGameStarted)
+            return;
+
         //https://developer.android.com/guide/topics/ui/dialogs.html
         //https://stackoverflow.com/questions/10714911/alertdialogs-items-not-displayed
         mSelectedItems = new ArrayList<>();
@@ -547,12 +553,10 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             @Override
             public void onShow(DialogInterface dialogInterface) {
-
                 Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        // TODO Do something
                         if(mSelectedItems.size() > 1)
                             dialog.dismiss();
                         else
@@ -567,28 +571,28 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void onTicketClick(View view)
     {
-        GameDestinationTicket ticket = (GameDestinationTicket) view.getTag();
-        Circle source = getCircleFromCityName(ticket.getSourceCity());
-        Circle des = getCircleFromCityName(ticket.getDestinationCity());
-        if(source == null || des == null)
-            return;
+        if(isGameStarted) {
 
-        if(source.getRadius() == RADIUS || des.getRadius() == RADIUS)
-        {
-            source.setRadius(HIGHLIGHT_RADIUS);
-            des.setRadius(HIGHLIGHT_RADIUS);
-        }
-        else
-        {
-            source.setRadius(RADIUS);
-            des.setRadius(RADIUS);
+            GameDestinationTicket ticket = (GameDestinationTicket) view.getTag();
+            Circle source = getCircleFromCityName(ticket.getSourceCity());
+            Circle des = getCircleFromCityName(ticket.getDestinationCity());
+            if (source == null || des == null)
+                return;
+
+            if (source.getRadius() == RADIUS || des.getRadius() == RADIUS) {
+                source.setRadius(HIGHLIGHT_RADIUS);
+                des.setRadius(HIGHLIGHT_RADIUS);
+            } else {
+                source.setRadius(RADIUS);
+                des.setRadius(RADIUS);
+            }
         }
     }
-
 
     public void takeUserPhoto(View view) {
-    }
 
+
+    }
 
     //UI updaters and getters
 
