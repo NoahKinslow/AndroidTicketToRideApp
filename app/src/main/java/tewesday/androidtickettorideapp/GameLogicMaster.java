@@ -19,7 +19,7 @@ import java.util.List;
 
 public class GameLogicMaster implements Parcelable
 {
-    private List<GameDestinationTicket> mDestinationTickets = new ArrayList<>();
+    private List<GameDestinationTicket> mDestinationTickets;
     private List<GameDestinationTicket> mProposedTickets;
     private GameBoardMap mGameBoardMap;
     private GameActivity mGameActivity;
@@ -28,18 +28,24 @@ public class GameLogicMaster implements Parcelable
     private InputStream mRoutesStream;
     private GameSession mGameSession;
     private List<GamePlayer> mGamePlayers;
-    private List<Integer> TrainDeck = new ArrayList<>();
-    private List<Integer> DiscardTrainDeck = new ArrayList<>();
-    private List<Integer> drawPiles = new ArrayList<>();
-    private boolean mIsAITurn = false;
-    private boolean mIsAIGame = true;
+    private List<Integer> TrainDeck;
+    private List<Integer> DiscardTrainDeck;
+    private List<Integer> drawPiles;
+    private boolean mIsAITurn;
+    private boolean mIsAIGame;
 
     GameLogicMaster()
     {
 
+        TrainDeck = new ArrayList<>();
+        DiscardTrainDeck = new ArrayList<>();
+        drawPiles = new ArrayList<>();
+        mIsAITurn = false;
+        mIsAIGame = true;
+        mDestinationTickets = new ArrayList<>();
+        mGamePlayers = new ArrayList<>();
+        mProposedTickets = new ArrayList<>();
     }
-
-
 
     // Setup the basic files to be read from
     public void setupFiles(InputStream destinationTicketsStream, InputStream citiesStream, InputStream routesStream)
@@ -96,6 +102,28 @@ public class GameLogicMaster implements Parcelable
         Collections.shuffle(TrainDeck);
     }
 
+    public void setupPlayers(boolean isAIGame)
+    {
+        if(isAIGame)
+        {
+            GamePlayer player = new GamePlayer();
+            player.setPlayerColor(7);
+            player.setPlayerID(0);
+            player.setPlayerName("You");
+            GamePlayer ai = new GamePlayer();
+            ai.setPlayerColor(2);
+            ai.setPlayerID(1);
+            ai.setPlayerName("Computer");
+
+            mGamePlayers.add(player);
+            mGamePlayers.add(ai);
+        }
+        else
+        {
+            //firebase player
+        }
+    }
+
     // Load all current GameSession data from the Firebase
     public void loadGameSessionDataFromFirebase()
     {
@@ -132,7 +160,8 @@ public class GameLogicMaster implements Parcelable
     {
         int cardColor = drawPiles.get(pileNumber);
 
-        //update hand
+        //TODO: update hand
+
         drawPiles.set(pileNumber, drawCardFromTrainDeck());
         DiscardTrainDeck.add(cardColor);
         checkDiscardPile();
@@ -182,6 +211,9 @@ public class GameLogicMaster implements Parcelable
     /// <param name="selected">List of the tickets selcted</param>
     public void selectedTicket(List<GameDestinationTicket> selected)
     {
+        //handles incase button is clicked > 1 time and select same tickets.
+        if(mProposedTickets.isEmpty())
+            return;
         //add ticket to player's tickets.
         for (GameDestinationTicket ticket : selected)
         {
@@ -221,13 +253,25 @@ public class GameLogicMaster implements Parcelable
             mDestinationTickets.addAll(mProposedTickets);
         }
 
-        mProposedTickets = null;
+        mProposedTickets = new ArrayList<>();
     }
 
     public List<GameDestinationTicket> getProposedTickets() {
-        mProposedTickets = new ArrayList<>(Arrays.asList(mDestinationTickets.get(0),
-                mDestinationTickets.get(1),
-                mDestinationTickets.get(2)));
+
+        if(!mProposedTickets.isEmpty())
+            return mProposedTickets;
+
+        Collections.shuffle(mDestinationTickets);
+
+        mProposedTickets = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            if (!mDestinationTickets.isEmpty()) {
+                //first element
+                mProposedTickets.add(mDestinationTickets.get(0));
+                mDestinationTickets.remove(0);
+            }
+        }
+
         return mProposedTickets;
     }
 
@@ -277,15 +321,23 @@ public class GameLogicMaster implements Parcelable
 
     //PARCELABLE
     protected GameLogicMaster(Parcel in) {
+        mDestinationTickets = new ArrayList<>();
         mDestinationTickets = in.createTypedArrayList(GameDestinationTicket.CREATOR);
+        mProposedTickets = new ArrayList<>();
         mProposedTickets = in.createTypedArrayList(GameDestinationTicket.CREATOR);
         mGameBoardMap = in.readParcelable(GameBoardMap.class.getClassLoader());
         mGameSession = in.readParcelable(GameSession.class.getClassLoader());
+        mGamePlayers = new ArrayList<>();
         mGamePlayers = in.createTypedArrayList(GamePlayer.CREATOR);
+        TrainDeck = new ArrayList<>();
         in.readList(TrainDeck, Integer.class.getClassLoader());
+        DiscardTrainDeck = new ArrayList<>();
         in.readList(DiscardTrainDeck, Integer.class.getClassLoader());
+        drawPiles = new ArrayList<>();
         in.readList(drawPiles, Integer.class.getClassLoader());
+        mIsAITurn = false;
         mIsAITurn = in.readByte() != 0;
+        mIsAIGame = true;
         mIsAIGame = in.readByte() != 0;
     }
 

@@ -157,6 +157,7 @@ public class AuthenticationActivity extends AppCompatActivity
     }
 
     public void playAIClick(View view) {
+        Toast.makeText(this, R.string.loading,Toast.LENGTH_LONG).show();
         //Create AI Game
         GameLogicMaster glm = new GameLogicMaster();
         glm.setupFiles((getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_destinationtickets)),
@@ -164,7 +165,6 @@ public class AuthenticationActivity extends AppCompatActivity
                 (getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_cityrouteconnections)));
         glm.setupGameBoardMap();
         glm.setupDestinationTickets();
-
         Intent intent = new Intent (this, GameActivity.class);
         intent.putParcelableArrayListExtra("ROUTE",
                 (ArrayList<GameRouteConnection>) glm.getGameBoardMap().getRoutes());

@@ -3,6 +3,7 @@ package tewesday.androidtickettorideapp;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GamePlayer implements Parcelable
@@ -10,7 +11,7 @@ public class GamePlayer implements Parcelable
     private String mAssociatedUserID;
     private String mPlayerName;
     private int mPlayerID;
-    private int mTrainsLeft = 45;
+    private int mTrainsLeft;
     private int mScore;
     private int mPlayerColor;
     private List<GameTrainCards> mTrainCards;
@@ -19,7 +20,9 @@ public class GamePlayer implements Parcelable
     // Default constructor for Firebase Database
     GamePlayer()
     {
-
+        mTickets = new ArrayList<>();
+        mTrainsLeft = 45;
+        mScore = 0;
     }
 
     public void addTicket(GameDestinationTicket ticket)
@@ -31,9 +34,12 @@ public class GamePlayer implements Parcelable
         mAssociatedUserID = in.readString();
         mPlayerName = in.readString();
         mPlayerID = in.readInt();
+        mTrainsLeft = 45;
         mTrainsLeft = in.readInt();
+        mScore = 0;
         mScore = in.readInt();
         mPlayerColor = in.readInt();
+        mTickets = new ArrayList<>();
         mTickets = in.createTypedArrayList(GameDestinationTicket.CREATOR);
     }
 

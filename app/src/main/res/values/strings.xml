@@ -21,6 +21,7 @@
     <string name="ticketDialogMessage">Select at least two tickets</string>
     <string name="okay">OK</string>
     <string name="or">OR</string>
+    <string name="loading">Loading Game...</string>
 
 
 </resources>

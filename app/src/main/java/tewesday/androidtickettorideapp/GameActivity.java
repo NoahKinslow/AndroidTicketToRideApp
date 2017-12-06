@@ -71,7 +71,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     private FirebaseAuth mAuthentication;
     private List<GamePlayer> mGamePlayers;
     private GameLogicMaster mGameLogicMaster;
-    private final boolean mIsAIGame = true;
+    private boolean mIsAIGame = false;
     private boolean mIsAITurn = false;
     private int mTimesTapped = 0;
     private final List<PatternItem> DOT_PATTERN =
@@ -97,7 +97,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         //TODO: do stuff
 
-        if (mGameLogicMaster.startGame(mAuthentication.getCurrentUser().getUid()))
+        if (mIsAIGame || mGameLogicMaster.startGame(mAuthentication.getCurrentUser().getUid()))
         {
             isGameStarted = true;
             button.setVisibility(View.GONE);
@@ -129,6 +129,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         if(getIntent().hasExtra("GAMELOGICMASTER"))
         {
+            mIsAIGame = false;
             mGameLogicMaster = getIntent().getParcelableExtra("GAMELOGICMASTER");
             mRoutes = mGameLogicMaster.getGameBoardMap().getRoutes();
             mCityArray = mGameLogicMaster.getGameBoardMap().getCities();
@@ -136,6 +137,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         else
         {
+            mIsAIGame = true;
             mGameLogicMaster = new GameLogicMaster();
             mRoutes = getIntent().getParcelableArrayListExtra("ROUTE");
             mCityArray = getIntent().getStringArrayListExtra("CITY");
@@ -143,6 +145,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                     .<GameDestinationTicket>getParcelableArrayListExtra("TICKET"));
             mGameLogicMaster.setupTrainDeck();
             mGameLogicMaster.setupDrawPiles();
+            mGameLogicMaster.setupPlayers(true);
         }
         mMarkers = new ArrayList<>();
         mPolylines = new ArrayList<>();
@@ -255,7 +258,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.setMaxZoomPreference(7.5f);
 
         mCities = createListOfCities();
-
+        
         //add Circles
         addCitiesToMap();
 
@@ -510,6 +513,9 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mGameLogicMaster.drawCard(pileNum);
 
+        int newCard = mGameLogicMaster.getDrawPileCardColor(pileNum);
+        updateDrawPile(pileNum, newCard);
+
         //See if turn is over
         if(mTimesTapped > 1)
         {
@@ -539,18 +545,18 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         //https://developer.android.com/guide/topics/ui/dialogs.html
         //https://stackoverflow.com/questions/10714911/alertdialogs-items-not-displayed
+        //https://stackoverflow.com/questions/3032342/arrayliststring-to-charsequence
         mSelectedItems = new ArrayList<>();
         final List<GameDestinationTicket> proposedTickets = mGameLogicMaster.getProposedTickets();
-        CharSequence[] dialogTicketItems =
-                {
-                    getTicketString(proposedTickets.get(0)),
-                    getTicketString(proposedTickets.get(1)),
-                    getTicketString(proposedTickets.get(2))
-                };
+        List<String> dialogTicketItems = new ArrayList<>();
+        for (GameDestinationTicket ticket : proposedTickets) {
+            dialogTicketItems.add(getTicketString(ticket));
+        }
+        CharSequence[] charseq = dialogTicketItems.toArray(new CharSequence[dialogTicketItems.size()]);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.ticketDialogMessage);
-        builder.setMultiChoiceItems(dialogTicketItems, null, new DialogInterface.OnMultiChoiceClickListener() {
+        builder.setMultiChoiceItems(charseq, null, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                 if (isChecked) {
@@ -581,7 +587,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             @Override
             public void onShow(DialogInterface dialogInterface) {
-                Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -735,7 +741,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     public String getTicketString(GameDestinationTicket ticket)
     {
         return ticket.getSourceCity() + " <> " + ticket.getDestinationCity() +
-                " - " + ticket.getPointValue() + "points";
+                " - " + ticket.getPointValue() + " points";
     }
 
     public Circle getCircleFromCityName(String cityname)

@@ -200,9 +200,10 @@ public class MainActivity extends AppCompatActivity
         mGameLogicMaster.loadGameSessionDataFromFirebase();
         mGameLogicMaster.setupTrainDeck();
         mGameLogicMaster.setupDrawPiles();
+        mGameLogicMaster.setupPlayers(false);
 
         // Switch to GameBoardActivity/UI here
-
+        Toast.makeText(this, R.string.loading,Toast.LENGTH_LONG).show();
         Intent intent = new Intent (this, GameActivity.class);
         intent.putParcelableArrayListExtra("ROUTE", (ArrayList<GameRouteConnection>) mGameLogicMaster.getGameBoardMap().getRoutes());
         intent.putStringArrayListExtra("CITY", (ArrayList<String>) mGameLogicMaster.getGameBoardMap().getCities());
@@ -274,6 +275,7 @@ public class MainActivity extends AppCompatActivity
 
     public void playAIClick(View view)
     {
+        Toast.makeText(this, R.string.loading,Toast.LENGTH_LONG).show();
         GameLogicMaster glm = new GameLogicMaster();
         glm.setupFiles((getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_destinationtickets)),
                 (getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_cities)),
