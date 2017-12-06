@@ -445,6 +445,8 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                             addresses = geo.getFromLocationName(cityName + " Canada", 1);
                         else if (Objects.equals(cityName, "Helena"))
                             addresses = geo.getFromLocationName(cityName + " Montana", 1);
+                        else if (Objects.equals(cityName, "Duluth"))
+                            addresses = geo.getFromLocationName(cityName + " Minnesota", 1);
                         else
                             addresses = geo.getFromLocationName(cityName, 1);
                     } catch (IOException e) {
@@ -575,9 +577,10 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void addTicketClick(View view)
     {
-        if(!isGameStarted)
+        if(!isGameStarted || mTimesTapped > 0)
             return;
 
+        mTimesTapped = 2;
         //https://developer.android.com/guide/topics/ui/dialogs.html
         //https://stackoverflow.com/questions/10714911/alertdialogs-items-not-displayed
         //https://stackoverflow.com/questions/3032342/arrayliststring-to-charsequence
@@ -612,6 +615,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                     addTicketToDisplay(proposedTickets.get(i));
                 }
                 mGameLogicMaster.selectedTicket(selectedTickets);
+                mTimesTapped = 0;
                 mGameLogicMaster.AITurn();
             }
         });
