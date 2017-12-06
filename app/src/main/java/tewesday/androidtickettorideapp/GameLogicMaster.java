@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class GameLogicMaster implements Parcelable
 {
@@ -131,25 +132,155 @@ public class GameLogicMaster implements Parcelable
     }
 
     // Function to call from GUI to update a route with player info
-    public void updateRoute(int playerID, int routeConnectionID)
+    public void updateRoute(int playerID, GameRouteConnection route)
     {
-        // placeholder value
-        String sourceCity = "Montreal";
-        String destinationCity = "Boston";
-        GameRouteConnection routeConnection = mGameBoardMap.getRouteConnection(sourceCity, destinationCity, routeConnectionID);
-        routeConnection.setPlayerControlled(true);
-        routeConnection.setPlayerID(playerID);
-        mGameBoardMap.writeRouteDataToFirebase(mGameSession.getGameSessionID(), routeConnection);
+        route.setPlayerControlled(true);
+        route.setPlayerID(playerID);
+        if(!mIsAIGame)
+            mGameBoardMap.writeRouteDataToFirebase(mGameSession.getGameSessionID(), route);
     }
 
     public void AITurn() {
-        //TODO
 
+        mIsAITurn = true;
+
+        if(mGamePlayers.get(1).getTickets().isEmpty())
+        {
+            //make sure player is not using selected tickets
+            while(!mProposedTickets.isEmpty())
+                selectedTicket(getProposedTickets());
+        }
+
+        //https://stackoverflow.com/questions/2706500/how-do-i-generate-a-random-int-number-in-c
+        Random rand = new Random();
+        int randomNumber = rand.nextInt(100);
+
+        if(randomNumber > 50)//|| card == 0)
+        {
+            int randCard = rand.nextInt(6);
+            drawCard(randCard);
+            mGameActivity.updateDrawPile(randCard, getDrawPileCardColor(randCard));
+            randCard = rand.nextInt(6);
+            drawCard(randCard);
+            mGameActivity.updateDrawPile(randCard, getDrawPileCardColor(randCard));
+        }
+        else
+        {
+            boolean placed = false;
+            int attempts = 0;
+            while (!placed && attempts > 1000)
+            {
+                int randRoute = rand.nextInt(mGameBoardMap.getRoutes().size());
+                boolean valid = PlaceTrains(mGameBoardMap.getRoutes().get(randRoute));
+                if (valid)
+                {
+                    placed = true;
+                    mGameActivity.claimRoute(mGamePlayers.get(1), mGameBoardMap.getRoutes().get(randRoute));
+                }
+                attempts++;
+            }
+
+            if (!placed)
+            {
+                //draw cards if cant take turn
+                int randCard = rand.nextInt(6);
+                drawCard(randCard);
+                mGameActivity.updateDrawPile(randCard, getDrawPileCardColor(randCard));
+                randCard = rand.nextInt(6);
+                drawCard(randCard);
+                mGameActivity.updateDrawPile(randCard, getDrawPileCardColor(randCard));
+            }
+        }
+        mIsAITurn = false;
     }
 
-    public void PlaceTrains(GameRouteConnection route) {
-        //TODO
+    public boolean PlaceTrains(GameRouteConnection route) {
+        int i = 0;
+        if (mIsAIGame)
+            i = mIsAITurn ? 1 : 0;
+        else
+            ;//i = /*FIREBASE USER ID*/
+
+        if (isValidMove(i, route)) {
+            updateRoute(i, route);
+            getPlayer(i).setTrainsLeft(getPlayer(i).getTrainsLeft() - route.getTrainDistance());
+            if (getPlayer(i).getTrainsLeft() < 3) {
+                gameOver();
+            }
+            mGameActivity.updatePlayerTrains(i, getPlayer(i).getTrainsLeft());
+            addRouteScore(i, route);
+
+            validateTickets(i);
+            return true;
+        } else {
+            return false;
+        }
     }
+
+    private void gameOver() {
+
+        for (GamePlayer p : mGamePlayers) {
+            validateTickets(p.getPlayerID());
+        }
+
+        boolean iWon = true;
+        for (GamePlayer p : mGamePlayers) {
+            if(p.getScore() > getPlayer(0).getScore())
+                iWon = false;
+        }
+        mGameActivity.gameOver(iWon);
+    }
+
+    public void validateTickets(int playerID)
+    {
+        // Check if a ticket has been completed
+        for (GameDestinationTicket ticket : getPlayer(playerID).getTickets())
+        {
+            if (!ticket.isCompleted())
+            {
+                if (mGameBoardMap.validateTicket(ticket, getPlayer(playerID)))
+                {
+                    ticket.setIsCompleted(true);
+                    getPlayer(playerID).setScore(
+                            getPlayer(playerID).getScore() + ticket.getPointValue());
+                    mGameActivity.ticketComplete(ticket);
+                    mGameActivity.updatePlayerPoints(playerID, getPlayer(playerID).getScore());
+
+
+                    if(!mIsAIGame)
+                        ;// update firebase
+                }
+            }
+        }
+    }
+
+    private void addRouteScore(int playerid, GameRouteConnection route) {
+        int points = 0;
+        switch (route.getTrainDistance())
+        {
+            case 1:
+                points = 1;
+                break;
+            case 2:
+                points = 2;
+                break;
+            case 3:
+                points = 4;
+                break;
+            case 4:
+                points = 7;
+                break;
+            case 5:
+                points = 10;
+                break;
+            case 6:
+                points = 15;
+                break;
+        }
+        getPlayer(playerid).setScore(getPlayer(playerid).getScore() + points);
+        mGameActivity.updatePlayerPoints(playerid, getPlayer(playerid).getScore());
+    }
+
 
     /// <summary>
     /// Draws card from pileNumber
@@ -160,7 +291,8 @@ public class GameLogicMaster implements Parcelable
     {
         int cardColor = drawPiles.get(pileNumber);
 
-        //TODO: update hand
+        int currentNum = mGamePlayers.get(0).getTrainCards().get(cardColor);
+        mGamePlayers.get(0).getTrainCards().get(cardColor).equals(currentNum + 1);
 
         drawPiles.set(pileNumber, drawCardFromTrainDeck());
         DiscardTrainDeck.add(cardColor);
@@ -275,8 +407,6 @@ public class GameLogicMaster implements Parcelable
         return mProposedTickets;
     }
 
-
-
     public int getDrawPileCardColor(int drawpile) {
         return drawPiles.get(drawpile);
     }
@@ -285,8 +415,11 @@ public class GameLogicMaster implements Parcelable
         return mGamePlayers;
     }
 
-    public int getCardNumber(int i) {
-        return 0;
+    public int getCardNumber(int color) {
+        if(!getPlayer(0).getTrainCards().isEmpty())
+            return getPlayer(0).getTrainCards().get(color);
+        else
+            return 0;
     }
 
     public void assignGameSession(GameSession gameSession)
@@ -317,6 +450,13 @@ public class GameLogicMaster implements Parcelable
     public GamePlayer getPlayer(int index)
     {
         return mGamePlayers.get(index);
+    }
+
+    public boolean isValidMove(int playerid, GameRouteConnection route) {
+        return (!route.isPlayerControlled()
+                || route.getRouteColor() == 0
+                || getPlayer(playerid).getTrainCards().get(route.getRouteColor()) >= route.getTrainDistance()
+                || getPlayer(playerid).getTrainCards().get(0) >= route.getTrainDistance());
     }
 
     //PARCELABLE
@@ -371,4 +511,8 @@ public class GameLogicMaster implements Parcelable
             return new GameLogicMaster[size];
         }
     };
+
+    public void setGameBoardMap(GameBoardMap gameBoardMap) {
+        mGameBoardMap = gameBoardMap;
+    }
 }

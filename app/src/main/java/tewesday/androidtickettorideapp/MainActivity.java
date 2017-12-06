@@ -275,7 +275,6 @@ public class MainActivity extends AppCompatActivity
 
     public void playAIClick(View view)
     {
-        Toast.makeText(this, R.string.loading,Toast.LENGTH_LONG).show();
         GameLogicMaster glm = new GameLogicMaster();
         glm.setupFiles((getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_destinationtickets)),
                 (getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_cities)),
@@ -290,6 +289,7 @@ public class MainActivity extends AppCompatActivity
                 (ArrayList<String>) glm.getGameBoardMap().getCities());
         intent.putParcelableArrayListExtra("TICKET",
                 (ArrayList<GameDestinationTicket>) glm.getDestinationTickets());
+        intent.putExtra("MAP", glm.getGameBoardMap());
 
         startActivity(intent);
     }

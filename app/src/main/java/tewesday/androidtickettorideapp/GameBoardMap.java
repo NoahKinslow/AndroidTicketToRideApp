@@ -2,8 +2,10 @@ package tewesday.androidtickettorideapp;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.v4.util.ArrayMap;
 import android.util.Log;
 
 import com.google.firebase.database.ChildEventListener;
@@ -38,12 +40,31 @@ public class GameBoardMap implements Parcelable
     protected GameBoardMap(Parcel in) {
         mCities = in.createStringArrayList();
         mRoutes = in.createTypedArrayList(GameRouteConnection.CREATOR);
+
+        //http://stackoverflow.com/questions/8254654/how-write-java-util-map-into-parcel-in-a-smart-way
+        mCityMap = new LinkedHashMap<>();
+        int size = in.readInt();
+        for(int i = 0; i < size; i++)
+        {
+            String key = in.readString();
+            GameCity value = in.readParcelable(GameCity.class.getClassLoader());
+            mCityMap.put(key,value);
+        }
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeStringList(mCities);
         dest.writeTypedList(mRoutes);
+
+        //http://stackoverflow.com/questions/8254654/how-write-java-util-map-into-parcel-in-a-smart-way
+        dest.writeInt(mCityMap.size());
+        for(LinkedHashMap.Entry<String, GameCity> entry : mCityMap.entrySet())
+        {
+            dest.writeString(entry.getKey());
+            dest.writeParcelable(entry.getValue(), flags);
+        }
+
     }
 
     @Override
@@ -238,8 +259,56 @@ public class GameBoardMap implements Parcelable
         }
     }
 
+    public boolean validateTicket(GameDestinationTicket ticket, GamePlayer player)
+    {
+        String startCity = ticket.getSourceCity();
+        String endCity = ticket.getDestinationCity();
+        int playerID = player.getPlayerID();
 
+        for (GameRouteConnection route : mCityMap.get(startCity).getmCityRoutes())
+        {
+            // Check if destination city was reached
+            if ((route.getDestinationCity().equals(endCity)
+                    || route.getSourceCity().equals(endCity))
+                    && route.getPlayerID() == playerID)
+            {
+                    // exit recursive function
+                    return true;
+            }
+            // Check if current route is owned by the player
+            else if (route.getPlayerID() == playerID)
+            {
+                return searchRoutesForTicketDestination(playerID, ticket, route);
+            }
+        }
+        return false;
+    }
 
+    public boolean searchRoutesForTicketDestination(int playerID, GameDestinationTicket ticket, GameRouteConnection checkedRouteConnection)
+    {
+        String startCity = ticket.getSourceCity();
+        String endCity = ticket.getDestinationCity();
+        String nextCity = checkedRouteConnection.getDestinationCity();
+
+        for (GameRouteConnection route : mCityMap.get(nextCity).getmCityRoutes())
+        {
+            // Check if destination city was reached
+            if ((route.getDestinationCity().equals(endCity)
+                    || route.getSourceCity().equals(endCity))
+                    && route.getPlayerID() == playerID)
+            {
+                    // exit recursive function
+                    return true;
+            }
+            // Check if current route is owned by the player
+            else if (route.getPlayerID() == playerID
+                    && !route.equals(checkedRouteConnection))
+            {
+                return searchRoutesForTicketDestination(playerID, ticket, route);
+            }
+        }
+        return false;
+    }
 
 
 

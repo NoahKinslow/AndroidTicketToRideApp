@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class GamePlayer implements Parcelable
@@ -14,7 +15,7 @@ public class GamePlayer implements Parcelable
     private int mTrainsLeft;
     private int mScore;
     private int mPlayerColor;
-    private List<GameTrainCards> mTrainCards;
+    private List<Integer> mTrainCards;
     private List<GameDestinationTicket> mTickets;
 
     // Default constructor for Firebase Database
@@ -23,6 +24,7 @@ public class GamePlayer implements Parcelable
         mTickets = new ArrayList<>();
         mTrainsLeft = 45;
         mScore = 0;
+        mTrainCards = Arrays.asList(0,0,0,0,0,0,0,0,0);
     }
 
     public void addTicket(GameDestinationTicket ticket)
@@ -41,6 +43,8 @@ public class GamePlayer implements Parcelable
         mPlayerColor = in.readInt();
         mTickets = new ArrayList<>();
         mTickets = in.createTypedArrayList(GameDestinationTicket.CREATOR);
+        mTrainCards = new ArrayList<>();
+        in.readList(mTrainCards, Integer.class.getClassLoader());
     }
 
     @Override
@@ -52,6 +56,8 @@ public class GamePlayer implements Parcelable
         dest.writeInt(mScore);
         dest.writeInt(mPlayerColor);
         dest.writeTypedList(mTickets);
+        dest.writeList(mTrainCards);
+
     }
 
     @Override
@@ -105,7 +111,7 @@ public class GamePlayer implements Parcelable
         mTrainsLeft = trainsLeft;
     }
 
-    public List<GameTrainCards> getTrainCards() {
+    public List<Integer> getTrainCards() {
         return mTrainCards;
     }
 
@@ -125,7 +131,7 @@ public class GamePlayer implements Parcelable
         mPlayerColor = playerColor;
     }
 
-    public void setTrainCards(List<GameTrainCards> trainCards) {
+    public void setTrainCards(List<Integer> trainCards) {
         mTrainCards = trainCards;
     }
 

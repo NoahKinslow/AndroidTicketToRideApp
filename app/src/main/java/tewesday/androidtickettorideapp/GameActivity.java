@@ -28,6 +28,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.Dot;
+import com.google.android.gms.maps.model.Gap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -75,7 +76,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     private boolean mIsAITurn = false;
     private int mTimesTapped = 0;
     private final List<PatternItem> DOT_PATTERN =
-            new ArrayList<PatternItem>(Arrays.asList(new Dot()));
+            new ArrayList<PatternItem>(Arrays.asList(new Dot(), new Gap(5)));
     private List<Integer> mSelectedItems;
     private boolean isGameStarted = false;
 
@@ -102,6 +103,11 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             isGameStarted = true;
             button.setVisibility(View.GONE);
         }
+    }
+
+    public void ticketComplete(GameDestinationTicket ticket) {
+        TextView textView = mTicketLayout.findViewWithTag(ticket);
+        textView.setTextColor(Color.GREEN);
     }
 
     private class CityCoordinates
@@ -139,6 +145,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         {
             mIsAIGame = true;
             mGameLogicMaster = new GameLogicMaster();
+            mGameLogicMaster.setGameBoardMap(getIntent().<GameBoardMap>getParcelableExtra("MAP"));
             mRoutes = getIntent().getParcelableArrayListExtra("ROUTE");
             mCityArray = getIntent().getStringArrayListExtra("CITY");
             mGameLogicMaster.setDestinationTickets(getIntent()
@@ -154,8 +161,8 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         mGameLogicMaster.setGameActivity(this);
         initializeLayoutItems();
         initializeDrawPiles();
-        initializeHand();
         initializePlayerList();
+        initializeHand();
     }
 
     private void initializeLayoutItems()
@@ -228,20 +235,33 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void initializePlayerList()
     {
-        if(!mIsAIGame) {
-            mGamePlayers = mGameLogicMaster.getGamePlayers();
+        mGamePlayers = mGameLogicMaster.getGamePlayers();
 
-            int i = 0;
-            for (GamePlayer p : mGamePlayers) {
-                updatePlayerName(i, p.getPlayerName());
-                updatePlayerPoints(i, p.getScore());
-                updatePlayerTrains(i, p.getTrainsLeft());
-                makePlayerVisible(i);
-                i++;
-            }
+        int i = 0;
+        for (GamePlayer p : mGamePlayers) {
+            updatePlayerName(i, p.getPlayerName());
+            updatePlayerPoints(i, p.getScore());
+            updatePlayerTrains(i, p.getTrainsLeft());
+            makePlayerVisible(i);
+            i++;
         }
-    }
 
+    }
+    public void gameOver(boolean iWon) {
+        if(iWon)
+        {
+            Toast.makeText(this, "Congratulations! You are the winner with " +
+                    mGameLogicMaster.getPlayer(0).getScore() +
+                    " points!", Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            Toast.makeText(this, "Sorry you lost with " +
+                    mGameLogicMaster.getPlayer(0).getScore() +
+                    " points!", Toast.LENGTH_LONG).show();
+        }
+        finish();
+    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -258,7 +278,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.setMaxZoomPreference(7.5f);
 
         mCities = createListOfCities();
-        
+
         //add Circles
         addCitiesToMap();
 
@@ -306,7 +326,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                 desLoc = des.mLocation;
             }
             else
-                break;
+                continue;
 
 
             //If it is a double route
@@ -353,7 +373,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             PolylineOptions poly = new PolylineOptions()
                     .add(sourceLoc)
                     .add(desLoc)
-                    .width(25)
+                    .width(35)
                     .zIndex(100)
                     .clickable(true);
 
@@ -429,7 +449,9 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                         e.printStackTrace();
                         Log.d("CITY FAIL:", cityName);
                     }
-                    if (addresses != null && !addresses.isEmpty()) {
+                    if (addresses != null && !addresses.isEmpty() &&
+                            addresses.get(0).hasLongitude() &&
+                            addresses.get(0).hasLatitude()) {
                         Address city = addresses.get(0);
                         double lat = city.getLatitude();
                         double lng = city.getLongitude();
@@ -440,6 +462,8 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         }while(!Geocoder.isPresent());
         return cities;
     }
+
+
 
     //Listeners
     @Override
@@ -474,24 +498,33 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onPolylineClick(Polyline polyline)
     {
-        if (!isGameStarted ||
-            mSelectedCard == null ||
-            mTimesTapped > 0)
+        if (!isGameStarted) {
+            Toast.makeText(this, "Press Start Game", Toast.LENGTH_SHORT);
             return;
+        }
+        if (mTimesTapped > 0) {
+            Toast.makeText(this, "Cannot place route same turn as card draw. Draw another card.", Toast.LENGTH_SHORT);
+            return;
+        }
+        if (mSelectedCard == null) {
+            Toast.makeText(this, "Please select a card first", Toast.LENGTH_SHORT);
+            return;
+        }
 
         GameRouteConnection route = (GameRouteConnection) polyline.getTag();
-        if(isCardAndRouteSeletion(mSelectedCard,route))
+        if(isCardAndRouteSeletion(mSelectedCard,route)
+                && mGameLogicMaster.PlaceTrains(route))
         {
-            mGameLogicMaster.PlaceTrains(route);
-
+            if(mGameLogicMaster.PlaceTrains(route))
             claimRoute(mGamePlayers.get(0), route);
+            updateHandDisplay(mSelectedCard.first, mSelectedCard.second - route.getTrainDistance());
 
-
-            Toast.makeText(this, "Route Claimed!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Route Claimed!", Toast.LENGTH_SHORT).show();
+            mGameLogicMaster.AITurn();
         }
         else
         {
-            Toast.makeText(this, "Invalid Move", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Invalid Move", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -520,11 +553,11 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         if(mTimesTapped > 1)
         {
             //end turn
+            mTimesTapped = 0;
             if (mIsAIGame) {
                 setAITurn(true);
                 mGameLogicMaster.AITurn();
             }
-            mTimesTapped = 0;
         }
     }
 
@@ -577,6 +610,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                     addTicketToDisplay(proposedTickets.get(i));
                 }
                 mGameLogicMaster.selectedTicket(selectedTickets);
+                mGameLogicMaster.AITurn();
             }
         });
 
@@ -627,6 +661,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     }
+
 
     //UI updaters and getters
 
