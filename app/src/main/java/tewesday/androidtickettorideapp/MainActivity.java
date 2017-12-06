@@ -268,7 +268,8 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void playAICLick(View view) {
+    public void aplayAICLick(View view)
+    {
         GameLogicMaster glm = new GameLogicMaster();
         glm.setupFiles((getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_destinationtickets)),
                 (getApplicationContext().getResources().openRawResource(R.raw.tickettoride_basicna_cities)),

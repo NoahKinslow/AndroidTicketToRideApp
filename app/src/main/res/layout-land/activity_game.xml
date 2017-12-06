@@ -14,7 +14,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         tools:context="tewesday.androidtickettorideapp.GameActivity"
-        map:layout_constraintBottom_toTopOf="@+id/Playerlayout"
+        map:layout_constraintBottom_toTopOf="@+id/PlayerLayout0"
         map:layout_constraintRight_toRightOf="parent"
         map:layout_constraintLeft_toLeftOf="parent"
         map:layout_constraintTop_toTopOf="parent"
@@ -38,6 +38,7 @@
                 android:src="@drawable/defaultuser"
                 android:contentDescription="Player1"/>
             <LinearLayout
+                android:id="@+id/PlayerLayout1"
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -45,28 +46,31 @@
                     android:id="@+id/PlayerName1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="AI Name"
+                    android:text="Computer"
                     />
                 <TextView
                     android:id="@+id/PlayerPoints1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="10 points"
+                    android:text="0 Points"
                     />
                 <TextView
                     android:id="@+id/PlayerTrains1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="45 Trains left"
+                    android:text="45 Trains Left"
                     />
             </LinearLayout>
             <ImageView
+                android:visibility="gone"
                 android:id="@+id/PlayerImage2"
                 android:layout_width="55dp"
                 android:layout_height="55dp"
                 android:src="@drawable/defaultuser"
                 android:contentDescription="Player1"/>
             <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/PlayerLayout2"
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -90,12 +94,15 @@
                     />
             </LinearLayout>
             <ImageView
+                android:visibility="gone"
                 android:id="@+id/PlayerImage3"
                 android:layout_width="55dp"
                 android:layout_height="55dp"
                 android:src="@drawable/defaultuser"
                 android:contentDescription="Player1"/>
             <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/PlayerLayout3"
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -119,12 +126,15 @@
                     />
             </LinearLayout>
             <ImageView
+                android:visibility="gone"
                 android:id="@+id/PlayerImage4"
                 android:layout_width="55dp"
                 android:layout_height="55dp"
                 android:src="@drawable/defaultuser"
                 android:contentDescription="Player1"/>
             <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/PlayerLayout4"
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -231,7 +241,7 @@
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <LinearLayout
-        android:id="@+id/Playerlayout"
+        android:id="@+id/PlayerLayout0"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -241,20 +251,20 @@
             android:id="@+id/PlayerName0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Player0"
+            android:text="You"
             />
         <TextView
             android:id="@+id/PlayerPoints0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="100 points"
+            android:text="0 Points"
             />
 
         <TextView
             android:id="@+id/PlayerTrains0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="4 Trains left" />
+            android:text="45 Trains Left" />
     </LinearLayout>
 
     <LinearLayout

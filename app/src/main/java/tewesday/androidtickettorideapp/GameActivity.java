@@ -1,7 +1,6 @@
 package tewesday.androidtickettorideapp;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -43,9 +42,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import static android.R.attr.tag;
-import static android.R.attr.windowHideAnimation;
-
 public class GameActivity extends AppCompatActivity implements OnMapReadyCallback,
                                                                 GoogleMap.OnPolylineClickListener,
                                                                 GoogleMap.OnCameraMoveListener
@@ -64,6 +60,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     //LayoutItems
     private List<Button> mHandButtons;
     private List<ImageView> mDrawPile;
+    private List<LinearLayout> mPlayerLayouts;
     private List<TextView> mNameTextViews;
     private List<TextView> mPointsTextViews;
     private List<TextView> mTrainsTextViews;
@@ -145,6 +142,8 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         initializeLayoutItems();
         initializeDrawPiles();
+        initializeHand();
+        initializePlayerList();
     }
 
     private void initializeLayoutItems()
@@ -183,6 +182,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         mNameTextViews = new ArrayList<>();
         mPointsTextViews = new ArrayList<>();
         mTrainsTextViews = new ArrayList<>();
+        mPlayerLayouts = new ArrayList<>();
 
         for (int i = 0; i < 5; i++)
         {
@@ -193,11 +193,12 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             int playerName = r.getIdentifier("PlayerName" + String.valueOf(i), "id", packageName);
             int playerPoints = r.getIdentifier("PlayerPoints" + String.valueOf(i), "id", packageName);
             int playerTrains = r.getIdentifier("PlayerTrains" + String.valueOf(i), "id", packageName);
+            int playerLayout = r.getIdentifier("PlayerLayout" + String.valueOf(i), "id", packageName);
             mImageViews.add((ImageView)findViewById(playerImage));
             mNameTextViews.add((TextView)findViewById(playerName));
             mPointsTextViews.add((TextView)findViewById(playerPoints));
             mTrainsTextViews.add((TextView)findViewById(playerTrains));
-
+            mPlayerLayouts.add((LinearLayout)findViewById(playerLayout));
         }
     }
 
@@ -206,6 +207,29 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         for (int i = 0; i < 6; i++)
             updateDrawPile(i, mGameLogicMaster.getDrawPileCardColor(i));
     }
+
+    private void initializeHand()
+    {
+        for (int i = 0; i < 9; i++)
+            updateHandDisplay(i, mGameLogicMaster.getCardNumber(i));
+    }
+
+    private void initializePlayerList()
+    {
+        if(!mIsAIGame) {
+            mGamePlayers = mGameLogicMaster.getGamePlayers();
+
+            int i = 0;
+            for (GamePlayer p : mGamePlayers) {
+                updatePlayerName(i, p.getPlayerName());
+                updatePlayerPoints(i, p.getScore());
+                updatePlayerTrains(i, p.getTrainsLeft());
+                makePlayerVisible(i);
+                i++;
+            }
+        }
+    }
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -589,6 +613,11 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     //UI updaters and getters
+
+    public void makePlayerVisible(int player)
+    {
+        mPlayerLayouts.get(player).setVisibility(View.VISIBLE);
+    }
 
     public void updatePlayerName(int player, String name)
     {

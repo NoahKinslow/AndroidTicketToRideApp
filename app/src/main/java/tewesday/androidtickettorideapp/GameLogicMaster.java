@@ -157,4 +157,12 @@ public class GameLogicMaster implements Parcelable
     public int getDrawPileCardColor(int drawpile) {
         return 0;
     }
+
+    public List<GamePlayer> getGamePlayers() {
+        return mGamePlayers;
+    }
+
+    public int getCardNumber(int i) {
+        return 0;
+    }
 }
