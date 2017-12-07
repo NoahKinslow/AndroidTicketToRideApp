@@ -260,7 +260,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                     mGameLogicMaster.getPlayer(0).getScore() +
                     " points!", Toast.LENGTH_LONG).show();
         }
-        finish();
+        isGameStarted = false;
     }
 
     @Override
@@ -325,9 +325,10 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                 sourceLoc = source.mLocation;
                 desLoc = des.mLocation;
             }
-            else
+            else {
+                Log.d("CITY ERROR:", sourceStr + "-" + desStr);
                 continue;
-
+            }
 
             //If it is a double route
             Polyline otherLine = null;
@@ -521,6 +522,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         {
             if(mGameLogicMaster.PlaceTrains(route))
             claimRoute(mGamePlayers.get(0), route);
+            updatePolyline(polyline, route);
             updateHandDisplay(mSelectedCard.first, mSelectedCard.second - route.getTrainDistance());
 
             Toast.makeText(this, "Route Claimed!", Toast.LENGTH_SHORT).show();
@@ -537,18 +539,21 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         if(!isGameStarted || mTimesTapped > 1)
             return;
 
-        mTimesTapped++;
-
         int pileNum = getDrawPileIndexFromImageView((ImageView)view);
         int color = getColorFromDrawPile(pileNum);
 
+        if(color == 0 && mTimesTapped > 0 && pileNum != 0)
+            return;
+
         if(color == 0)
+            mTimesTapped += 2;
+        else
             mTimesTapped++;
 
         //add card to hand display
         updateHandDisplay(color, getNumHandCardsFromColor(color) + 1);
 
-        mGameLogicMaster.drawCard(pileNum);
+        mGameLogicMaster.drawCard(0, pileNum);
 
         int newCard = mGameLogicMaster.getDrawPileCardColor(pileNum);
         updateDrawPile(pileNum, newCard);
@@ -824,6 +829,12 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         route.setPlayerColor(player.getPlayerColor());
         updatePolyline(route);
     }
+    public void updatePolyline(Polyline p, GameRouteConnection route)
+    {
+        p.setTag(route);
+        p.setColor(ROUTE_COLORS[route.getPlayerColor()]);
+        p.setPattern(null);
+    }
 
     public void updatePolyline(GameRouteConnection route)
     {
@@ -832,9 +843,8 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             if(((GameRouteConnection)p.getTag()).getConnectionID()
                     == route.getConnectionID())
             {
-                p.setTag(route);
-                p.setColor(ROUTE_COLORS[route.getPlayerColor()]);
-                p.setPattern(null);
+                updatePolyline(p,route);
+                break;
             }
         }
     }

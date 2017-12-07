@@ -158,17 +158,17 @@ public class GameLogicMaster implements Parcelable
         if(randomNumber > 50)//|| card == 0)
         {
             int randCard = rand.nextInt(6);
-            drawCard(randCard);
+            drawCard(1, randCard);
             mGameActivity.updateDrawPile(randCard, getDrawPileCardColor(randCard));
             randCard = rand.nextInt(6);
-            drawCard(randCard);
+            drawCard(1, randCard);
             mGameActivity.updateDrawPile(randCard, getDrawPileCardColor(randCard));
         }
         else
         {
             boolean placed = false;
             int attempts = 0;
-            while (!placed && attempts > 1000)
+            while (!placed && attempts < 1000)
             {
                 int randRoute = rand.nextInt(mGameBoardMap.getRoutes().size());
                 boolean valid = PlaceTrains(mGameBoardMap.getRoutes().get(randRoute));
@@ -184,10 +184,10 @@ public class GameLogicMaster implements Parcelable
             {
                 //draw cards if cant take turn
                 int randCard = rand.nextInt(6);
-                drawCard(randCard);
+                drawCard(1, randCard);
                 mGameActivity.updateDrawPile(randCard, getDrawPileCardColor(randCard));
                 randCard = rand.nextInt(6);
-                drawCard(randCard);
+                drawCard(1, randCard);
                 mGameActivity.updateDrawPile(randCard, getDrawPileCardColor(randCard));
             }
         }
@@ -287,12 +287,12 @@ public class GameLogicMaster implements Parcelable
     /// </summary>
     /// <param name="pileNumber">0-5 0 is deck</param>
     /// <returns>int color of card drawn</returns>
-    public int drawCard(int pileNumber)
+    public int drawCard(int player, int pileNumber)
     {
         int cardColor = drawPiles.get(pileNumber);
 
-        int currentNum = mGamePlayers.get(0).getTrainCards().get(cardColor);
-        mGamePlayers.get(0).getTrainCards().get(cardColor).equals(currentNum + 1);
+        int currentNum = getPlayer(player).getTrainCards().get(cardColor);
+        getPlayer(player).updateTrainCard(cardColor, currentNum + 1);
 
         drawPiles.set(pileNumber, drawCardFromTrainDeck());
         DiscardTrainDeck.add(cardColor);
@@ -453,10 +453,23 @@ public class GameLogicMaster implements Parcelable
     }
 
     public boolean isValidMove(int playerid, GameRouteConnection route) {
-        return (!route.isPlayerControlled()
-                || route.getRouteColor() == 0
-                || getPlayer(playerid).getTrainCards().get(route.getRouteColor()) >= route.getTrainDistance()
-                || getPlayer(playerid).getTrainCards().get(0) >= route.getTrainDistance());
+        if(!route.isPlayerControlled())
+        {
+            //if card of routecolor >= route trains
+            if(getPlayer(playerid).getTrainCards().get(route.getRouteColor())
+                    >= route.getTrainDistance())
+                return true;
+            //if players wild cards >= route trains
+            if(getPlayer(playerid).getTrainCards().get(0) >= route.getTrainDistance())
+                return true;
+            //if route is wild and player has card of quantity >= route trains
+            if(route.getRouteColor() == 0) {
+                for (int i : getPlayer(playerid).getTrainCards())
+                    if (i >= route.getTrainDistance())
+                        return true;
+            }
+        }
+        return false;
     }
 
     //PARCELABLE
