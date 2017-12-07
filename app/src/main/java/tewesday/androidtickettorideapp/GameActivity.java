@@ -146,6 +146,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             mRoutes = mGameLogicMaster.getGameBoardMap().getRoutes();
             mCityArray = mGameLogicMaster.getGameBoardMap().getCities();
             mAuthentication = FirebaseAuth.getInstance();
+            mGameLogicMaster.setCurrentUserID(mAuthentication.getCurrentUser().getUid());
         }
         else
         {

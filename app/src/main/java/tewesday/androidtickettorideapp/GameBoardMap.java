@@ -1,11 +1,7 @@
 package tewesday.androidtickettorideapp;
 
-import android.content.Context;
-import android.net.Uri;
-import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.v4.util.ArrayMap;
 import android.util.Log;
 
 import com.google.firebase.database.ChildEventListener;
@@ -18,18 +14,13 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import static android.content.ContentValues.TAG;
 
@@ -159,17 +150,18 @@ public class GameBoardMap implements Parcelable
     private void addRouteConnection(GameRouteConnection routeConnection)
     {
         mCityMap.get(routeConnection.getSourceCity()).addRouteConnection(routeConnection);
+        mCityMap.get(routeConnection.getDestinationCity()).addRouteConnection(routeConnection);
     }
 
     // Get a RouteConnection using its sourceCity, destinationCity, and connection ID
     public GameRouteConnection getRouteConnection(String sourceCity, String destinationCity, int connectionID)
     {
-        for (int i = 0;i < mCityMap.get(sourceCity).getmCityRoutes().size();i++)
+        for (int i = 0; i < mCityMap.get(sourceCity).getCityRoutes().size(); i++)
         {
-            if (mCityMap.get(sourceCity).getmCityRoutes().get(i).getDestinationCity().equals(destinationCity) &&
-                    mCityMap.get(sourceCity).getmCityRoutes().get(i).getConnectionID() == connectionID)
+            if (mCityMap.get(sourceCity).getCityRoutes().get(i).getDestinationCity().equals(destinationCity) &&
+                    mCityMap.get(sourceCity).getCityRoutes().get(i).getConnectionID() == connectionID)
             {
-                return mCityMap.get(sourceCity).getmCityRoutes().get(i);
+                return mCityMap.get(sourceCity).getCityRoutes().get(i);
             }
         }
         return null;
@@ -249,9 +241,9 @@ public class GameBoardMap implements Parcelable
     // Find a routeConnection in the CityMap and update(replace) it with the given routeConnection
     public void updateRouteConnection(GameRouteConnection routeConnection)
     {
-        for (int i = 0;i < mCityMap.get(routeConnection.getSourceCity()).getmCityRoutes().size();i++)
+        for (int i = 0; i < mCityMap.get(routeConnection.getSourceCity()).getCityRoutes().size(); i++)
         {
-            if ((mCityMap.get(routeConnection.getSourceCity()).getmCityRoutes().get(i).getConnectionID()) == routeConnection.getConnectionID())
+            if ((mCityMap.get(routeConnection.getSourceCity()).getCityRoutes().get(i).getConnectionID()) == routeConnection.getConnectionID())
             {
                 mCityMap.get(routeConnection.getSourceCity()).updateRouteConnection(routeConnection, i);
                 break;
@@ -265,15 +257,16 @@ public class GameBoardMap implements Parcelable
         String endCity = ticket.getDestinationCity();
         int playerID = player.getPlayerID();
 
-        for (GameRouteConnection route : mCityMap.get(startCity).getmCityRoutes())
+        for (GameRouteConnection route : mCityMap.get(startCity).getCityRoutes())
         {
             // Check if destination city was reached
-            if ((route.getDestinationCity().equals(endCity)
-                    || route.getSourceCity().equals(endCity))
-                    && route.getPlayerID() == playerID)
+            if ((route.getDestinationCity().equals(endCity) || route.getSourceCity().equals(endCity)))
             {
+                if (route.getPlayerID() == playerID)
+                {
                     // exit recursive function
                     return true;
+                }
             }
             // Check if current route is owned by the player
             else if (route.getPlayerID() == playerID)
@@ -290,15 +283,16 @@ public class GameBoardMap implements Parcelable
         String endCity = ticket.getDestinationCity();
         String nextCity = checkedRouteConnection.getDestinationCity();
 
-        for (GameRouteConnection route : mCityMap.get(nextCity).getmCityRoutes())
+        for (GameRouteConnection route : mCityMap.get(nextCity).getCityRoutes())
         {
             // Check if destination city was reached
-            if ((route.getDestinationCity().equals(endCity)
-                    || route.getSourceCity().equals(endCity))
-                    && route.getPlayerID() == playerID)
+            if ((route.getDestinationCity().equals(endCity) || route.getSourceCity().equals(endCity)))
             {
+                if (route.getPlayerID() == playerID)
+                {
                     // exit recursive function
                     return true;
+                }
             }
             // Check if current route is owned by the player
             else if (route.getPlayerID() == playerID

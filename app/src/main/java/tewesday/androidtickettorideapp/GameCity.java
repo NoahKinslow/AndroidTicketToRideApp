@@ -76,11 +76,11 @@ public class GameCity implements Parcelable
         return mCityName;
     }
 
-    public ArrayList<GameRouteConnection> getmCityRoutes() {
+    public ArrayList<GameRouteConnection> getCityRoutes() {
         return mCityRoutes;
     }
 
-    public void setmCityRoutes(ArrayList<GameRouteConnection> mCityRoutes) {
+    public void setCityRoutes(ArrayList<GameRouteConnection> mCityRoutes) {
         this.mCityRoutes = mCityRoutes;
     }
 

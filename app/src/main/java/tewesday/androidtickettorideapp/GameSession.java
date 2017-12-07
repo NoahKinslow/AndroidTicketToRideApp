@@ -67,7 +67,7 @@ public class GameSession implements Parcelable
     // Add a new player to this GameSession
     public void addNewPlayer(String userID, String playerName)
     {
-        GamePlayer playerToAdd = new GamePlayer();
+        GamePlayer playerToAdd = new GamePlayer(true);
         playerToAdd.setAssociatedUserID(userID);
         playerToAdd.setPlayerName(playerName);
         playerToAdd.setTrainsLeft(DEFAULTTRAINCOUNT);
@@ -116,6 +116,19 @@ public class GameSession implements Parcelable
             }
         }
         return null;
+    }
+
+    public void updatePlayerFirebase(GamePlayer playerUpdate)
+    {
+        for (GamePlayer player : mPlayerList)
+        {
+            if (player.getAssociatedUserID().equals(playerUpdate.getAssociatedUserID()))
+            {
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference("Games").child(mGameSessionID).child("playerList").child(playerUpdate.getPlayerID() + "");
+                myRef.setValue(playerUpdate);
+            }
+        }
     }
 
     public String getGameSessionID() {

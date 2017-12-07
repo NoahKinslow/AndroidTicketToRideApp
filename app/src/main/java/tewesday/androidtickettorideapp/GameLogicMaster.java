@@ -3,6 +3,7 @@ package tewesday.androidtickettorideapp;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
@@ -34,10 +35,10 @@ public class GameLogicMaster implements Parcelable
     private List<Integer> drawPiles;
     private boolean mIsAITurn;
     private boolean mIsAIGame;
+    private String currentUserID;
 
     GameLogicMaster()
     {
-
         TrainDeck = new ArrayList<>();
         DiscardTrainDeck = new ArrayList<>();
         drawPiles = new ArrayList<>();
@@ -107,11 +108,11 @@ public class GameLogicMaster implements Parcelable
     {
         if(isAIGame)
         {
-            GamePlayer player = new GamePlayer();
+            GamePlayer player = new GamePlayer(true);
             player.setPlayerColor(7);
             player.setPlayerID(0);
             player.setPlayerName("You");
-            GamePlayer ai = new GamePlayer();
+            GamePlayer ai = new GamePlayer(true);
             ai.setPlayerColor(2);
             ai.setPlayerID(1);
             ai.setPlayerName("Computer");
@@ -122,6 +123,10 @@ public class GameLogicMaster implements Parcelable
         else
         {
             //firebase player
+            for (GamePlayer player: mGameSession.getPlayerList())
+            {
+                mGamePlayers.add(player);
+            }
         }
     }
 
@@ -199,7 +204,11 @@ public class GameLogicMaster implements Parcelable
         if (mIsAIGame)
             i = mIsAITurn ? 1 : 0;
         else
-            ;//i = /*FIREBASE USER ID*/
+        {
+            //i = /*FIREBASE USER ID*/
+            GamePlayer player = mGameSession.searchForPlayer(currentUserID);
+            i = player.getPlayerID();
+        }
 
         if (isValidMove(i, route)) {
             updateRoute(i, route);
@@ -248,6 +257,9 @@ public class GameLogicMaster implements Parcelable
 
 
                     if(!mIsAIGame)
+                    {
+
+                    }
                         ;// update firebase
                 }
             }
@@ -370,6 +382,8 @@ public class GameLogicMaster implements Parcelable
                             //TODO: Get player
                             //String userID = authLink.User.LocalId;
                             //GameSession.PlayerList[GameSession.GetPlayerID(userID)].AddTicket(ticket);
+                            mGameSession.searchForPlayer(currentUserID).addTicket(ticket);
+                            mGameSession.updatePlayerFirebase(mGameSession.searchForPlayer(currentUserID));
                         }
                     }
 
@@ -527,5 +541,10 @@ public class GameLogicMaster implements Parcelable
 
     public void setGameBoardMap(GameBoardMap gameBoardMap) {
         mGameBoardMap = gameBoardMap;
+    }
+
+    public void setCurrentUserID(String userID)
+    {
+        currentUserID = userID;
     }
 }
