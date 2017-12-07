@@ -846,11 +846,9 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         mTicketLayout.addView(textView);
     }
 
-    private static int mNextTicketColorNum = 0;
     private final List<Integer> TICKET_COLORS = Arrays.asList
             (
                     Color.BLUE,
-                    Color.LTGRAY,
                     Color.YELLOW,
                     0xB87333,
                     0xCC329,
@@ -867,10 +865,8 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             );
     private int createTicketColor()
     {
-        if(mNextTicketColorNum >= TICKET_COLORS.size())
-            mNextTicketColorNum = 0;
         Collections.shuffle(TICKET_COLORS);
-        return TICKET_COLORS.get(mNextTicketColorNum++);
+        return TICKET_COLORS.get(0);
     }
 
     public String getTicketString(GameDestinationTicket ticket)

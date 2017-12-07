@@ -162,26 +162,30 @@
     </HorizontalScrollView>
 
     <Button
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
         android:id="@+id/myTicketsButton"
+        android:background="@drawable/ticket"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/addTicketButton"
         app:layout_constraintLeft_toRightOf="@+id/handLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="78dp"
+        android:layout_height="55dp"
         android:padding="0dp"
-        android:onClick="myTicketsClick"
-        android:text="My Tickets"/>
+        android:onClick="myTicketsClick"/>
 
     <Button
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
         android:id="@+id/addTicketButton"
+        android:background="@drawable/addticket"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/myTicketsButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="78dp"
+        android:layout_height="55dp"
         android:padding="0dp"
-        android:onClick="addTicketClick"
-        android:text="@string/add_tickets"/>
+        android:onClick="addTicketClick"/>
 
     <Button
         app:layout_constraintBottom_toTopOf="@+id/handLayout"
