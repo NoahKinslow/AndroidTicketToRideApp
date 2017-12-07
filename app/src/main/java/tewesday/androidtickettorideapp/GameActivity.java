@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AlertDialog;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +45,7 @@ import com.google.maps.android.ui.IconGenerator;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -439,6 +442,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         List<CityCoordinates> cities = new ArrayList<>();
         do {
             if (Geocoder.isPresent()) {
+                cities = new ArrayList<>();
                 Geocoder geo = new Geocoder(this);
                 for (String cityName : mCityArray) {
                     List<Address> addresses = null;
@@ -464,15 +468,15 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                         Address city = addresses.get(0);
                         double lat = city.getLatitude();
                         double lng = city.getLongitude();
-                        cities.add(new CityCoordinates(cityName, new LatLng(lat, lng)));
+                        CityCoordinates cityCo = new CityCoordinates(cityName, new LatLng(lat, lng));
+                        if(!cities.contains(cityCo))
+                        cities.add(cityCo);
                     }
                 }
             }
         }while(!Geocoder.isPresent());
         return cities;
     }
-
-
 
     //Listeners
     @Override
@@ -586,6 +590,10 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void addTicketClick(View view)
     {
+        ScrollView ticketsv = findViewById(R.id.ticketScrollView);
+        ticketsv.setVisibility(View.GONE);
+        mTicketLayout.setVisibility(View.GONE);
+
         if(!isGameStarted || mTimesTapped > 0)
             return;
 
@@ -648,14 +656,12 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                 });
             }
         });
-
         dialog.show();
     }
 
     public void onTicketClick(View view)
     {
         if(isGameStarted) {
-
             GameDestinationTicket ticket = (GameDestinationTicket) view.getTag();
             Circle source = getCircleFromCityName(ticket.getSourceCity());
             Circle des = getCircleFromCityName(ticket.getDestinationCity());
@@ -665,10 +671,34 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             if (source.getRadius() == RADIUS || des.getRadius() == RADIUS) {
                 source.setRadius(HIGHLIGHT_RADIUS);
                 des.setRadius(HIGHLIGHT_RADIUS);
+                int color = (int) view.getTag(R.string.COLOR_TAG);
+                source.setStrokeColor(color);
+                des.setStrokeColor(color);
+                source.setFillColor(color);
+                des.setFillColor(color);
             } else {
                 source.setRadius(RADIUS);
                 des.setRadius(RADIUS);
+                source.setStrokeColor(Color.BLACK);
+                des.setStrokeColor(Color.BLACK);
+                source.setFillColor(Color.BLACK);
+                des.setFillColor(Color.BLACK);
             }
+        }
+    }
+
+    public void myTicketsClick(View view) {
+        if(!isGameStarted)
+            return;
+
+        ScrollView ticketsv = findViewById(R.id.ticketScrollView);
+        if(ticketsv.getVisibility() == View.GONE) {
+            ticketsv.setVisibility(View.VISIBLE);
+            mTicketLayout.setVisibility(View.VISIBLE);
+        }
+        else {
+            ticketsv.setVisibility(View.GONE);
+            mTicketLayout.setVisibility(View.GONE);
         }
     }
 
@@ -800,6 +830,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void addTicketToDisplay(GameDestinationTicket ticket)
     {
+        int color = createTicketColor();
         TextView textView = new TextView(this);
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -808,8 +839,37 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
         textView.setText(getTicketString(ticket));
+        textView.setTextColor(color);
         textView.setTag(ticket);
+        textView.setTag(R.string.COLOR_TAG, color);
         mTicketLayout.addView(textView);
+    }
+
+    private static int mNextTicketColorNum = 0;
+    private final List<Integer> TICKET_COLORS = Arrays.asList
+            (
+                    Color.BLUE,
+                    Color.LTGRAY,
+                    Color.YELLOW,
+                    0xB87333,
+                    0xCC329,
+                    0x855E42,
+                    Color.CYAN,
+                    Color.GRAY,
+                    0xF58231,
+                    Color.RED,
+                    0x000080,
+                    0xCFB53B,
+                    Color.MAGENTA,
+                    Color.GRAY,
+                    0x008080
+            );
+    private int createTicketColor()
+    {
+        if(mNextTicketColorNum >= TICKET_COLORS.size())
+            mNextTicketColorNum = 0;
+        Collections.shuffle(TICKET_COLORS);
+        return TICKET_COLORS.get(mNextTicketColorNum++);
     }
 
     public String getTicketString(GameDestinationTicket ticket)

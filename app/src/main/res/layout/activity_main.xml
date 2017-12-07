@@ -9,7 +9,7 @@
         android:id="@+id/textView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:textAlignment="center"
         android:text="@string/welcome_you_are_signed_in"/>
 
@@ -17,7 +17,7 @@
         android:id="@+id/gameSessionText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:inputType="textPersonName"
         android:selectAllOnFocus="true"
         android:textAlignment="center"
@@ -27,28 +27,28 @@
         android:id="@+id/createGameButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:text="@string/create_game" />
 
     <Button
         android:id="@+id/joinGameButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:text="@string/join_game" />
 
     <Button
         android:id="@+id/signOutButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:text="@string/sign_out"/>
 
     <Button
         android:id="@+id/gameTestButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:onClick="playAIClick"
         android:text="@string/play_ai_game"/>
 
