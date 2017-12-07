@@ -16,7 +16,7 @@ Draw cards by clicking draw pile in top right.
 Add tickets by placing the add ticket button in the bottom right.  
 
 Bugs:  
-Firebase no completely implemented  
+Firebase not completely implemented  
 Ticket can appear with spaces between them in the list view
 Possibly a Feature: Ticket dialog can close without validation (cheating can occur)
 
