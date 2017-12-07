@@ -1,6 +1,7 @@
 package tewesday.androidtickettorideapp;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -8,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
+import android.provider.MediaStore;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -52,6 +54,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleMap mMap;
     private final int RADIUS = 80000;
     private final int HIGHLIGHT_RADIUS = 120000;
+    private final int REQUEST_THUMBNAIL_IMAGE = 1;
     private Pair<Integer, Integer> mSelectedCard = null;
     private List<GameRouteConnection> mRoutes;
     private List<CityCoordinates> mCities;
@@ -239,6 +242,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         int i = 0;
         for (GamePlayer p : mGamePlayers) {
+            colorPlayerName(i, p.getPlayerColor());
             updatePlayerName(i, p.getPlayerName());
             updatePlayerPoints(i, p.getScore());
             updatePlayerTrains(i, p.getTrainsLeft());
@@ -669,8 +673,27 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     public void takeUserPhoto(View view) {
+        //Taken from the wonderful:
+        //https://github.com/thale4/TakingPhotosSimply/
+        dispatchTakeThumbnailIntent();
+    }
 
+    private void dispatchTakeThumbnailIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_THUMBNAIL_IMAGE);
+        }
+    }
 
+    // Get thumbnail for image and display to ImageView
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_THUMBNAIL_IMAGE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            updatePlayerImage(0,imageBitmap);
+        }
     }
 
 
@@ -694,6 +717,11 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void updatePlayerTrains(int player, int trains)
     {
         mTrainsTextViews.get(player).setText(getString(R.string.trainsLeft, trains));
+    }
+
+    public void colorPlayerName(int player, int playercolor)
+    {
+        mNameTextViews.get(player).setTextColor(ROUTE_COLORS[playercolor]);
     }
 
     public void updatePlayerImage(int player, Bitmap image)
