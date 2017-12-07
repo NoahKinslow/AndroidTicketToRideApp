@@ -9,7 +9,7 @@
         android:id="@+id/textView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:textAlignment="center"
         android:text="@string/welcome_to_ticket_to_ride"/>
 
@@ -17,7 +17,7 @@
         android:id="@+id/usernameText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:selectAllOnFocus="true"
         android:textAlignment="center"
         android:text="@string/usernameSignIn"/>
@@ -27,7 +27,7 @@
         style="@android:style/Widget.Material.EditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:inputType="textPassword"
         android:selectAllOnFocus="true"
         android:textAlignment="center"
@@ -37,14 +37,14 @@
         android:id="@+id/signInButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:text="@string/sign_inButton"/>
 
     <Button
         android:id="@+id/signUpButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:text="@string/sign_upButton" />
 
     <Button
@@ -53,5 +53,5 @@
         android:layout_height="wrap_content"
         android:onClick="playAIClick"
         android:text="@string/play_ai_game"
-        android:layout_margin="10dp"/>
+        android:layout_margin="5dp"/>
 </LinearLayout>
