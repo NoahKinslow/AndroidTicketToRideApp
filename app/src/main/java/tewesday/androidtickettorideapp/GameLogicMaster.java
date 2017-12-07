@@ -143,6 +143,10 @@ public class GameLogicMaster implements Parcelable
         route.setPlayerID(playerID);
         if(!mIsAIGame)
             mGameBoardMap.writeRouteDataToFirebase(mGameSession.getGameSessionID(), route);
+        else
+        {
+            mGameBoardMap.updateRouteConnection(route);
+        }
     }
 
     public void AITurn() {
