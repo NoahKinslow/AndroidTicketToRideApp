@@ -1,107 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="tewesday.androidtickettorideapp.MainActivity">
+    android:gravity="center_vertical">
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Ticket To Ride"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintVertical_bias="0.032"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintLeft_creator="1" />
+        android:layout_margin="10dp"
+        android:textAlignment="center"
+        android:text="@string/welcome_you_are_signed_in"/>
 
     <EditText
         android:id="@+id/gameSessionText"
-        style="@android:style/Widget.Material.EditText"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_margin="10dp"
         android:inputType="textPersonName"
         android:selectAllOnFocus="true"
-        android:text="Enter Game Name"
-        android:textAppearance="@android:style/TextAppearance.Widget.EditText"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.226"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintLeft_creator="1" />
-
-    <Button
-        android:id="@+id/signOutButton"
-        style="@android:style/Widget.Material.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="74dp"
-        android:layout_marginTop="75dp"
-        android:text="Sign Out"
-        android:textAppearance="@android:style/TextAppearance.Material.Widget.Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/createGameButton"
-        tools:layout_constraintTop_creator="1"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintBottom_creator="1"
-        tools:layout_constraintLeft_creator="1" />
+        android:textAlignment="center"
+        android:text="@string/enter_game_name" />
 
     <Button
         android:id="@+id/createGameButton"
-        style="@android:style/Widget.Material.Button"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Create Game"
-        android:textAppearance="@android:style/TextAppearance.Material.Widget.Button"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/joinGameButton"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintLeft_creator="1" />
+        android:layout_margin="10dp"
+        android:text="@string/create_game" />
 
     <Button
         android:id="@+id/joinGameButton"
-        style="@android:style/Widget.Material.Button"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Join Game"
-        android:textAppearance="@android:style/TextAppearance.Material.Widget.Button"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gameSessionText"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintLeft_creator="1" />
+        android:layout_margin="10dp"
+        android:text="@string/join_game" />
+
+    <Button
+        android:id="@+id/signOutButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/sign_out"/>
 
     <Button
         android:id="@+id/gameTestButton"
-        style="@android:style/Widget.Material.Button"
-        android:layout_width="145dp"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:onClick="playAIClick"
-        android:text="Play AI Game"
         android:layout_margin="10dp"
-        android:textAppearance="@android:style/TextAppearance.Material.Widget.Button"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="9dp"
-        app:layout_constraintTop_toBottomOf="@+id/createGameButton"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/signOutButton" />
+        android:onClick="playAIClick"
+        android:text="@string/play_ai_game"/>
 
-
-
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>
