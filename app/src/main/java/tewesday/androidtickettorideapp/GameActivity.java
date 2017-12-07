@@ -1,6 +1,7 @@
 package tewesday.androidtickettorideapp;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -8,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
+import android.provider.MediaStore;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -52,6 +54,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleMap mMap;
     private final int RADIUS = 80000;
     private final int HIGHLIGHT_RADIUS = 120000;
+    private final int REQUEST_THUMBNAIL_IMAGE = 1;
     private Pair<Integer, Integer> mSelectedCard = null;
     private List<GameRouteConnection> mRoutes;
     private List<CityCoordinates> mCities;
@@ -240,6 +243,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         int i = 0;
         for (GamePlayer p : mGamePlayers) {
+            colorPlayerName(i, p.getPlayerColor());
             updatePlayerName(i, p.getPlayerName());
             updatePlayerPoints(i, p.getScore());
             updatePlayerTrains(i, p.getTrainsLeft());
@@ -261,7 +265,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                     mGameLogicMaster.getPlayer(0).getScore() +
                     " points!", Toast.LENGTH_LONG).show();
         }
-        finish();
+        isGameStarted = false;
     }
 
     @Override
@@ -326,9 +330,10 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                 sourceLoc = source.mLocation;
                 desLoc = des.mLocation;
             }
-            else
+            else {
+                Log.d("CITY ERROR:", sourceStr + "-" + desStr);
                 continue;
-
+            }
 
             //If it is a double route
             Polyline otherLine = null;
@@ -522,6 +527,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         {
             if(mGameLogicMaster.PlaceTrains(route))
             claimRoute(mGamePlayers.get(0), route);
+            updatePolyline(polyline, route);
             updateHandDisplay(mSelectedCard.first, mSelectedCard.second - route.getTrainDistance());
 
             Toast.makeText(this, "Route Claimed!", Toast.LENGTH_SHORT).show();
@@ -538,18 +544,21 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         if(!isGameStarted || mTimesTapped > 1)
             return;
 
-        mTimesTapped++;
-
         int pileNum = getDrawPileIndexFromImageView((ImageView)view);
         int color = getColorFromDrawPile(pileNum);
 
+        if(color == 0 && mTimesTapped > 0 && pileNum != 0)
+            return;
+
         if(color == 0)
+            mTimesTapped += 2;
+        else
             mTimesTapped++;
 
         //add card to hand display
         updateHandDisplay(color, getNumHandCardsFromColor(color) + 1);
 
-        mGameLogicMaster.drawCard(pileNum);
+        mGameLogicMaster.drawCard(0, pileNum);
 
         int newCard = mGameLogicMaster.getDrawPileCardColor(pileNum);
         updateDrawPile(pileNum, newCard);
@@ -665,8 +674,27 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     public void takeUserPhoto(View view) {
+        //Taken from the wonderful:
+        //https://github.com/thale4/TakingPhotosSimply/
+        dispatchTakeThumbnailIntent();
+    }
 
+    private void dispatchTakeThumbnailIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_THUMBNAIL_IMAGE);
+        }
+    }
 
+    // Get thumbnail for image and display to ImageView
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_THUMBNAIL_IMAGE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            updatePlayerImage(0,imageBitmap);
+        }
     }
 
 
@@ -690,6 +718,11 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void updatePlayerTrains(int player, int trains)
     {
         mTrainsTextViews.get(player).setText(getString(R.string.trainsLeft, trains));
+    }
+
+    public void colorPlayerName(int player, int playercolor)
+    {
+        mNameTextViews.get(player).setTextColor(ROUTE_COLORS[playercolor]);
     }
 
     public void updatePlayerImage(int player, Bitmap image)
@@ -825,6 +858,12 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         route.setPlayerColor(player.getPlayerColor());
         updatePolyline(route);
     }
+    public void updatePolyline(Polyline p, GameRouteConnection route)
+    {
+        p.setTag(route);
+        p.setColor(ROUTE_COLORS[route.getPlayerColor()]);
+        p.setPattern(null);
+    }
 
     public void updatePolyline(GameRouteConnection route)
     {
@@ -833,9 +872,8 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             if(((GameRouteConnection)p.getTag()).getConnectionID()
                     == route.getConnectionID())
             {
-                p.setTag(route);
-                p.setColor(ROUTE_COLORS[route.getPlayerColor()]);
-                p.setPattern(null);
+                updatePolyline(p,route);
+                break;
             }
         }
     }

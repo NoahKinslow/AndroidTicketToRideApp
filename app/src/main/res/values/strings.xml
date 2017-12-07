@@ -22,6 +22,14 @@
     <string name="okay">OK</string>
     <string name="or">OR</string>
     <string name="loading">Loading Game...</string>
+    <string name="play_ai_game">Play AI Game</string>
+    <string name="welcome_to_ticket_to_ride">Welcome to Ticket To Ride</string>
+    <string name="enter_game_name">Enter Game Name</string>
+    <string name="create_game">Create Game</string>
+    <string name="join_game">Join Game</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="welcome_you_are_signed_in">Welcome! You are signed in.</string>
+    <string name="ticketToRideString">Ticket To Ride</string>
 
 
 </resources>

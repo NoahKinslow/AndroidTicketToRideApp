@@ -115,6 +115,11 @@ public class GamePlayer implements Parcelable
         return mTrainCards;
     }
 
+    public void updateTrainCard(int index, int cards)
+    {
+        mTrainCards.set(index, cards);
+    }
+
     public int getScore() {
         return mScore;
     }
