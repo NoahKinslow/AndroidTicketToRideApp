@@ -118,6 +118,19 @@ public class GameSession implements Parcelable
         return null;
     }
 
+    public void updatePlayerFirebase(GamePlayer playerUpdate)
+    {
+        for (GamePlayer player : mPlayerList)
+        {
+            if (player.getAssociatedUserID().equals(playerUpdate.getAssociatedUserID()))
+            {
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference("Games").child(mGameSessionID).child("playerList").child(playerUpdate.getPlayerID() + "");
+                myRef.setValue(playerUpdate);
+            }
+        }
+    }
+
     public String getGameSessionID() {
         return mGameSessionID;
     }

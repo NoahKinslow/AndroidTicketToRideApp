@@ -159,6 +159,7 @@ public class GameBoardMap implements Parcelable
     private void addRouteConnection(GameRouteConnection routeConnection)
     {
         mCityMap.get(routeConnection.getSourceCity()).addRouteConnection(routeConnection);
+        mCityMap.get(routeConnection.getDestinationCity()).addRouteConnection(routeConnection);
     }
 
     // Get a RouteConnection using its sourceCity, destinationCity, and connection ID

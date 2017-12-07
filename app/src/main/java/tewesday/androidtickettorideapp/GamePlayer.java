@@ -142,4 +142,5 @@ public class GamePlayer implements Parcelable
     public void setTickets(List<GameDestinationTicket> tickets) {
         mTickets = tickets;
     }
+
 }
