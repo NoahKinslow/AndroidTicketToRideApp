@@ -19,7 +19,9 @@ public class GamePlayer implements Parcelable
     private List<GameDestinationTicket> mTickets;
 
     // Default constructor for Firebase Database
-    GamePlayer()
+    GamePlayer(){}
+
+    GamePlayer(boolean aiGame)
     {
         mTickets = new ArrayList<>();
         mTrainsLeft = 45;

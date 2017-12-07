@@ -67,7 +67,7 @@ public class GameSession implements Parcelable
     // Add a new player to this GameSession
     public void addNewPlayer(String userID, String playerName)
     {
-        GamePlayer playerToAdd = new GamePlayer();
+        GamePlayer playerToAdd = new GamePlayer(true);
         playerToAdd.setAssociatedUserID(userID);
         playerToAdd.setPlayerName(playerName);
         playerToAdd.setTrainsLeft(DEFAULTTRAINCOUNT);

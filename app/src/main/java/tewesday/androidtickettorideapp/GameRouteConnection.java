@@ -30,7 +30,7 @@ public class GameRouteConnection implements Parcelable
     // Does a player own this route?
     private boolean mPlayerControlled = false;
     // What is the ID of the player that owns this route
-    private int mPlayerID;
+    private int mPlayerID = 10;
 
 
     // This default constructor is for Firebase Database to use

@@ -269,12 +269,13 @@ public class GameBoardMap implements Parcelable
         for (GameRouteConnection route : mCityMap.get(startCity).getmCityRoutes())
         {
             // Check if destination city was reached
-            if ((route.getDestinationCity().equals(endCity)
-                    || route.getSourceCity().equals(endCity))
-                    && route.getPlayerID() == playerID)
+            if ((route.getDestinationCity().equals(endCity) || route.getSourceCity().equals(endCity)))
             {
+                if (route.getPlayerID() == playerID)
+                {
                     // exit recursive function
                     return true;
+                }
             }
             // Check if current route is owned by the player
             else if (route.getPlayerID() == playerID)
@@ -294,12 +295,13 @@ public class GameBoardMap implements Parcelable
         for (GameRouteConnection route : mCityMap.get(nextCity).getmCityRoutes())
         {
             // Check if destination city was reached
-            if ((route.getDestinationCity().equals(endCity)
-                    || route.getSourceCity().equals(endCity))
-                    && route.getPlayerID() == playerID)
+            if ((route.getDestinationCity().equals(endCity) || route.getSourceCity().equals(endCity)))
             {
+                if (route.getPlayerID() == playerID)
+                {
                     // exit recursive function
                     return true;
+                }
             }
             // Check if current route is owned by the player
             else if (route.getPlayerID() == playerID

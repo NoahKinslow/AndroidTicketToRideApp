@@ -108,11 +108,11 @@ public class GameLogicMaster implements Parcelable
     {
         if(isAIGame)
         {
-            GamePlayer player = new GamePlayer();
+            GamePlayer player = new GamePlayer(true);
             player.setPlayerColor(7);
             player.setPlayerID(0);
             player.setPlayerName("You");
-            GamePlayer ai = new GamePlayer();
+            GamePlayer ai = new GamePlayer(true);
             ai.setPlayerColor(2);
             ai.setPlayerID(1);
             ai.setPlayerName("Computer");
@@ -123,6 +123,10 @@ public class GameLogicMaster implements Parcelable
         else
         {
             //firebase player
+            for (GamePlayer player: mGameSession.getPlayerList())
+            {
+                mGamePlayers.add(player);
+            }
         }
     }
 
